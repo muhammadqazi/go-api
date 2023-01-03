@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
@@ -34,4 +36,6 @@ func NewStudentsHandler(service services.StudentServices, mapper mappers.Student
 	}
 }
 
-func (s *studentHandler) CreateStudent(c *gin.Context) {}
+func (s *studentHandler) CreateStudent(c *gin.Context) {
+	fmt.Println(123123)
+}

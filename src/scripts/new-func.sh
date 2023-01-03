@@ -9,11 +9,17 @@ then
 fi
 file_name=$1
 
+# if the file src/internal/api/handlers/${file_name}_handler.go is already exists then show error message
+if [ -f src/internal/api/handlers/${file_name}_handler.go ]
+then
+    echo "File already exists"
+    exit 1
+fi
+
 # Create the handler file
 name_cap=$(echo $file_name | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
-cd ..
 dir_name=$(pwd) 
-cat > internal/api/handlers/${file_name}_handler.go << EOF
+cat > src/internal/api/handlers/${file_name}_handler.go << EOF
 package handlers
 
 import (
@@ -54,7 +60,7 @@ func (s *${file_name}Handler) Create${name_cap}(c *gin.Context) {}
 EOF
 
 # # Create the services file
-cat > internal/core/domain/services/${file_name}_services.go << EOF
+cat > src/internal/core/domain/services/${file_name}_services.go << EOF
 package services
 
 import (
@@ -84,7 +90,7 @@ func (s *${file_name}Services) Create${name_cap}() {
 EOF
 
 # # Create the mapper file
-cat > internal/core/infrastructure/postgres/mappers/${file_name}_mapper.go << EOF
+cat > src/internal/core/infrastructure/postgres/mappers/${file_name}_mapper.go << EOF
 package mappers
 
 type ${name_cap}Mapper interface {
@@ -101,7 +107,7 @@ EOF
 
 # # Create the repository file
 
-cat > internal/core/infrastructure/postgres/repositories/${file_name}_repository.go << EOF
+cat > src/internal/core/infrastructure/postgres/repositories/${file_name}_repository.go << EOF
 package repositories
 
 import "gorm.io/gorm"

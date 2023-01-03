@@ -3,9 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
-	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/routers"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	database "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
@@ -21,12 +19,13 @@ func main() {
 		Load the environment variables from .env file
 		"""
 	*/
+
 	viper.SetConfigFile(".env")
 	viper.ReadInConfig()
 
 	port := viper.Get("PORT").(string)
 	dbUrl := viper.Get("DB_URL").(string)
-	secretKey := viper.Get("JWT_SECRET").(string)
+	// secretKey := viper.Get("JWT_SECRET").(string)
 
 	/*
 		"""
@@ -42,7 +41,7 @@ func main() {
 		"""
 	*/
 
-	var jwtService security.TokenManager = security.NewTokenManager(secretKey)
+	// var jwtService security.TokenManager = security.NewTokenManager(secretKey)
 
 	/*
 		"""
@@ -106,8 +105,7 @@ func main() {
 		Router with JWT middleware
 		"""
 	*/
-
-	auth := r.Group("/api/v1", middleware.AuthorizeJWT(jwtService))
+	auth := r.Group("/api/v1") //, middleware.AuthorizeJWT(jwtService))
 
 	routers.StudentRouter(auth, studentHandler)
 	/*
