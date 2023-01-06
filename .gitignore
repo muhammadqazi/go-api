@@ -5,3 +5,4 @@
 .idea
 .vscode
 .vscode-test
+./tmp

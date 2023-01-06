@@ -6,10 +6,15 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 func Init(url string) *gorm.DB {
-	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(url), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+	})
 
 	if err != nil {
 		log.Fatalln(err)

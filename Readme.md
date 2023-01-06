@@ -14,23 +14,27 @@ Clone the project
 git clone git@github.com:muhammadqazi/SIS-Backend-Go.git
 ```
 
+### Scripts
 
+`make server` to run main.go without fast refresh.
+
+`make fast` for the fast refresh.
+
+`make func` to add a new function to application, it will make new file in handler,mapper,service and repository. Just write
+` make func name=functionName `
+
+`check-db` check dp will check if the database in docker it's working or not.
+
+For `air` binary file 
+
+`curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s` use this command it will create a `bin` directory in project copy air and move it to project root near make file.
+
+##### Air Config
+```
+[build]
+cmd = "go build -o ./tmp/main ./src/cmd/main.go"
+```
 
 ### ENVIRONMENT VARIABLES
 
-To run this project, you will need to add the following environment variables to your .env file
-
-```
-DB_URL
-
-PORT 			// with : ex, :9000
-
-JWT_SECRET
-```
-
-
-Run the project with 
-
-```
-make server
-```
+All the environment variables are in `.env.sample` file.
