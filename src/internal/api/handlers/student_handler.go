@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 )
 
@@ -21,6 +22,7 @@ type StudentHandler interface {
 	CreateStudent(c *gin.Context)
 	GetStudentByEmail(c *gin.Context)
 	GetStudentByStudentID(c *gin.Context)
+	AddFaculty(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -104,6 +106,19 @@ func (s *studentHandler) GetStudentByStudentID(c *gin.Context) {
 
 	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No student found"})
 
+}
+
+func (s *studentHandler) AddFaculty(c *gin.Context) {
+
+	var faculty entities.FacultiesEntity
+
+	faculty.CreatedAt = time.Now()
+	if err := c.BindJSON(&faculty); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
+		return
+	}
+
+	s.studentServices.AddFaculty(faculty)
 }
 
 func getCurrentSemester() string {

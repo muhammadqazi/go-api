@@ -11,3 +11,7 @@ func:
 check-db:
 	chmod +x src/scripts/check-db.sh
 	./src/scripts/check-db.sh
+
+seed:
+	chmod +x src/scripts/seed-db.sh
+	./src/scripts/seed-db.sh

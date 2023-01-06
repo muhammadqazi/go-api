@@ -11,5 +11,6 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 
 	g.POST("/create", h.CreateStudent)
 	g.GET("/:id", h.GetStudentByStudentID)
+	g.POST("/add", h.AddFaculty)
 
 }
