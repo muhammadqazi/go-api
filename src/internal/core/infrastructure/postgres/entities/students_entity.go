@@ -21,9 +21,9 @@ type StudentsEntity struct {
 	GraduationDate time.Time `gorm:"type:timestamp" json:"graduation_date"`
 
 	FacultyID      uint `gorm:"column:faculty_id;not null" json:"faculty_id"`
-	PersonalInfoID uint `gorm:"not null" json:"personalinfo_id"`
-	ContactInfoID  uint `gorm:"not null" json:"contactinfo_id"`
-	AddressID      uint `gorm:"not null" json:"address_id"`
+	PersonalInfoID uint `gorm:"null" json:"personalinfo_id"`
+	ContactInfoID  uint `gorm:"null" json:"contactinfo_id"`
+	AddressID      uint `gorm:"null" json:"address_id"`
 	AccountingID   uint `gorm:"not null" json:"accounting_id"`
 
 	IsGraduated bool `gorm:"type:boolean;not null" json:"is_graduated"`

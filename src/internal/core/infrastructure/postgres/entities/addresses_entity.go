@@ -1,8 +1,6 @@
 package entities
 
 type AddressesEntity struct {
-	BaseEntity // createdat, updatedat, deletedat, isactive
-
 	AddressID uint   `gorm:"primaryKey;not null;uniqueIndex" json:"address_id"`
 	State     string `gorm:"type:varchar(255);not null" json:"state"`
 	City      string `gorm:"type:varchar(255);not null" json:"city"`
