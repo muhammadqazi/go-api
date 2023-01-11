@@ -3,6 +3,7 @@ package mappers
 import (
 	"time"
 
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 )
@@ -29,21 +30,31 @@ const (
 	NoAccess          = "NoAccess"
 )
 
+const (
+	Role = "Student"
+)
+
 func (m *studentMapper) StudentCreateMapper(student dtos.StudentCreateDTO, sid uint, semester string) entities.StudentsEntity {
 
+	hashedPassword, _ := security.HashPassword(student.Password)
+
 	return entities.StudentsEntity{
-		StudentID:    sid,
-		FirstName:    student.FirstName,
-		Surname:      student.Surname,
-		Email:        student.Email,
-		Nationality:  student.Nationality,
-		DOB:          student.DOB,
-		PlaceOfBirth: student.PlaceOfBirth,
-		Sex:          student.Sex,
-		Password:     student.Password,
-		Role:         student.Role,
-		Semester:     semester,
-		FacultyID:    student.FacultyID,
+		StudentID:      sid,
+		FirstName:      student.FirstName,
+		Surname:        student.Surname,
+		Email:          student.Email,
+		Nationality:    student.Nationality,
+		DOB:            student.DOB,
+		PlaceOfBirth:   student.PlaceOfBirth,
+		Sex:            student.Sex,
+		Password:       hashedPassword,
+		Role:           Role,
+		Semester:       semester,
+		FacultyID:      student.FacultyID,
+		PersonalInfoID: student.PersonalInfoID,
+		ContactInfoID:  student.ContactInfoID,
+		AddressID:      student.AddressID,
+		AccountingID:   student.AccountsID,
 		BaseEntity: entities.BaseEntity{
 			IsActive:  student.IsActive,
 			CreatedAt: time.Now().UTC(),
@@ -70,12 +81,12 @@ func (m *studentMapper) StudentResponseMapper(student entities.StudentsEntity) d
 		EnrollmentDate: student.EnrollmentDate,
 		GraduationDate: student.GraduationDate,
 		FacultyID:      student.FacultyID,
-		// PersonalInfoID: student.PersonalInfoID,
-		// ContactInfoID:  student.ContactInfoID,
-		// AddressID:      student.AddressID,
-		// IsActive:       student.IsActive,
-		// CreatedAt:      student.CreatedAt,
-		// IsGraduated:    student.IsGraduated,
-		// IsDeleted:      student.IsDeleted,
+		PersonalInfoID: student.PersonalInfoID,
+		ContactInfoID:  student.ContactInfoID,
+		AddressID:      student.AddressID,
+		IsActive:       student.IsActive,
+		CreatedAt:      student.CreatedAt,
+		IsGraduated:    student.IsGraduated,
+		IsDeleted:      student.IsDeleted,
 	}
 }

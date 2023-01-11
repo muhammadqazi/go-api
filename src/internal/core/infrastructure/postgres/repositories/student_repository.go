@@ -10,7 +10,6 @@ type StudentRepository interface {
 	GetLastStudentID() (uint, error)
 	GetStudentByEmail(email string) (entities.StudentsEntity, error)
 	GetStudentByStudentID(sid uint) (entities.StudentsEntity, error)
-	AddFaculty(f entities.FacultiesEntity)
 }
 
 type studentConnection struct {
@@ -49,13 +48,6 @@ func (r *studentConnection) GetStudentByStudentID(sid uint) (entities.StudentsEn
 	return student, err
 
 }
-
-func (r *studentConnection) AddFaculty(f entities.FacultiesEntity) {
-
-	r.conn.Create(&f)
-
-}
-
 func (r *studentConnection) GetLastStudentID() (uint, error) {
 
 	var lastStudent entities.StudentsEntity

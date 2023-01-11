@@ -12,7 +12,6 @@ type StudentServices interface {
 	GetLastStudentID() (uint, error)
 	GetStudentByEmail(string) (entities.StudentsEntity, error)
 	GetStudentByStudentID(uint) (entities.StudentsEntity, error)
-	AddFaculty(f entities.FacultiesEntity)
 }
 
 type studentServices struct {
@@ -42,8 +41,4 @@ func (s *studentServices) GetStudentByStudentID(sid uint) (entities.StudentsEnti
 
 func (s *studentServices) GetLastStudentID() (uint, error) {
 	return s.studentRepository.GetLastStudentID()
-}
-
-func (s *studentServices) AddFaculty(f entities.FacultiesEntity) {
-	s.studentRepository.AddFaculty(f)
 }

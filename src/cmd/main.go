@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/routers"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	database "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
@@ -25,7 +26,7 @@ func main() {
 
 	port := viper.Get("PORT").(string)
 	dbUrl := viper.Get("DB_URL").(string)
-	// secretKey := viper.Get("JWT_SECRET").(string)
+	secretKey := viper.Get("JWT_SECRET").(string)
 
 	/*
 		"""
@@ -41,7 +42,7 @@ func main() {
 		"""
 	*/
 
-	// var jwtService security.TokenManager = security.NewTokenManager(secretKey)
+	var jwtService security.TokenManager = security.NewTokenManager(secretKey)
 
 	/*
 		"""
@@ -80,7 +81,7 @@ func main() {
 	*/
 
 	var (
-		studentHandler handlers.StudentHandler = handlers.NewStudentsHandler(studentServices, studentMapper)
+		studentHandler handlers.StudentHandler = handlers.NewStudentsHandler(studentServices, studentMapper, jwtService)
 	)
 
 	/*
