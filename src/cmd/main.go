@@ -51,7 +51,8 @@ func main() {
 	*/
 
 	var (
-		studentRepository repositories.StudentRepository = repositories.NewStudentRepository(db)
+		studentRepository  repositories.StudentRepository    = repositories.NewStudentRepository(db)
+		accountsRepository repositories.AccountingRepository = repositories.NewAccountingRepository(db)
 	)
 
 	/*
@@ -61,7 +62,8 @@ func main() {
 	*/
 
 	var (
-		studentMapper mappers.StudentMapper = mappers.NewStudentMapper()
+		studentMapper  mappers.StudentMapper  = mappers.NewStudentMapper()
+		accountsMapper mappers.AccountsMapper = mappers.NewAccountingMapper()
 	)
 
 	/*
@@ -71,7 +73,8 @@ func main() {
 	*/
 
 	var (
-		studentServices services.StudentServices = services.NewStudentServices(studentRepository, studentMapper)
+		studentServices services.StudentServices    = services.NewStudentServices(studentRepository, studentMapper)
+		accountServices services.AccountingServices = services.NewAccountingServices(accountsRepository, accountsMapper)
 	)
 
 	/*
@@ -81,7 +84,8 @@ func main() {
 	*/
 
 	var (
-		studentHandler handlers.StudentHandler = handlers.NewStudentsHandler(studentServices, studentMapper, jwtService)
+		studentHandler  handlers.StudentHandler    = handlers.NewStudentsHandler(studentServices, studentMapper, jwtService)
+		accountsHandler handlers.AccountingHandler = handlers.NewAccountingHandler(accountServices, accountsMapper)
 	)
 
 	/*
@@ -109,6 +113,7 @@ func main() {
 	auth := r.Group("/api/v1") //, middleware.AuthorizeJWT(jwtService))
 
 	routers.StudentRouter(auth, studentHandler)
+	routers.AccountingRouter(auth, accountsHandler)
 	/*
 		"""
 		Start the server, when you use 'localhost' it will not ask you for the permision again and again "MAC trick"

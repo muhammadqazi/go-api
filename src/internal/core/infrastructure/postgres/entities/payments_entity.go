@@ -8,5 +8,5 @@ type PaymentsEntity struct {
 	Amount      int       `gorm:"not null" json:"amount"`
 	ProcessType string    `gorm:"type:varchar(255);not null" json:"process_type"`
 
-	AccountingEntity []AccountingEntity `gorm:"foreignkey:PaymentID"`
+	AccountsID uint `gorm:"not null" json:"accounts_id"`
 }

@@ -24,10 +24,10 @@ func NewStudentRepository(db *gorm.DB) StudentRepository {
 
 func (r *studentConnection) InsertStudent(student entities.StudentsEntity) (uint, error) {
 
-	rec := r.conn.Create(&student)
+	res := r.conn.Create(&student)
 
-	if rec.Error != nil {
-		return 0, rec.Error
+	if res.Error != nil {
+		return 0, res.Error
 	}
 
 	return student.StudentID, nil

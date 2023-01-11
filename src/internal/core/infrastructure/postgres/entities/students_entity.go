@@ -24,7 +24,7 @@ type StudentsEntity struct {
 	PersonalInfoID uint `gorm:"null" json:"personalinfo_id"`
 	ContactInfoID  uint `gorm:"null" json:"contactinfo_id"`
 	AddressID      uint `gorm:"null" json:"address_id"`
-	AccountingID   uint `gorm:"not null" json:"accounting_id"`
+	AccountsID     uint `gorm:"not null" json:"accounts_id"`
 
 	IsGraduated bool `gorm:"type:boolean;not null" json:"is_graduated"`
 	IsDeleted   bool `gorm:"type:boolean;not null" json:"is_deleted"`

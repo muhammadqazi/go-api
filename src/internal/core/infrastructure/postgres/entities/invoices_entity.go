@@ -10,5 +10,5 @@ type InvoicesEntity struct {
 	Installment int       `gorm:"not null" json:"installment"`
 	Term        string    `gorm:"type:varchar(255);not null" json:"term"`
 
-	AccountingEntity []AccountingEntity `gorm:"foreignkey:InvoiceID"`
+	AccountsID uint `gorm:"not null" json:"accounts_id"`
 }

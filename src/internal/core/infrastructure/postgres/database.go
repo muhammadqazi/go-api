@@ -36,9 +36,9 @@ func Init(url string) *gorm.DB {
 		&entities.DepartmentsEntity{},
 		&entities.CoursesEntity{},
 		&entities.AdvisorsEntity{},
+		&entities.AccountsEntity{},
 		&entities.InvoicesEntity{},
 		&entities.PaymentsEntity{},
-		&entities.AccountingEntity{},
 		&entities.StudentsEntity{},
 	)
 
