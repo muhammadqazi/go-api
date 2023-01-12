@@ -9,8 +9,8 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 
 	g := r.Group("/students")
 
-	g.POST("/create", h.CreateStudent)
+	// g.POST("/create", h.CreateStudent)
 	g.GET("/:id", h.GetStudentByStudentID)
-	g.POST("/login", h.StudentSignIn)
+	// g.POST("/login", h.StudentSignIn)
 
 }

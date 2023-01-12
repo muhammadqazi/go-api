@@ -31,33 +31,33 @@ VALUES
 (4, 'CHEM101', 'General Chemistry', 3, 25, 'active',true,current_timestamp,2),
 (5, 'BIO101', 'Introduction to Biology', 3, 30, 'active',true,current_timestamp,2);
 
-INSERT INTO accounts_entity
-    (accounts_id, total_fee, current_dept,approaching_dept,total_dept,scholarship, discount, installments) 
-VALUES
-    (1, 10000, 70000,1000,8000, 1000, 500, 4),
-    (2, 12000, 70000,1000,8000,1500, 400, 5),
-    (3, 8000, 70000,1000,8000,500, 300, 3),
-    (4, 15000, 70000,1000,8000,2000, 600, 4),
-    (5, 7000, 70000,1000,8000,700, 200, 2);
+-- INSERT INTO accounts_entity
+--     (accounts_id, total_fee, current_dept,approaching_dept,total_dept,scholarship, discount,discount_type, installments) 
+-- VALUES
+--     (1, 10000, 70000,1000,8000, 1000, 500, 'Sports',4),
+--     (2, 12000, 70000,1000,8000,1500, 400,  'Sports',5),
+--     (3, 8000, 70000,1000,8000,500, 300,  'Sports',3),
+--     (4, 15000, 70000,1000,8000,2000, 600,  'Sports',4),
+--     (5, 7000, 70000,1000,8000,700, 200, 'Sports', 2);
 
 
-INSERT INTO 
-    invoices_entity (invoice_id, date, amount, description, installment, term,accounts_id) 
-VALUES 
-    (1, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',1),
-    (2, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',2),
-    (3, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',3),
-    (4, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',4),
-    (5, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',5);
+-- INSERT INTO 
+--     invoices_entity (invoice_id, date, amount, description, installment, term,accounts_id) 
+-- VALUES 
+--     (1, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',1),
+--     (2, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',2),
+--     (3, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',3),
+--     (4, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',4),
+--     (5, current_timestamp, 1000, 'Monthly invoice', 1, 'Fall',5);
 
-INSERT INTO payments_entity 
-    (payment_id, date, amount, process_type,accounts_id) 
-VALUES 
-    (1, current_timestamp, 1000, 'Cash',1),
-    (2, current_timestamp, 1000, 'Check',2),
-    (3, current_timestamp, 1000, 'Credit card',3),
-    (4, current_timestamp, 1000, 'Bank transfer',4),
-    (5, current_timestamp, 1000, 'Paypal',5);
+-- INSERT INTO payments_entity 
+--     (payment_id, date, amount, process_type,accounts_id) 
+-- VALUES 
+--     (1, current_timestamp, 1000, 'Cash',1),
+--     (2, current_timestamp, 1000, 'Check',2),
+--     (3, current_timestamp, 1000, 'Credit card',3),
+--     (4, current_timestamp, 1000, 'Bank transfer',4),
+--     (5, current_timestamp, 1000, 'Paypal',5);
 
 
 INSERT INTO personal_info_entity (personal_info_id, id_card_number, passport_number, father_name, mother_name) 
@@ -96,7 +96,7 @@ VALUES
     (5, 'Illinois', 'Chicago', 'IL', '654 Cedar Ave');
 
 INSERT INTO students_entity 
-    (created_at, updated_at, deleted_at, is_active, first_name, surname, email, nationality, dob, place_of_birth, sex, password, role, status, semester, enrollment_date, graduation_date,student_id,is_deleted,is_graduated,faculty_id,personal_info_id,contact_info_id,address_id,accounts_id) 
+    (created_at, updated_at, deleted_at, is_active, first_name, surname, email, nationality, dob, place_of_birth, sex, password, role, status, semester, enrollment_date, graduation_date,student_id) 
 VALUES 
-    (current_timestamp, current_timestamp, NULL, true, 'John', 'Doe', 'john.doe@example.com', 'American', '01/01/1970', 'New York', 'male', 'password', 'student', 'enrolled', 'Spring', '01/01/2021', NULL,21906778,false,false,1,1,1,1,1), 
-    (current_timestamp, current_timestamp, NULL, true, 'Jane', 'Doe', 'jane.doe@example.com', 'Canadian', '01/01/1980', 'Toronto', 'female', 'password', 'student', 'enrolled', 'Fall', '01/01/2021', NULL,22107446,false,false,1,1,1,1,1)
+    (current_timestamp, current_timestamp, NULL, true, 'John', 'Doe', 'john.doe@example.com', 'American', '01/01/1970', 'New York', 'male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'student', 'enrolled', 'Spring', '01/01/2021', NULL,21906778),
+    (current_timestamp, current_timestamp, NULL, true, 'Jane', 'Doe', 'jane.doe@example.com', 'Canadian', '01/01/1980', 'Toronto', 'female', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'student', 'enrolled', 'Fall', '01/01/2021', NULL,22107446)

@@ -53,8 +53,8 @@ func (m *studentMapper) StudentCreateMapper(student dtos.StudentCreateDTO, sid u
 		FacultyID:      student.FacultyID,
 		PersonalInfoID: student.PersonalInfoID,
 		ContactInfoID:  student.ContactInfoID,
-		AddressID:      student.AddressID,
 		AccountsID:     student.AccountsID,
+		AddressID:      student.AddressID,
 		BaseEntity: entities.BaseEntity{
 			IsActive:  student.IsActive,
 			CreatedAt: time.Now().UTC(),

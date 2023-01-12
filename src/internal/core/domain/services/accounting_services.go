@@ -7,7 +7,8 @@ import (
 )
 
 type AccountingServices interface {
-	CreateAccounts(dto dtos.AccountCreateDTO) (uint, error)
+	CreateAccounts(dto dtos.StudentCreateDTO) (uint, error)
+	MakePayment(dtos.MakePaymentDTO, uint) bool
 }
 
 type accountingServices struct {
@@ -22,7 +23,14 @@ func NewAccountingServices(repo repositories.AccountingRepository, mapper mapper
 	}
 }
 
-func (s *accountingServices) CreateAccounts(account dtos.AccountCreateDTO) (uint, error) {
+func (s *accountingServices) CreateAccounts(account dtos.StudentCreateDTO) (uint, error) {
 	m := s.accountingMapper.AccountsCreateMapper(account)
 	return s.accountingRepository.InsertAccounts(m)
+}
+
+func (s *accountingServices) MakePayment(payment dtos.MakePaymentDTO, sid uint) bool {
+
+	m := s.accountingMapper.MakePaymentMapper(payment)
+
+	return s.accountingRepository.InsertPayment(m, sid)
 }

@@ -15,9 +15,12 @@ type StudentCreateDTO struct {
 	IsActive       bool   `json:"is_active"`
 	FacultyID      uint   `json:"faculty_id"`
 	PersonalInfoID uint   `json:"personalinfo_id"`
+	AccountsID     uint   `json:"accounts_id"`
 	ContactInfoID  uint   `json:"contactinfo_id"`
 	AddressID      uint   `json:"address_id"`
-	AccountsID     uint   `json:"accounts_id"`
+	Scholarship    int    `json:"scholarship"`
+	Discount       int    `json:"discount"`
+	DiscountType   string `json:"discount_type"`
 }
 
 type StudentSignInDTO struct {

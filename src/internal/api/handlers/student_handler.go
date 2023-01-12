@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -10,6 +11,7 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"gorm.io/gorm"
 )
 
 /*
@@ -28,6 +30,7 @@ type StudentHandler interface {
 type studentHandler struct {
 	studentMapper   mappers.StudentMapper
 	studentServices services.StudentServices
+	accountServices services.AccountingServices
 	jwtService      security.TokenManager
 }
 
@@ -37,10 +40,11 @@ type studentHandler struct {
 	"""
 */
 
-func NewStudentsHandler(service services.StudentServices, mapper mappers.StudentMapper, jwtService security.TokenManager) StudentHandler {
+func NewStudentsHandler(service services.StudentServices, account services.AccountingServices, mapper mappers.StudentMapper, jwtService security.TokenManager) StudentHandler {
 	return &studentHandler{
 		studentMapper:   mapper,
 		studentServices: service,
+		accountServices: account,
 		jwtService:      jwtService,
 	}
 }
@@ -61,13 +65,13 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 	}
 
 	/*
-
 		"""
 		We will check if the student already exists in the database
 		"""
 	*/
 
-	if _, err := s.studentServices.GetStudentByEmail(student.Email); err == nil {
+	_, err := s.studentServices.GetStudentByEmail(student.Email)
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Student already exists"})
 		return
 	}
@@ -81,9 +85,14 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 	semester := getCurrentSemester()
 	sid := recent_sid + 1
 
-	if sid, err := s.studentServices.CreateStudent(student, sid, semester); err == nil {
-		c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Student created successfully", "student_id": sid})
-		return
+	if accounts_id, err := s.accountServices.CreateAccounts(student); err == nil {
+		student.AccountsID = accounts_id
+
+		if sid, err := s.studentServices.CreateStudent(student, sid, semester); err == nil {
+			c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Student created successfully", "student_id": sid})
+			return
+		}
+
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error creating student"})
@@ -125,7 +134,6 @@ func (s *studentHandler) StudentSignIn(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"status":     true,
 			"token":      token,
 			"expires_in": 60,
 		})

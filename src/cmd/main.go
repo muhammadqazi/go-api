@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
+	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/routers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
@@ -84,7 +85,7 @@ func main() {
 	*/
 
 	var (
-		studentHandler  handlers.StudentHandler    = handlers.NewStudentsHandler(studentServices, studentMapper, jwtService)
+		studentHandler  handlers.StudentHandler    = handlers.NewStudentsHandler(studentServices, accountServices, studentMapper, jwtService)
 		accountsHandler handlers.AccountingHandler = handlers.NewAccountingHandler(accountServices, accountsMapper)
 	)
 
@@ -103,14 +104,14 @@ func main() {
 		"""
 	*/
 
-	routers.NoAuthRouter(api)
+	routers.NoAuthRouter(api, studentHandler)
 
 	/*
 		"""
 		Router with JWT middleware
 		"""
 	*/
-	auth := r.Group("/api/v1") //, middleware.AuthorizeJWT(jwtService))
+	auth := r.Group("/api/v1", middleware.AuthorizeJWT(jwtService))
 
 	routers.StudentRouter(auth, studentHandler)
 	routers.AccountingRouter(auth, accountsHandler)

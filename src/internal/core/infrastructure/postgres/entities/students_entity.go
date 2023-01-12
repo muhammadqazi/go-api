@@ -20,12 +20,12 @@ type StudentsEntity struct {
 	EnrollmentDate time.Time `gorm:"type:timestamp" json:"enrollment_date"`
 	GraduationDate time.Time `gorm:"type:timestamp" json:"graduation_date"`
 
-	FacultyID      uint `gorm:"column:faculty_id;not null" json:"faculty_id"`
-	PersonalInfoID uint `gorm:"null" json:"personalinfo_id"`
-	ContactInfoID  uint `gorm:"null" json:"contactinfo_id"`
-	AddressID      uint `gorm:"null" json:"address_id"`
-	AccountsID     uint `gorm:"not null" json:"accounts_id"`
+	FacultyID      uint `gorm:"column:faculty_id" json:"faculty_id"`
+	PersonalInfoID uint `json:"personalinfo_id"`
+	ContactInfoID  uint `json:"contactinfo_id"`
+	AddressID      uint `json:"address_id"`
+	AccountsID     uint `json:"accounts_id"`
 
-	IsGraduated bool `gorm:"type:boolean;not null" json:"is_graduated"`
-	IsDeleted   bool `gorm:"type:boolean;not null" json:"is_deleted"`
+	IsGraduated bool `gorm:"type:boolean;not null;default:false" json:"is_graduated"`
+	IsDeleted   bool `gorm:"type:boolean;not null;default:false" json:"is_deleted"`
 }
