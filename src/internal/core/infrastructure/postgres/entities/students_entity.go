@@ -20,7 +20,7 @@ type StudentsEntity struct {
 	EnrollmentDate time.Time `gorm:"type:timestamp" json:"enrollment_date"`
 	GraduationDate time.Time `gorm:"type:timestamp" json:"graduation_date"`
 
-	FacultyID      uint `gorm:"column:faculty_id" json:"faculty_id"`
+	FacultyID      uint `gorm:"column:faculty_id" json:"faculty_id"` // department id here
 	PersonalInfoID uint `json:"personalinfo_id"`
 	ContactInfoID  uint `json:"contactinfo_id"`
 	AddressID      uint `json:"address_id"`

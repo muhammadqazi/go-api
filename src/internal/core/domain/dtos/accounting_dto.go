@@ -16,3 +16,6 @@ type MakePaymentDTO struct {
 	BuyRate     float32 `json:"buy_rate"`
 	SellRate    float32 `json:"sell_rate"`
 }
+type AccountUpdateDTO struct {
+	TotalDept int `json:"total_dept"`
+}

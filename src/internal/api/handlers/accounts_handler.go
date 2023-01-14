@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -62,11 +63,13 @@ func (s *accountingHandler) MakePayment(c *gin.Context) {
 		return
 	}
 
-	if res := s.accountingServices.MakePayment(payment, uint(sid)); res {
-		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Trabsaction Sucessfull"})
+	if err := s.accountingServices.MakePayment(payment, uint(sid)); err == nil {
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Transaction Sucessfull"})
 		return
 	}
 
-	c.JSON(http.StatusInternalServerError, gin.H{"status": true, "message": "An Error occoured while performing this transaction"})
+	fmt.Println(err)
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "An Error occoured while performing this transaction"})
 
 }
