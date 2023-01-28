@@ -28,6 +28,7 @@ func Init(url string) *gorm.DB {
 	*/
 
 	db.AutoMigrate(
+		&entities.InstructorsEntity{},
 		&entities.DepartmentsEntity{},
 		&entities.FacultiesEntity{},
 		&entities.PersonalInfoEntity{},
@@ -36,7 +37,6 @@ func Init(url string) *gorm.DB {
 		&entities.InvoicesEntity{},
 		&entities.PaymentsEntity{},
 		&entities.StudentsEntity{},
-		&entities.InstructorsEntity{},
 		&entities.CoursesEntity{},
 		&entities.CurriculumEntity{},
 		&entities.TranscriptEntity{},

@@ -8,7 +8,7 @@ import (
 )
 
 type AccountsMapper interface {
-	AccountsCreateMapper(dtos.StudentCreateDTO) entities.AccountsEntity
+	AccountsCreateMapper(dtos.StudentCreateDTO, uint) entities.AccountsEntity
 	MakePaymentMapper(dtos.MakePaymentDTO) entities.PaymentsEntity
 }
 
@@ -19,7 +19,7 @@ func NewAccountingMapper() AccountsMapper {
 	return &accountsMapper{}
 }
 
-func (m *accountsMapper) AccountsCreateMapper(student dtos.StudentCreateDTO) entities.AccountsEntity {
+func (m *accountsMapper) AccountsCreateMapper(student dtos.StudentCreateDTO, sid uint) entities.AccountsEntity {
 
 	DiscountType := "none"
 	if student.Discount > 0 {
@@ -40,6 +40,7 @@ func (m *accountsMapper) AccountsCreateMapper(student dtos.StudentCreateDTO) ent
 		Discount:     student.Discount,
 		DiscountType: DiscountType,
 		Installments: 2, // default
+		StudentID:    sid,
 
 		TotalDept: float32(currentDept),
 	}

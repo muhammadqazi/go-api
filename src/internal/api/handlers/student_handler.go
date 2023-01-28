@@ -76,23 +76,20 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 		return
 	}
 
-	recent_sid, err := s.studentServices.GetLastStudentID()
+	recentSid, err := s.studentServices.GetLastStudentID()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error generating student number"})
 		return
 	}
 
 	semester := getCurrentSemester()
-	sid := recent_sid + 1
+	sid := recentSid + 1
 
-	if accounts_id, err := s.accountServices.CreateAccounts(student); err == nil {
-		student.AccountsID = accounts_id
-
-		if sid, err := s.studentServices.CreateStudent(student, sid, semester); err == nil {
-			c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Student created successfully", "student_id": sid})
+	if sid, err := s.studentServices.CreateStudent(student, sid, semester); err == nil {
+		if _, err := s.accountServices.CreateAccounts(student, sid); err == nil {
+			c.JSON(http.StatusOK, gin.H{"status": true, "message": "Student created successfully", "student_id": sid})
 			return
 		}
-
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error creating student"})

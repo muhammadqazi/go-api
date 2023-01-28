@@ -13,8 +13,3 @@ docker exec -it $POSTGRES_CONTAINER_NAME psql -U $POSTGRES_USER -c "DROP DATABAS
 
 # Create a new database with the same name
 docker exec -it $POSTGRES_CONTAINER_NAME psql -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB;"
-
-# Change the current working directory to ../../
-cd ../../
-
-make fast

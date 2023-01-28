@@ -15,5 +15,6 @@ type InstructorsEntity struct {
 	Nationality  string `gorm:"type:varchar(255);not null" json:"nationality"`
 	Role         string `gorm:"type:varchar(255);not null" json:"role"`
 
-	CoursesEntity []CoursesEntity `gorm:"foreignkey:InstructorID"`
+	CoursesEntity     []CoursesEntity     `gorm:"foreignkey:InstructorID"`
+	DepartmentsEntity []DepartmentsEntity `gorm:"foreignkey:HeadID"`
 }

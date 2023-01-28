@@ -13,12 +13,12 @@ type StudentsEntity struct {
 	DOB            string    `gorm:"type:varchar(50);not null" json:"dob"`
 	PlaceOfBirth   string    `gorm:"type:varchar(50);not null" json:"place_of_birth"`
 	Sex            string    `gorm:"type:varchar(50);not null" json:"sex"`
-	Password       string    `gorm:"type:varchar(50);not null" json:"password"`
+	Password       string    `gorm:"type:varchar(255);not null" json:"password"`
 	Role           string    `gorm:"type:varchar(50);not null" json:"role"`
 	Status         string    `gorm:"type:varchar(50);not null" json:"status"`
 	AccessStatus   string    `gorm:"type:varchar(50);not null" json:"access_status"`
 	AcceptanceType string    `gorm:"type:varchar(50);not null" json:"acceptance_type"`
-	Semester       string    `gorm:"type:varchar(255);not null" json:"semester"`
+	Semester       string    `gorm:"type:varchar(50);not null" json:"semester"`
 	GraduationDate time.Time `gorm:"type:timestamp" json:"graduation_date"`
 
 	IsGraduated bool `gorm:"type:boolean;not null;default:false" json:"is_graduated"`

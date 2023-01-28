@@ -28,6 +28,8 @@ const (
 	FullAccess        = "FullAccess"
 	ProvisionalAccess = "ProvisionalAccess"
 	NoAccess          = "NoAccess"
+	Registered        = "Registered"
+	NotRegistered     = "NotRegistered"
 )
 
 const (
@@ -39,22 +41,25 @@ func (m *studentMapper) StudentCreateMapper(student dtos.StudentCreateDTO, sid u
 	hashedPassword, _ := security.HashPassword(student.Password)
 
 	return entities.StudentsEntity{
-		StudentID:    sid,
-		FirstName:    student.FirstName,
-		Surname:      student.Surname,
-		Email:        student.Email,
-		Nationality:  student.Nationality,
-		DOB:          student.DOB,
-		PlaceOfBirth: student.PlaceOfBirth,
-		Sex:          student.Sex,
-		Password:     hashedPassword,
-		Role:         Role,
-		Semester:     semester,
+		StudentID:      sid,
+		FirstName:      student.FirstName,
+		Surname:        student.Surname,
+		Email:          student.Email,
+		Nationality:    student.Nationality,
+		DOB:            student.DOB,
+		PlaceOfBirth:   student.PlaceOfBirth,
+		Sex:            student.Sex,
+		Password:       hashedPassword,
+		Role:           Role,
+		Semester:       semester,
+		DepartmentID:   student.DepartmentID,
+		AcceptanceType: student.AcceptanceType,
 		BaseEntity: entities.BaseEntity{
-			IsActive:  student.IsActive,
+			IsActive:  true,
 			CreatedAt: time.Now().UTC(),
 		},
-		Status: New,
+		AccessStatus: FullAccess,
+		Status:       NotRegistered,
 	}
 }
 

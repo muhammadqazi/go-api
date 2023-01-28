@@ -14,7 +14,7 @@ type DepartmentsEntity struct {
 	DeanEmail      string `gorm:"type:varchar(50);not null" json:"dean_email"`
 	DeanPhone      string `gorm:"type:varchar(50);not null" json:"dean_phone"`
 
-	//HeadID uint `gorm:"column:instructor_id" json:"head_id"`
+	HeadID uint `gorm:"column:head_id" json:"head_id"`
 
 	StudentsEntity   []StudentsEntity   `gorm:"foreignkey:DepartmentID"`
 	FacultiesEntity  []FacultiesEntity  `gorm:"foreignkey:DepartmentID"`
