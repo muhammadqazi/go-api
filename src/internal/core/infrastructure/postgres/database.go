@@ -28,18 +28,21 @@ func Init(url string) *gorm.DB {
 	*/
 
 	db.AutoMigrate(
-
+		&entities.DepartmentsEntity{},
 		&entities.FacultiesEntity{},
 		&entities.PersonalInfoEntity{},
-		&entities.AddressesEntity{},
 		&entities.ContactInfoEntity{},
-		&entities.DepartmentsEntity{},
-		&entities.CoursesEntity{},
-		&entities.AdvisorsEntity{},
 		&entities.AccountsEntity{},
 		&entities.InvoicesEntity{},
 		&entities.PaymentsEntity{},
 		&entities.StudentsEntity{},
+		&entities.InstructorsEntity{},
+		&entities.CoursesEntity{},
+		&entities.CurriculumEntity{},
+		&entities.TranscriptEntity{},
+		&entities.CourseScheduleEntity{},
+		&entities.ExamScheduleEntity{},
+		&entities.ExamResultsEntity{},
 	)
 
 	return db

@@ -31,7 +31,7 @@ func (r *accountingConnection) InsertAccounts(account entities.AccountsEntity) (
 		return 0, res.Error
 	}
 
-	return account.AccountsID, nil
+	return account.AccountID, nil
 }
 
 func (r *accountingConnection) GetAccountByID(id uint) (entities.AccountsEntity, error) {
@@ -51,8 +51,8 @@ func (r *accountingConnection) InsertPayment(payment entities.PaymentsEntity, si
 		return err
 	}
 
-	accountID := student.AccountsID
-	payment.AccountsID = accountID
+	accountID := 1
+	payment.AccountID = uint(accountID)
 
 	// Begin a new transaction
 	tx := r.conn.Begin()

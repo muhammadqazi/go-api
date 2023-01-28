@@ -39,28 +39,22 @@ func (m *studentMapper) StudentCreateMapper(student dtos.StudentCreateDTO, sid u
 	hashedPassword, _ := security.HashPassword(student.Password)
 
 	return entities.StudentsEntity{
-		StudentID:      sid,
-		FirstName:      student.FirstName,
-		Surname:        student.Surname,
-		Email:          student.Email,
-		Nationality:    student.Nationality,
-		DOB:            student.DOB,
-		PlaceOfBirth:   student.PlaceOfBirth,
-		Sex:            student.Sex,
-		Password:       hashedPassword,
-		Role:           Role,
-		Semester:       semester,
-		FacultyID:      student.FacultyID,
-		PersonalInfoID: student.PersonalInfoID,
-		ContactInfoID:  student.ContactInfoID,
-		AccountsID:     student.AccountsID,
-		AddressID:      student.AddressID,
+		StudentID:    sid,
+		FirstName:    student.FirstName,
+		Surname:      student.Surname,
+		Email:        student.Email,
+		Nationality:  student.Nationality,
+		DOB:          student.DOB,
+		PlaceOfBirth: student.PlaceOfBirth,
+		Sex:          student.Sex,
+		Password:     hashedPassword,
+		Role:         Role,
+		Semester:     semester,
 		BaseEntity: entities.BaseEntity{
 			IsActive:  student.IsActive,
 			CreatedAt: time.Now().UTC(),
 		},
-		EnrollmentDate: time.Now().UTC(),
-		Status:         New,
+		Status: New,
 	}
 }
 
@@ -78,15 +72,10 @@ func (m *studentMapper) StudentResponseMapper(student entities.StudentsEntity) d
 		Role:           student.Role,
 		Status:         student.Status,
 		Semester:       student.Semester,
-		EnrollmentDate: student.EnrollmentDate,
 		GraduationDate: student.GraduationDate,
-		FacultyID:      student.FacultyID,
-		PersonalInfoID: student.PersonalInfoID,
-		ContactInfoID:  student.ContactInfoID,
-		AddressID:      student.AddressID,
-		IsActive:       student.IsActive,
-		CreatedAt:      student.CreatedAt,
-		IsGraduated:    student.IsGraduated,
-		IsDeleted:      student.IsDeleted,
+
+		IsActive:    student.IsActive,
+		CreatedAt:   student.CreatedAt,
+		IsGraduated: student.IsGraduated,
 	}
 }

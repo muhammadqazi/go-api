@@ -31,28 +31,26 @@ func (m *accountsMapper) AccountsCreateMapper(student dtos.StudentCreateDTO) ent
 	currentDept := totalFee - (totalFee * scholarship / 100)
 
 	if student.Discount > 0 {
-		currentDept -= (currentDept * student.Discount / 100)
+		currentDept -= currentDept * student.Discount / 100
 	}
 
 	return entities.AccountsEntity{
-		TotalFee:     totalFee,
+		TotalFee:     float32(totalFee),
 		Scholarship:  scholarship,
 		Discount:     student.Discount,
 		DiscountType: DiscountType,
 		Installments: 2, // default
 
-		TotalDept: currentDept,
+		TotalDept: float32(currentDept),
 	}
 }
 
 func (m *accountsMapper) MakePaymentMapper(payment dtos.MakePaymentDTO) entities.PaymentsEntity {
 
 	return entities.PaymentsEntity{
-		Amount:      payment.Amount,
+		Amount:      float32(payment.Amount),
 		ProcessType: payment.ProcessType,
 		Date:        time.Now().UTC(),
 		Currency:    payment.Currency,
-		BuyRate:     payment.BuyRate,
-		SellRate:    payment.SellRate,
 	}
 }
