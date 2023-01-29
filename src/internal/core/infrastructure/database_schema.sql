@@ -1,0 +1,27 @@
+-- This is just database schema in RAW SQL format. NOT a migration script.
+CREATE TABLE students (
+      student_id INT AUTO_INCREMENT PRIMARY KEY,
+      first_name VARCHAR(50) NOT NULL,
+      surname VARCHAR(50) NOT NULL,
+      email VARCHAR(50) NOT NULL UNIQUE,
+      nationality VARCHAR(50) NOT NULL,
+      dob VARCHAR(50) NOT NULL,
+      place_of_birth VARCHAR(50) NOT NULL,
+      sex VARCHAR(50) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      role VARCHAR(50) NOT NULL,
+      status VARCHAR(50) NOT NULL,
+      access_status VARCHAR(50) NOT NULL,
+      acceptance_type VARCHAR(50) NOT NULL,
+      semester VARCHAR(50) NOT NULL,
+      graduation_date TIMESTAMP,
+      is_graduated BOOLEAN NOT NULL DEFAULT FALSE,
+      supervisor_id INT,
+      department_id INT,
+      created_at TIMESTAMP NOT NULL,
+      updated_at TIMESTAMP NOT NULL,
+      deleted_at TIMESTAMP,
+      is_active BOOLEAN NOT NULL DEFAULT TRUE,
+      FOREIGN KEY (supervisor_id) REFERENCES instructors(instructor_id),
+      FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);

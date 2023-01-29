@@ -53,5 +53,6 @@ func (m *accountsMapper) MakePaymentMapper(payment dtos.MakePaymentDTO) entities
 		ProcessType: payment.ProcessType,
 		Date:        time.Now().UTC(),
 		Currency:    payment.Currency,
+		Installment: payment.Installment,
 	}
 }

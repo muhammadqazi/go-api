@@ -59,6 +59,22 @@ func New${name_cap}Handler(service services.${name_cap}Services, mapper mappers.
 func (s *${file_name}Handler) Create${name_cap}(c *gin.Context) {}
 EOF
 
+# Create a router file
+cat > src/internal/api/routers/${file_name}_router.go << EOF
+package routers
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
+)
+func ${file_name}Router(r *gin.Engine, h handlers.${name_cap}Handler) {
+
+	g := r.Group("/accounts")
+
+	g.POST("/pay", h.MakePayment)
+}
+
+EOF
+
 # # Create the services file
 cat > src/internal/core/domain/services/${file_name}_services.go << EOF
 package services
