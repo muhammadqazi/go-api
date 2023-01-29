@@ -68,9 +68,9 @@ import (
 )
 func ${file_name}Router(r *gin.Engine, h handlers.${name_cap}Handler) {
 
-	g := r.Group("/accounts")
+	g := r.Group("/${file_name}")
 
-	g.POST("/pay", h.MakePayment)
+	g.POST("/create", h.Create${name_cap})
 }
 
 EOF
