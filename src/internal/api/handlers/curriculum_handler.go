@@ -6,6 +6,7 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"net/http"
 )
 
 /*
@@ -45,4 +46,10 @@ func (s *curriculumHandler) CreateCurriculum(c *gin.Context) {
 		return
 	}
 
+	if err := s.curriculumServices.CreateCurriculum(curriculum); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Internal Server Error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Curriculum Created Successfully"})
 }

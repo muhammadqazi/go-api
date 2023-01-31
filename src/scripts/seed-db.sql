@@ -1,10 +1,10 @@
-INSERT INTO departments_entity (department_code, name, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, created_at, is_active)
+INSERT INTO departments_entity (department_code, name, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, created_at, is_active, offered_semesters , number_of_years)
 VALUES
-    ('D001', 'Computer Science', 'Study of computers and computational systems', 'Dr. John Doe', 'Dr. Jane Doe', 'cs@university.com', '555-555-5555', 'dean_cs@university.com', '555-555-5551', current_timestamp , true),
-    ('D002', 'Mathematics', 'Study of numbers and shapes', 'Dr. Tom Doe', 'Dr. Sarah Doe', 'math@university.com', '555-555-5556', 'dean_math@university.com', '555-555-5552', current_timestamp , true),
-    ('D003', 'Physics', 'Study of matter and energy', 'Dr. James Doe', 'Dr. Emily Doe', 'physics@university.com', '555-555-5557', 'dean_physics@university.com', '555-555-5553', current_timestamp , true),
-    ('D004', 'Chemistry', 'Study of chemicals and their reactions', 'Dr. David Doe', 'Dr. Lily Doe', 'chemistry@university.com', '555-555-5558', 'dean_chemistry@university.com', '555-555-5554', current_timestamp , true),
-    ('D005', 'Biology', 'Study of living organisms', 'Dr. Michael Doe', 'Dr. Grace Doe', 'biology@university.com', '555-555-5559', 'dean_biology@university.com', '555-555-5555', current_timestamp , true);
+    ('D001', 'Computer Science', 'Study of computers and computational systems', 'Dr. John Doe', 'Dr. Jane Doe', 'cs@university.com', '555-555-5555', 'dean_cs@university.com', '555-555-5551', current_timestamp , true, '{"Fall","Spring"}',4),
+    ('D002', 'Mathematics', 'Study of numbers and shapes', 'Dr. Tom Doe', 'Dr. Sarah Doe', 'math@university.com', '555-555-5556', 'dean_math@university.com', '555-555-5552', current_timestamp , true,'{"Fall","Spring"}',4),
+    ('D003', 'Physics', 'Study of matter and energy', 'Dr. James Doe', 'Dr. Emily Doe', 'physics@university.com', '555-555-5557', 'dean_physics@university.com', '555-555-5553', current_timestamp , true,'{"Fall","Spring"}',4),
+    ('D004', 'Chemistry', 'Study of chemicals and their reactions', 'Dr. David Doe', 'Dr. Lily Doe', 'chemistry@university.com', '555-555-5558', 'dean_chemistry@university.com', '555-555-5554', current_timestamp , true,'{"Fall","Spring"}',4),
+    ('D005', 'Biology', 'Study of living organisms', 'Dr. Michael Doe', 'Dr. Grace Doe', 'biology@university.com', '555-555-5559', 'dean_biology@university.com', '555-555-5555', current_timestamp , true,'{"Fall","Spring"}',4);
 
 
 INSERT INTO faculties_entity (name, code, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, department_id , created_at, is_active)
@@ -86,16 +86,16 @@ VALUES
     (40, 'Social Implications of Computing', 'CS440', 'Study of the social implications of computing', 3, 6, 45, 15, current_timestamp, true);
 
 
-INSERT INTO curriculum_entity (department_id, semester , created_at, is_active)
+INSERT INTO curriculum_entity (department_id, semester, year , created_at, is_active)
 VALUES
-    (1, 'Fall',current_timestamp , true),
-    (1 ,'Spring',current_timestamp , true),
-    (1,  'Fall',current_timestamp , true),
-    (1, 'Spring',current_timestamp , true),
-    (1,  'Fall',current_timestamp , true),
-    (1, 'Spring',current_timestamp , true),
-    (1,  'Fall',current_timestamp , true),
-    (1, 'Spring',current_timestamp , true),
-    (1, 'Fall',current_timestamp , true),
-    (1 ,'Spring',current_timestamp , true);
+    (1, 'Fall', 1,current_timestamp , true),
+    (1 ,'Spring', 1,current_timestamp , true),
+    (1,  'Fall', 2,current_timestamp , true),
+    (1, 'Spring', 2,current_timestamp , true),
+    (1,  'Fall', 3,current_timestamp , true),
+    (1, 'Spring', 3,current_timestamp , true),
+    (1,  'Fall', 4,current_timestamp , true),
+    (1, 'Spring', 4,current_timestamp , true),
+    (1, 'Fall', 5,current_timestamp , true),
+    (1 ,'Spring', 5,current_timestamp , true);
 

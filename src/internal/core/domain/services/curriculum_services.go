@@ -1,12 +1,13 @@
 package services
 
 import (
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
 )
 
 type CurriculumServices interface {
-	CreateCurriculum()
+	CreateCurriculum(dto dtos.CurriculumCreateDTO) error
 }
 
 type curriculumServices struct {
@@ -21,6 +22,18 @@ func NewCurriculumServices(repo repositories.CurriculumRepository, mapper mapper
 	}
 }
 
-func (s *curriculumServices) CreateCurriculum() {
+func (s *curriculumServices) CreateCurriculum(curriculum dtos.CurriculumCreateDTO) error {
 
+	for _, v := range curriculum.Curriculum {
+		schema := dtos.CurriculumSchema{
+			Semester:     v.Semester,
+			Year:         v.Year,
+			DepartmentID: curriculum.DepartmentID,
+		}
+		m := s.curriculumMapper.CreateCurriculum(schema)
+		if err := s.curriculumRepository.InsertCurriculum(m, v.CourseID); err != nil {
+			return err
+		}
+	}
+	return nil
 }
