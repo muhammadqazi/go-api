@@ -3,25 +3,26 @@ package dtos
 import "time"
 
 type StudentCreateDTO struct {
-	FirstName      string `json:"first_name"`
-	Surname        string `json:"surname"`
-	Email          string `json:"email"`
-	Nationality    string `json:"nationality"`
-	DOB            string `json:"dob"`
-	PlaceOfBirth   string `json:"place_of_birth"`
-	Sex            string `json:"sex"`
-	Password       string `json:"password"`
-	Role           string `json:"role"`
-	Scholarship    int    `json:"scholarship"`
-	Discount       int    `json:"discount"`
-	DiscountType   string `json:"discount_type"`
-	AcceptanceType string `json:"acceptance_type"`
-	DepartmentID   uint   `json:"department_id"`
+	FirstName      string `json:"first_name" validate:"required,min=2,max=50"`
+	Surname        string `json:"surname" validate:"required,min=2,max=50"`
+	Email          string `json:"email" validate:"required,email"`
+	Nationality    string `json:"nationality" validate:"required,min=2,max=50"`
+	DOB            string `json:"dob" validate:"required"`
+	PlaceOfBirth   string `json:"place_of_birth" validate:"required,min=2,max=50"`
+	Sex            string `json:"sex" validate:"required,min=2,max=50"`
+	Password       string `json:"password" validate:"required,min=8,max=50"`
+	Role           string `json:"role" validate:"required,min=2,max=50"`
+	Scholarship    int    `json:"scholarship" validate:"required"`
+	Discount       int    `json:"discount" validate:"required"`
+	DiscountType   string `json:"discount_type" validate:"required,min=2,max=50"`
+	AcceptanceType string `json:"acceptance_type" validate:"required,min=2,max=50"`
+	DepartmentID   uint   `json:"department_id" validate:"required"`
+	SupervisorID   uint   `json:"supervisor_id" validate:"required"`
 }
 
 type StudentSignInDTO struct {
-	StudentID uint   `json:"student_id"`
-	Password  string `json:"password"`
+	StudentID uint   `json:"student_id" validate:"required"`
+	Password  string `json:"password" validate:"required"`
 }
 
 type StudentResponseDTO struct {

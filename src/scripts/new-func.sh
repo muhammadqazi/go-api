@@ -24,6 +24,7 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 )
@@ -39,20 +40,22 @@ type ${name_cap}Handler interface {
 }
 
 type ${file_name}Handler struct {
+  validator            validation.Validator
 	${file_name}Mapper   mappers.${name_cap}Mapper
 	${file_name}Services services.${name_cap}Services
 }
 
 /*
 	"""
-	This will creates a new instance of the ${name_cap}Handler, we will use this as a constructor
+	This will create a new instance of the ${name_cap}Handler, we will use this as a constructor
 	"""
 */
 
-func New${name_cap}Handler(service services.${name_cap}Services, mapper mappers.${name_cap}Mapper) ${name_cap}Handler {
+func New${name_cap}Handler(service services.${name_cap}Services, mapper mappers.${name_cap}Mapper,v validation.Validator) ${name_cap}Handler {
 	return &${file_name}Handler{
 		${file_name}Mapper:   mapper,
 		${file_name}Services: service,
+		validator:            v,
 	}
 }
 

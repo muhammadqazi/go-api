@@ -86,13 +86,16 @@ VALUES
     (40, 'Social Implications of Computing', 'CS440', 'Study of the social implications of computing', 3, 6, 45, 15, current_timestamp, true);
 
 
-INSERT INTO curriculum_entity (department_id, course_id, semester, year , created_at, is_active)
+INSERT INTO curriculum_entity (department_id, semester , created_at, is_active)
 VALUES
-    (1, 1, 'Fall', 2019,current_timestamp , true), (1, 2, 'Fall', 2019,current_timestamp , true), (1, 3, 'Fall', 2019,current_timestamp , true), (1, 4, 'Fall', 2019,current_timestamp , true), (1, 5, 'Fall', 2019,current_timestamp , true),
-    (1, 6, 'Spring', 2019,current_timestamp , true), (1, 7, 'Spring', 2019,current_timestamp , true), (1, 8, 'Spring', 2019,current_timestamp , true), (1, 9, 'Spring', 2019,current_timestamp , true), (1, 10, 'Spring', 2019,current_timestamp , true),
-    (1, 11, 'Fall', 2020,current_timestamp , true), (1, 12, 'Fall', 2020,current_timestamp , true), (1, 13, 'Fall', 2020,current_timestamp , true), (1, 14, 'Fall', 2020,current_timestamp , true), (1, 15, 'Fall', 2020,current_timestamp , true),
-    (1, 16, 'Spring', 2020,current_timestamp , true), (1, 17, 'Spring', 2020,current_timestamp , true), (1, 18, 'Spring', 2020,current_timestamp , true), (1, 19, 'Spring', 2020,current_timestamp , true), (1, 20, 'Spring', 2020,current_timestamp , true),
-    (1, 21, 'Fall', 2021,current_timestamp , true), (1, 22, 'Fall', 2021,current_timestamp , true), (1, 23, 'Fall', 2021,current_timestamp , true), (1, 24, 'Fall', 2021,current_timestamp , true), (1, 25, 'Fall', 2021,current_timestamp , true),
-    (1, 26, 'Spring', 2021,current_timestamp , true), (1, 27, 'Spring', 2021,current_timestamp , true), (1, 28, 'Spring', 2021,current_timestamp , true), (1, 29, 'Spring', 2021,current_timestamp , true), (1, 30, 'Spring', 2021,current_timestamp , true),
-    (1, 31, 'Fall', 2022,current_timestamp , true), (1, 32, 'Fall', 2022,current_timestamp , true), (1, 33, 'Fall', 2022,current_timestamp , true), (1, 34, 'Fall', 2022,current_timestamp , true), (1, 35, 'Fall', 2022,current_timestamp , true),
-    (1, 36, 'Spring', 2022,current_timestamp , true), (1, 37, 'Spring', 2022,current_timestamp , true), (1, 38, 'Spring', 2022,current_timestamp , true), (1, 39, 'Spring', 2022,current_timestamp , true), (1, 40, 'Spring', 2022,current_timestamp,true);
+    (1, 'Fall',current_timestamp , true),
+    (1 ,'Spring',current_timestamp , true),
+    (1,  'Fall',current_timestamp , true),
+    (1, 'Spring',current_timestamp , true),
+    (1,  'Fall',current_timestamp , true),
+    (1, 'Spring',current_timestamp , true),
+    (1,  'Fall',current_timestamp , true),
+    (1, 'Spring',current_timestamp , true),
+    (1, 'Fall',current_timestamp , true),
+    (1 ,'Spring',current_timestamp , true);
+

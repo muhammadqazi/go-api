@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"net/http"
 	"strconv"
 
@@ -23,20 +24,22 @@ type AccountingHandler interface {
 }
 
 type accountingHandler struct {
+	validator          validation.Validator
 	accountingMapper   mappers.AccountsMapper
 	accountingServices services.AccountingServices
 }
 
 /*
 	"""
-	This will creates a new instance of the AccountingHandler, we will use this as a constructor
+	This will create a new instance of the AccountingHandler, we will use this as a constructor
 	"""
 */
 
-func NewAccountingHandler(service services.AccountingServices, mapper mappers.AccountsMapper) AccountingHandler {
+func NewAccountingHandler(service services.AccountingServices, mapper mappers.AccountsMapper, v validation.Validator) AccountingHandler {
 	return &accountingHandler{
 		accountingMapper:   mapper,
 		accountingServices: service,
+		validator:          v,
 	}
 }
 
@@ -52,14 +55,7 @@ func (s *accountingHandler) MakePayment(c *gin.Context) {
 		return
 	}
 
-	/*
-		"""
-		BindJSON will bind the request body to the struct
-		"""
-	*/
-
-	if err := c.BindJSON(&payment); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
+	if err := s.validator.Validate(&payment, c); err != nil {
 		return
 	}
 

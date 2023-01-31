@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"net/http"
 	"strconv"
 	"time"
@@ -28,6 +29,7 @@ type StudentHandler interface {
 }
 
 type studentHandler struct {
+	validator       validation.Validator
 	studentMapper   mappers.StudentMapper
 	studentServices services.StudentServices
 	accountServices services.AccountingServices
@@ -36,16 +38,17 @@ type studentHandler struct {
 
 /*
 	"""
-	This will creates a new instance of the StudentHandler, we will use this as a constructor
+	This will create a new instance of the StudentHandler, we will use this as a constructor
 	"""
 */
 
-func NewStudentsHandler(service services.StudentServices, account services.AccountingServices, mapper mappers.StudentMapper, jwtService security.TokenManager) StudentHandler {
+func NewStudentsHandler(service services.StudentServices, account services.AccountingServices, mapper mappers.StudentMapper, jwtService security.TokenManager, v validation.Validator) StudentHandler {
 	return &studentHandler{
 		studentMapper:   mapper,
 		studentServices: service,
 		accountServices: account,
 		jwtService:      jwtService,
+		validator:       v,
 	}
 }
 
@@ -53,14 +56,7 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 
 	var student dtos.StudentCreateDTO
 
-	/*
-		"""
-		BindJSON will bind the request body to the struct
-		"""
-	*/
-
-	if err := c.BindJSON(&student); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
+	if err := s.validator.Validate(&student, c); err != nil {
 		return
 	}
 

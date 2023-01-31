@@ -53,6 +53,7 @@ func (m *studentMapper) StudentCreateMapper(student dtos.StudentCreateDTO, sid u
 		Role:           Role,
 		Semester:       semester,
 		DepartmentID:   student.DepartmentID,
+		SupervisorID:   student.SupervisorID,
 		AcceptanceType: student.AcceptanceType,
 		BaseEntity: entities.BaseEntity{
 			IsActive:  true,

@@ -6,6 +6,7 @@ import (
 	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/routers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	database "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
@@ -39,11 +40,12 @@ func main() {
 
 	/*
 		"""
-		JWT Token Manager
+		JWT Token Manager & validator
 		"""
 	*/
 
 	var jwtService security.TokenManager = security.NewTokenManager(secretKey)
+	var validator validation.Validator = validation.NewStructValidator()
 
 	/*
 		"""
@@ -52,8 +54,9 @@ func main() {
 	*/
 
 	var (
-		studentRepository  repositories.StudentRepository    = repositories.NewStudentRepository(db)
-		accountsRepository repositories.AccountingRepository = repositories.NewAccountingRepository(db)
+		studentRepository    repositories.StudentRepository    = repositories.NewStudentRepository(db)
+		accountsRepository   repositories.AccountingRepository = repositories.NewAccountingRepository(db)
+		curriculumRepository repositories.CurriculumRepository = repositories.NewCurriculumRepository(db)
 	)
 
 	/*
@@ -63,8 +66,9 @@ func main() {
 	*/
 
 	var (
-		studentMapper  mappers.StudentMapper  = mappers.NewStudentMapper()
-		accountsMapper mappers.AccountsMapper = mappers.NewAccountingMapper()
+		studentMapper    mappers.StudentMapper    = mappers.NewStudentMapper()
+		accountsMapper   mappers.AccountsMapper   = mappers.NewAccountingMapper()
+		curriculumMapper mappers.CurriculumMapper = mappers.NewCurriculumMapper()
 	)
 
 	/*
@@ -74,8 +78,9 @@ func main() {
 	*/
 
 	var (
-		studentServices services.StudentServices    = services.NewStudentServices(studentRepository, studentMapper)
-		accountServices services.AccountingServices = services.NewAccountingServices(accountsRepository, accountsMapper)
+		studentServices    services.StudentServices    = services.NewStudentServices(studentRepository, studentMapper)
+		accountServices    services.AccountingServices = services.NewAccountingServices(accountsRepository, accountsMapper)
+		curriculumServices services.CurriculumServices = services.NewCurriculumServices(curriculumRepository, curriculumMapper)
 	)
 
 	/*
@@ -85,8 +90,9 @@ func main() {
 	*/
 
 	var (
-		studentHandler  handlers.StudentHandler    = handlers.NewStudentsHandler(studentServices, accountServices, studentMapper, jwtService)
-		accountsHandler handlers.AccountingHandler = handlers.NewAccountingHandler(accountServices, accountsMapper)
+		studentHandler    handlers.StudentHandler    = handlers.NewStudentsHandler(studentServices, accountServices, studentMapper, jwtService, validator)
+		accountsHandler   handlers.AccountingHandler = handlers.NewAccountingHandler(accountServices, accountsMapper, validator)
+		curriculumHandler handlers.CurriculumHandler = handlers.NewCurriculumHandler(curriculumServices, curriculumMapper, validator)
 	)
 
 	/*
@@ -96,6 +102,8 @@ func main() {
 	*/
 
 	r := gin.Default()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
 	api := r.Group("api/v1")
 
 	/*
@@ -115,6 +123,7 @@ func main() {
 
 	routers.StudentRouter(auth, studentHandler)
 	routers.AccountingRouter(auth, accountsHandler)
+	routers.CurriculumRouter(auth, curriculumHandler)
 	/*
 		"""
 		Start the server, when you use 'localhost' it will not ask you for the permision again and again "MAC trick"

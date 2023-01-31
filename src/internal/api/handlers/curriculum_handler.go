@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 )
@@ -17,21 +19,30 @@ type CurriculumHandler interface {
 }
 
 type curriculumHandler struct {
+	validator          validation.Validator
 	curriculumMapper   mappers.CurriculumMapper
 	curriculumServices services.CurriculumServices
 }
 
 /*
 	"""
-	This will creates a new instance of the CurriculumHandler, we will use this as a constructor
+	This will create a new instance of the CurriculumHandler, we will use this as a constructor
 	"""
 */
 
-func NewCurriculumHandler(service services.CurriculumServices, mapper mappers.CurriculumMapper) CurriculumHandler {
+func NewCurriculumHandler(service services.CurriculumServices, mapper mappers.CurriculumMapper, v validation.Validator) CurriculumHandler {
 	return &curriculumHandler{
+		validator:          v,
 		curriculumMapper:   mapper,
 		curriculumServices: service,
 	}
 }
 
-func (s *curriculumHandler) CreateCurriculum(c *gin.Context) {}
+func (s *curriculumHandler) CreateCurriculum(c *gin.Context) {
+	var curriculum dtos.CurriculumCreateDTO
+
+	if err := s.validator.Validate(&curriculum, c); err != nil {
+		return
+	}
+
+}
