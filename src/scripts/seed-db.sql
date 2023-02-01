@@ -26,18 +26,18 @@ VALUES
     (0, 0, 10, 'Sports', 2, 50, 21906778, 1575, 3500),
     (0, 0, 10, 'Sports', 2, 50, 21906778, 1575, 3500);
 
-INSERT INTO instructors_entity (instructor_id, first_name, last_name, email, phone_number, password, dob, place_of_birth, sex, nationality, role , created_at,is_active)
+INSERT INTO instructors_entity (first_name, last_name, email, phone_number, password, dob, place_of_birth, sex, nationality, role , created_at,is_active)
 VALUES
-    (1, 'John', 'Doe', 'johndoe@example.com', '555-555-5555', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1980-01-01', 'New York', 'Male', 'American', 'Instructor',current_timestamp,true),
-    (2, 'Jane', 'Doe', 'janedoe@example.com', '555-555-5556', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1981-02-02', 'Los Angeles', 'Female', 'American', 'Instructor',current_timestamp,true),
-    (3, 'Bob', 'Smith', 'bobsmith@example.com', '555-555-5557', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1982-03-03', 'Chicago', 'Male', 'American', 'Instructor',current_timestamp,true),
-    (4, 'Alice', 'Johnson', 'alicejohnson@example.com', '555-555-5558', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1983-04-04', 'Houston', 'Female', 'American', 'Instructor',current_timestamp,true),
-    (5, 'Tom', 'Williams', 'tomwilliams@example.com', '555-555-5559', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1984-05-05', 'Philadelphia', 'Male', 'American', 'Instructor',current_timestamp,true),
-    (6, 'Emily', 'Jones', 'emilyjones@example.com', '555-555-5560', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1985-06-06', 'Phoenix', 'Female', 'American', 'Instructor',current_timestamp,true),
-    (7, 'David', 'Brown', 'davidbrown@example.com', '555-555-5561', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1986-07-07', 'San Antonio', 'Male', 'American', 'Instructor',current_timestamp,true),
-    (8, 'Sophie', 'Davis', 'sophiedavis@example.com', '555-555-5562', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1987-08-08', 'San Diego', 'Female', 'American', 'Instructor',current_timestamp,true),
-    (9, 'Jacob', 'Miller', 'jacobmiller@example.com', '555-555-5563', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1988-09-09', 'Dallas', 'Male', 'American', 'Instructor',current_timestamp,true),
-    (10, 'Olivia', 'Wilson', 'oliviawilson@example.com', '555-555-5564', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim0', '1989-10-10', 'San Jose', 'Female', 'American', 'Instructor',current_timestamp,true);
+    ('John', 'Doe', 'johndoe@example.com', '555-555-5555', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1980-01-01', 'New York', 'Male', 'American', 'Instructor',current_timestamp,true),
+    ('Jane', 'Doe', 'janedoe@example.com', '555-555-5556', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1981-02-02', 'Los Angeles', 'Female', 'American', 'Instructor',current_timestamp,true),
+    ('Bob', 'Smith', 'bobsmith@example.com', '555-555-5557', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1982-03-03', 'Chicago', 'Male', 'American', 'Instructor',current_timestamp,true),
+    ('Alice', 'Johnson', 'alicejohnson@example.com', '555-555-5558', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1983-04-04', 'Houston', 'Female', 'American', 'Instructor',current_timestamp,true),
+    ('Tom', 'Williams', 'tomwilliams@example.com', '555-555-5559', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1984-05-05', 'Philadelphia', 'Male', 'American', 'Instructor',current_timestamp,true),
+    ('Emily', 'Jones', 'emilyjones@example.com', '555-555-5560', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1985-06-06', 'Phoenix', 'Female', 'American', 'Instructor',current_timestamp,true),
+    ('David', 'Brown', 'davidbrown@example.com', '555-555-5561', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1986-07-07', 'San Antonio', 'Male', 'American', 'Instructor',current_timestamp,true),
+    ('Sophie', 'Davis', 'sophiedavis@example.com', '555-555-5562', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1987-08-08', 'San Diego', 'Female', 'American', 'Instructor',current_timestamp,true),
+    ('Jacob', 'Miller', 'jacobmiller@example.com', '555-555-5563', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1988-09-09', 'Dallas', 'Male', 'American', 'Instructor',current_timestamp,true),
+    ( 'Olivia', 'Wilson', 'oliviawilson@example.com', '555-555-5564', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim0', '1989-10-10', 'San Jose', 'Female', 'American', 'Instructor',current_timestamp,true);
 
 
 

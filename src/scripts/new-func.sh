@@ -69,7 +69,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
 )
-func ${file_name}Router(r *gin.Engine, h handlers.${name_cap}Handler) {
+func ${name_cap}Router(r *gin.RouterGroup, h handlers.${name_cap}Handler) {
 
 	g := r.Group("/${file_name}")
 
@@ -88,7 +88,7 @@ import (
 )
 
 type ${name_cap}Services interface {
-	Create${name_cap}()
+	Create${name_cap}(dtos.${name_cap}CreateDTO) error
 }
 
 type ${file_name}Services struct {
@@ -103,7 +103,7 @@ func New${name_cap}Services(repo repositories.${name_cap}Repository, mapper mapp
 	}
 }
 
-func (s *${file_name}Services) Create${name_cap}() {
+func (s *${file_name}Services) Create${name_cap}(${file_name} dtos.${name_cap}CreateDTO) error {
 
 }
 EOF
@@ -113,6 +113,7 @@ cat > src/internal/core/infrastructure/postgres/mappers/${file_name}_mapper.go <
 package mappers
 
 type ${name_cap}Mapper interface {
+    ${name_cap}CreateMapper()
 }
 
 type ${file_name}Mapper struct {
@@ -120,6 +121,9 @@ type ${file_name}Mapper struct {
 
 func New${name_cap}Mapper() ${name_cap}Mapper {
     return &${file_name}Mapper{}
+}
+
+func (m *${file_name}Mapper) ${name_cap}CreateMapper() {
 }
 
 EOF
@@ -132,7 +136,7 @@ package repositories
 import "gorm.io/gorm"
 
 type ${name_cap}Repository interface {
-    Insert${name_cap}()
+    Insert${name_cap}(entities.${name_cap}Entity) error
 }
 
 type ${file_name}Connection struct {
@@ -145,7 +149,7 @@ func New${name_cap}Repository(db *gorm.DB) ${name_cap}Repository {
     }
 }
 
-func (r *${file_name}Connection) Insert${name_cap}() {
+func (r *${file_name}Connection) Insert${name_cap}(${file_name entities.${name_cap}Entity}) error {
 
 }
 
