@@ -83,6 +83,7 @@ cat > src/internal/core/domain/services/${file_name}_services.go << EOF
 package services
 
 import (
+  "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
 )
@@ -133,7 +134,10 @@ EOF
 cat > src/internal/core/infrastructure/postgres/repositories/${file_name}_repository.go << EOF
 package repositories
 
-import "gorm.io/gorm"
+import (
+  "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+  "gorm.io/gorm"
+)
 
 type ${name_cap}Repository interface {
     Insert${name_cap}(entities.${name_cap}Entity) error
@@ -149,7 +153,7 @@ func New${name_cap}Repository(db *gorm.DB) ${name_cap}Repository {
     }
 }
 
-func (r *${file_name}Connection) Insert${name_cap}(${file_name entities.${name_cap}Entity}) error {
+func (r *${file_name}Connection) Insert${name_cap}(${file_name} entities.${name_cap}Entity) error {
 
 }
 
