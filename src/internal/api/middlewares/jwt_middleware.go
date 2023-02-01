@@ -32,12 +32,5 @@ func AuthorizeJWT(jwtService security.TokenManager) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": false, "message": "Invalid authorization token"})
 			return
 		}
-
-		/*
-			"""
-			If you want to know what's inside the token, you can use the following code.
-			"""
-		*/
-
 	}
 }

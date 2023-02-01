@@ -7,7 +7,7 @@ import (
 )
 
 type CurriculumMapper interface {
-	CreateCurriculum(schema dtos.CurriculumSchema) entities.CurriculumEntity
+	CurriculumCreateMapper(schema dtos.CurriculumSchema) entities.CurriculumEntity
 }
 
 type curriculumMapper struct {
@@ -17,7 +17,7 @@ func NewCurriculumMapper() CurriculumMapper {
 	return &curriculumMapper{}
 }
 
-func (s *curriculumMapper) CreateCurriculum(curriculum dtos.CurriculumSchema) entities.CurriculumEntity {
+func (s *curriculumMapper) CurriculumCreateMapper(curriculum dtos.CurriculumSchema) entities.CurriculumEntity {
 	return entities.CurriculumEntity{
 		Semester:     curriculum.Semester,
 		Year:         curriculum.Year,

@@ -23,14 +23,22 @@ func NewCurriculumServices(repo repositories.CurriculumRepository, mapper mapper
 }
 
 func (s *curriculumServices) CreateCurriculum(curriculum dtos.CurriculumCreateDTO) error {
+	/*
+		"""
+		curriculum.Curriculum is an array of [course ids, semester and year], in the curriculum entity
+		we will store the semester, year and department id, and in the curriculum course entity which is a
+		pivot table we will store the course id and curriculum id.
 
+		CurriculumSchema is the blueprint of the curriculum entity
+		"""
+	*/
 	for _, v := range curriculum.Curriculum {
 		schema := dtos.CurriculumSchema{
 			Semester:     v.Semester,
 			Year:         v.Year,
 			DepartmentID: curriculum.DepartmentID,
 		}
-		m := s.curriculumMapper.CreateCurriculum(schema)
+		m := s.curriculumMapper.CurriculumCreateMapper(schema)
 		if err := s.curriculumRepository.InsertCurriculum(m, v.CourseID); err != nil {
 			return err
 		}

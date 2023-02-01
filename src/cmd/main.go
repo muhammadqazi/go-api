@@ -54,9 +54,10 @@ func main() {
 	*/
 
 	var (
-		studentRepository    repositories.StudentRepository    = repositories.NewStudentRepository(db)
-		accountsRepository   repositories.AccountingRepository = repositories.NewAccountingRepository(db)
-		curriculumRepository repositories.CurriculumRepository = repositories.NewCurriculumRepository(db)
+		studentRepository    repositories.StudentRepository     = repositories.NewStudentRepository(db)
+		accountsRepository   repositories.AccountingRepository  = repositories.NewAccountingRepository(db)
+		curriculumRepository repositories.CurriculumRepository  = repositories.NewCurriculumRepository(db)
+		instructorRepository repositories.InstructorsRepository = repositories.NewInstructorsRepository(db)
 	)
 
 	/*
@@ -66,9 +67,10 @@ func main() {
 	*/
 
 	var (
-		studentMapper    mappers.StudentMapper    = mappers.NewStudentMapper()
-		accountsMapper   mappers.AccountsMapper   = mappers.NewAccountingMapper()
-		curriculumMapper mappers.CurriculumMapper = mappers.NewCurriculumMapper()
+		studentMapper    mappers.StudentMapper     = mappers.NewStudentMapper()
+		accountsMapper   mappers.AccountsMapper    = mappers.NewAccountingMapper()
+		curriculumMapper mappers.CurriculumMapper  = mappers.NewCurriculumMapper()
+		instructorMapper mappers.InstructorsMapper = mappers.NewInstructorsMapper()
 	)
 
 	/*
@@ -78,9 +80,10 @@ func main() {
 	*/
 
 	var (
-		studentServices    services.StudentServices    = services.NewStudentServices(studentRepository, studentMapper)
-		accountServices    services.AccountingServices = services.NewAccountingServices(accountsRepository, accountsMapper)
-		curriculumServices services.CurriculumServices = services.NewCurriculumServices(curriculumRepository, curriculumMapper)
+		studentServices    services.StudentServices     = services.NewStudentServices(studentRepository, studentMapper)
+		accountServices    services.AccountingServices  = services.NewAccountingServices(accountsRepository, accountsMapper)
+		curriculumServices services.CurriculumServices  = services.NewCurriculumServices(curriculumRepository, curriculumMapper)
+		instructorServices services.InstructorsServices = services.NewInstructorsServices(instructorRepository, instructorMapper)
 	)
 
 	/*
@@ -90,9 +93,10 @@ func main() {
 	*/
 
 	var (
-		studentHandler    handlers.StudentHandler    = handlers.NewStudentsHandler(studentServices, accountServices, studentMapper, jwtService, validator)
-		accountsHandler   handlers.AccountingHandler = handlers.NewAccountingHandler(accountServices, accountsMapper, validator)
-		curriculumHandler handlers.CurriculumHandler = handlers.NewCurriculumHandler(curriculumServices, curriculumMapper, validator)
+		studentHandler    handlers.StudentHandler     = handlers.NewStudentsHandler(studentServices, accountServices, studentMapper, jwtService, validator)
+		accountsHandler   handlers.AccountingHandler  = handlers.NewAccountingHandler(accountServices, accountsMapper, validator)
+		curriculumHandler handlers.CurriculumHandler  = handlers.NewCurriculumHandler(curriculumServices, curriculumMapper, validator)
+		instructorHandler handlers.InstructorsHandler = handlers.NewInstructorsHandler(instructorServices, instructorMapper, validator)
 	)
 
 	/*
@@ -124,6 +128,8 @@ func main() {
 	routers.StudentRouter(auth, studentHandler)
 	routers.AccountingRouter(auth, accountsHandler)
 	routers.CurriculumRouter(auth, curriculumHandler)
+	routers.InstructorsRouter(auth, instructorHandler)
+
 	/*
 		"""
 		Start the server, when you use 'localhost' it will not ask you for the permision again and again "MAC trick"
