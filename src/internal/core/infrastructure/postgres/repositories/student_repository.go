@@ -7,9 +7,9 @@ import (
 
 type StudentRepository interface {
 	InsertStudent(student entities.StudentsEntity) (uint, error)
-	GetLastStudentID() (uint, error)
-	GetStudentByEmail(email string) (entities.StudentsEntity, error)
-	GetStudentByStudentID(sid uint) (entities.StudentsEntity, error)
+	QueryLastStudentID() (uint, error)
+	QueryStudentByEmail(email string) (entities.StudentsEntity, error)
+	QueryStudentByID(sid uint) (entities.StudentsEntity, error)
 }
 
 type studentConnection struct {
@@ -33,7 +33,7 @@ func (r *studentConnection) InsertStudent(student entities.StudentsEntity) (uint
 	return student.StudentID, nil
 }
 
-func (r *studentConnection) GetStudentByEmail(email string) (entities.StudentsEntity, error) {
+func (r *studentConnection) QueryStudentByEmail(email string) (entities.StudentsEntity, error) {
 
 	var student entities.StudentsEntity
 	err := r.conn.Unscoped().Where("email = ?", email).First(&student).Error
@@ -41,14 +41,14 @@ func (r *studentConnection) GetStudentByEmail(email string) (entities.StudentsEn
 
 }
 
-func (r *studentConnection) GetStudentByStudentID(sid uint) (entities.StudentsEntity, error) {
+func (r *studentConnection) QueryStudentByID(sid uint) (entities.StudentsEntity, error) {
 
 	var student entities.StudentsEntity
 	err := r.conn.Unscoped().Where("student_id = ?", sid).First(&student).Error
 	return student, err
 
 }
-func (r *studentConnection) GetLastStudentID() (uint, error) {
+func (r *studentConnection) QueryLastStudentID() (uint, error) {
 
 	var lastStudent entities.StudentsEntity
 

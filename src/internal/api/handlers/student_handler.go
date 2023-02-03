@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"errors"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
@@ -23,8 +23,8 @@ import (
 
 type StudentHandler interface {
 	CreateStudent(c *gin.Context)
-	GetStudentByEmail(c *gin.Context)
-	GetStudentByStudentID(c *gin.Context)
+	FetchStudentByEmail(c *gin.Context)
+	FetchStudentByID(c *gin.Context)
 	StudentSignIn(c *gin.Context)
 }
 
@@ -66,19 +66,19 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 		"""
 	*/
 
-	_, err := s.studentServices.GetStudentByEmail(student.Email)
+	_, err := s.studentServices.FetchStudentByEmail(student.Email)
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Student already exists"})
 		return
 	}
 
-	recentSid, err := s.studentServices.GetLastStudentID()
+	recentSid, err := s.studentServices.FetchLastStudentID()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error generating student number"})
 		return
 	}
 
-	semester := getCurrentSemester()
+	semester := utils.GetCurrentSemester()
 	sid := recentSid + 1
 
 	if sid, err := s.studentServices.CreateStudent(student, sid, semester); err == nil {
@@ -92,7 +92,7 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 
 }
 
-func (s *studentHandler) GetStudentByEmail(c *gin.Context) {
+func (s *studentHandler) FetchStudentByEmail(c *gin.Context) {
 
 }
 
@@ -111,7 +111,7 @@ func (s *studentHandler) StudentSignIn(c *gin.Context) {
 		return
 	}
 
-	if doc, err := s.studentServices.GetStudentByStudentID(student.StudentID); err == nil {
+	if doc, err := s.studentServices.FetchStudentByID(student.StudentID); err == nil {
 
 		password := security.CheckPasswordHash(student.Password, doc.Password)
 
@@ -136,12 +136,12 @@ func (s *studentHandler) StudentSignIn(c *gin.Context) {
 	c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "No student found with this id"})
 }
 
-func (s *studentHandler) GetStudentByStudentID(c *gin.Context) {
+func (s *studentHandler) FetchStudentByID(c *gin.Context) {
 
 	id := c.Param("id")
 	sid, _ := strconv.ParseUint(id, 10, 64)
 
-	if doc, err := s.studentServices.GetStudentByStudentID(uint(sid)); err == nil {
+	if doc, err := s.studentServices.FetchStudentByID(uint(sid)); err == nil {
 		m := s.studentMapper.StudentResponseMapper(doc)
 
 		c.JSON(http.StatusOK, gin.H{"status": true, "data": m})
@@ -150,19 +150,4 @@ func (s *studentHandler) GetStudentByStudentID(c *gin.Context) {
 
 	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No student found"})
 
-}
-
-func getCurrentSemester() string {
-	_, month, _ := time.Now().Date()
-	var semester string
-	switch {
-	case month >= time.September && month <= time.January:
-		semester = "Fall"
-	case month >= time.February && month <= time.June:
-		semester = "Spring"
-	default:
-		semester = "Summer"
-	}
-
-	return semester
 }

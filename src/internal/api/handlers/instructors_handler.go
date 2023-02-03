@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"gorm.io/gorm"
 	"net/http"
 )
 
@@ -46,7 +48,17 @@ func (s *instructorsHandler) CreateInstructors(c *gin.Context) {
 		return
 	}
 
-	// TODO : Check if the email and phone already present because its unique index in database.
+	_, err := s.instructorsServices.FetchInstructorByEmail(instructor.Email)
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Email already associated with another instructor"})
+		return
+	}
+
+	_, err = s.instructorsServices.FetchInstructorByPhone(instructor.PhoneNumber)
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Phone number already associated with another instructor"})
+		return
+	}
 
 	if err := s.instructorsServices.CreateInstructors(instructor); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})

@@ -37,6 +37,7 @@ import (
 
 type ${name_cap}Handler interface {
 	Create${name_cap}(c *gin.Context)
+	Get${name_cap}(c *gin.Context)
 }
 
 type ${file_name}Handler struct {
@@ -60,6 +61,7 @@ func New${name_cap}Handler(service services.${name_cap}Services, mapper mappers.
 }
 
 func (s *${file_name}Handler) Create${name_cap}(c *gin.Context) {}
+func (s *${file_name}Handler) Get${name_cap}(c *gin.Context) {}
 EOF
 
 # Create a router file
@@ -74,6 +76,7 @@ func ${name_cap}Router(r *gin.RouterGroup, h handlers.${name_cap}Handler) {
 	g := r.Group("/${file_name}")
 
 	g.POST("/create", h.Create${name_cap})
+	g.GET("/get", h.Get${name_cap})
 }
 
 EOF
@@ -90,6 +93,7 @@ import (
 
 type ${name_cap}Services interface {
 	Create${name_cap}(dtos.${name_cap}CreateDTO) error
+	Fetch${name_cap}() error
 }
 
 type ${file_name}Services struct {
@@ -104,9 +108,9 @@ func New${name_cap}Services(repo repositories.${name_cap}Repository, mapper mapp
 	}
 }
 
-func (s *${file_name}Services) Create${name_cap}(${file_name} dtos.${name_cap}CreateDTO) error {
+func (s *${file_name}Services) Create${name_cap}(${file_name} dtos.${name_cap}CreateDTO) error {}
+func (s *${file_name}Services) Fetch${name_cap}() error{}
 
-}
 EOF
 
 # # Create the mapper file
@@ -141,6 +145,7 @@ import (
 
 type ${name_cap}Repository interface {
     Insert${name_cap}(entities.${name_cap}Entity) error
+    Query${name_cap}() error
 }
 
 type ${file_name}Connection struct {
@@ -153,8 +158,7 @@ func New${name_cap}Repository(db *gorm.DB) ${name_cap}Repository {
     }
 }
 
-func (r *${file_name}Connection) Insert${name_cap}(${file_name} entities.${name_cap}Entity) error {
-
-}
+func (r *${file_name}Connection) Insert${name_cap}(${file_name} entities.${name_cap}Entity) error {}
+func (r *${file_name}Connection) Query${name_cap}() error {}
 
 EOF

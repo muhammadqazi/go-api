@@ -9,9 +9,9 @@ import (
 
 type StudentServices interface {
 	CreateStudent(dtos.StudentCreateDTO, uint, string) (uint, error)
-	GetLastStudentID() (uint, error)
-	GetStudentByEmail(string) (entities.StudentsEntity, error)
-	GetStudentByStudentID(uint) (entities.StudentsEntity, error)
+	FetchLastStudentID() (uint, error)
+	FetchStudentByEmail(string) (entities.StudentsEntity, error)
+	FetchStudentByID(uint) (entities.StudentsEntity, error)
 }
 
 type studentServices struct {
@@ -31,14 +31,14 @@ func (s *studentServices) CreateStudent(student dtos.StudentCreateDTO, sid uint,
 	return s.studentRepository.InsertStudent(m)
 }
 
-func (s *studentServices) GetStudentByEmail(email string) (entities.StudentsEntity, error) {
-	return s.studentRepository.GetStudentByEmail(email)
+func (s *studentServices) FetchStudentByEmail(email string) (entities.StudentsEntity, error) {
+	return s.studentRepository.QueryStudentByEmail(email)
 }
 
-func (s *studentServices) GetStudentByStudentID(sid uint) (entities.StudentsEntity, error) {
-	return s.studentRepository.GetStudentByStudentID(sid)
+func (s *studentServices) FetchStudentByID(sid uint) (entities.StudentsEntity, error) {
+	return s.studentRepository.QueryStudentByID(sid)
 }
 
-func (s *studentServices) GetLastStudentID() (uint, error) {
-	return s.studentRepository.GetLastStudentID()
+func (s *studentServices) FetchLastStudentID() (uint, error) {
+	return s.studentRepository.QueryLastStudentID()
 }

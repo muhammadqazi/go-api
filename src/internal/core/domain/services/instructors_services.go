@@ -2,12 +2,15 @@ package services
 
 import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
 )
 
 type InstructorsServices interface {
 	CreateInstructors(dtos.InstructorCreateDTO) error
+	FetchInstructorByEmail(string) (entities.InstructorsEntity, error)
+	FetchInstructorByPhone(string) (entities.InstructorsEntity, error)
 }
 
 type instructorsServices struct {
@@ -26,4 +29,12 @@ func (s *instructorsServices) CreateInstructors(instructor dtos.InstructorCreate
 
 	m := s.instructorsMapper.InstructorCreateMapper(instructor)
 	return s.instructorsRepository.InsertInstructors(m)
+}
+
+func (s *instructorsServices) FetchInstructorByEmail(email string) (entities.InstructorsEntity, error) {
+	return s.instructorsRepository.QueryInstructorByEmail(email)
+}
+
+func (s *instructorsServices) FetchInstructorByPhone(phone string) (entities.InstructorsEntity, error) {
+	return s.instructorsRepository.QueryInstructorByPhone(phone)
 }

@@ -7,7 +7,7 @@ import (
 
 type AccountingRepository interface {
 	InsertAccounts(entities.AccountsEntity) (uint, error)
-	GetAccountByStudentID(uint) (entities.AccountsEntity, error)
+	QueryAccountByStudentID(uint) (entities.AccountsEntity, error)
 	InsertPayment(entities.PaymentsEntity, uint) error
 }
 
@@ -32,7 +32,7 @@ func (r *accountingConnection) InsertAccounts(account entities.AccountsEntity) (
 	return account.AccountID, nil
 }
 
-func (r *accountingConnection) GetAccountByStudentID(id uint) (entities.AccountsEntity, error) {
+func (r *accountingConnection) QueryAccountByStudentID(id uint) (entities.AccountsEntity, error) {
 
 	var account entities.AccountsEntity
 	err := r.conn.Unscoped().Where("student_id = ?", id).First(&account).Error
@@ -42,7 +42,7 @@ func (r *accountingConnection) GetAccountByStudentID(id uint) (entities.Accounts
 
 func (r *accountingConnection) InsertPayment(payment entities.PaymentsEntity, sid uint) error {
 
-	account, err := r.GetAccountByStudentID(sid)
+	account, err := r.QueryAccountByStudentID(sid)
 	if err != nil {
 		return err
 	}
