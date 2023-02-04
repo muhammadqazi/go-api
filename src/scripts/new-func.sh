@@ -70,10 +70,21 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
+	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
 )
 func ${name_cap}Router(r *gin.RouterGroup, h handlers.${name_cap}Handler) {
 
+  allowedRolesForCreate := []string{"admin"}
 	g := r.Group("/${file_name}")
+
+  /*
+  		"""
+  		We will use the RolesMiddleware to check if the user has the required permissions to access the route
+  		"""
+  */
+
+  checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
+  g.Use(checkRoleForCreate)
 
 	g.POST("/create", h.Create${name_cap})
 	g.GET("/get", h.Get${name_cap})

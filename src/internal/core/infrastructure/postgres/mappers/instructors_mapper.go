@@ -1,6 +1,7 @@
 package mappers
 
 import (
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"time"
@@ -18,11 +19,14 @@ func NewInstructorsMapper() InstructorsMapper {
 }
 
 func (s *instructorsMapper) InstructorCreateMapper(instructor dtos.InstructorCreateDTO) entities.InstructorsEntity {
+
+	hashedPassword, _ := security.HashPassword(instructor.Password)
+
 	return entities.InstructorsEntity{
 		FirstName:    instructor.FirstName,
 		LastName:     instructor.LastName,
 		Email:        instructor.Email,
-		Password:     instructor.Password,
+		Password:     hashedPassword,
 		PhoneNumber:  instructor.PhoneNumber,
 		DOB:          instructor.DOB,
 		PlaceOfBirth: instructor.PlaceOfBirth,

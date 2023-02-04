@@ -14,6 +14,7 @@ type MakePaymentDTO struct {
 	ProcessType string `json:"process_type" validate:"required"`
 	Currency    string `json:"currency" validate:"required"`
 	Installment int    `json:"installment" validate:"required"`
+	StudentID   uint   `json:"student_id" validate:"required"`
 }
 type AccountUpdateDTO struct {
 	TotalDept int `json:"total_dept" validate:"required"`

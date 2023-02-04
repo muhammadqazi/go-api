@@ -96,7 +96,7 @@ func main() {
 		studentHandler    handlers.StudentHandler     = handlers.NewStudentsHandler(studentServices, accountServices, studentMapper, jwtService, validator)
 		accountsHandler   handlers.AccountingHandler  = handlers.NewAccountingHandler(accountServices, accountsMapper, validator)
 		curriculumHandler handlers.CurriculumHandler  = handlers.NewCurriculumHandler(curriculumServices, curriculumMapper, validator)
-		instructorHandler handlers.InstructorsHandler = handlers.NewInstructorsHandler(instructorServices, instructorMapper, validator)
+		instructorHandler handlers.InstructorsHandler = handlers.NewInstructorsHandler(instructorServices, instructorMapper, jwtService, validator)
 	)
 
 	/*
@@ -108,15 +108,6 @@ func main() {
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	api := r.Group("api/v1")
-
-	/*
-		"""
-		Router without JWT middleware
-		"""
-	*/
-
-	routers.NoAuthRouter(api, studentHandler)
 
 	/*
 		"""

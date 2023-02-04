@@ -8,7 +8,7 @@ import (
 )
 
 type TokenManager interface {
-	NewJWT(userID string) (string, error)
+	NewJWT(userID string, role string) (string, error)
 	ValidateToken(token string) (*jwt.Token, error)
 }
 
@@ -20,10 +20,11 @@ func NewTokenManager(signedKey string) TokenManager {
 	return &tokenManager{signingKey: signedKey}
 }
 
-func (t *tokenManager) NewJWT(userID string) (string, error) {
+func (t *tokenManager) NewJWT(userID string, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
-		Subject:   userID,
+		Subject:   role,
+		Id:        userID,
 	})
 
 	return token.SignedString([]byte(t.signingKey))

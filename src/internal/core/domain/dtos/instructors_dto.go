@@ -21,3 +21,8 @@ type InstructorCreateDTO struct {
 	Nationality  string `json:"nationality" validate:"required`
 	Role         role   `json:"role" validate:"required"`
 }
+
+type InstructorSignInDTO struct {
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}

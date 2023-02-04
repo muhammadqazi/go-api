@@ -100,14 +100,7 @@ func (s *studentHandler) StudentSignIn(c *gin.Context) {
 
 	var student dtos.StudentSignInDTO
 
-	/*
-		"""
-		BindJSON will bind the request body to the struct
-		"""
-	*/
-
-	if err := c.BindJSON(&student); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
+	if err := s.validator.Validate(&student, c); err != nil {
 		return
 	}
 
@@ -116,11 +109,11 @@ func (s *studentHandler) StudentSignIn(c *gin.Context) {
 		password := security.CheckPasswordHash(student.Password, doc.Password)
 
 		if !password {
-			c.JSON(http.StatusBadRequest, gin.H{"status": false, "messsage": "Incorrect username or password"})
+			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Incorrect username or password"})
 			return
 		}
 
-		token, err := s.jwtService.NewJWT(strconv.FormatUint(uint64(doc.StudentID), 10))
+		token, err := s.jwtService.NewJWT(strconv.FormatUint(uint64(doc.StudentID), 10), doc.Role)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
 			return
