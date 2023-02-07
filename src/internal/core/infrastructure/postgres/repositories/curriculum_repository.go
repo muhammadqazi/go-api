@@ -1,12 +1,13 @@
 package repositories
 
 import (
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"gorm.io/gorm"
 )
 
 type CurriculumRepository interface {
-	InsertCurriculum(entities.CurriculumEntity, uint) error
+	InsertCurriculum(entities.CurriculumEntity, dtos.CourseCurriculumSchema) error
 }
 
 type curriculumConnection struct {
@@ -19,7 +20,7 @@ func NewCurriculumRepository(db *gorm.DB) CurriculumRepository {
 	}
 }
 
-func (r *curriculumConnection) InsertCurriculum(curriculum entities.CurriculumEntity, courseID uint) error {
+func (r *curriculumConnection) InsertCurriculum(curriculum entities.CurriculumEntity, courseCurriculum dtos.CourseCurriculumSchema) error {
 	tx := r.conn.Begin()
 
 	if err := tx.Create(&curriculum).Error; err != nil {
@@ -28,11 +29,9 @@ func (r *curriculumConnection) InsertCurriculum(curriculum entities.CurriculumEn
 	}
 
 	var pivot entities.CourseCurriculumEntity
-
 	pivot.CurriculumID = curriculum.CurriculumID
-	pivot.CourseID = courseID
-	pivot.CreatedAt = curriculum.CreatedAt
-	pivot.IsActive = curriculum.IsActive
+	pivot.CourseLoad = courseCurriculum.CourseLoad
+	pivot.CourseID = courseCurriculum.CourseID
 
 	if err := tx.Create(&pivot).Error; err != nil {
 		tx.Rollback()

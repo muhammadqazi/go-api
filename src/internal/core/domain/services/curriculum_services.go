@@ -39,9 +39,18 @@ func (s *curriculumServices) CreateCurriculum(curriculum dtos.CurriculumCreateDT
 			DepartmentID: curriculum.DepartmentID,
 		}
 		m := s.curriculumMapper.CurriculumCreateMapper(schema)
-		if err := s.curriculumRepository.InsertCurriculum(m, v.CourseID); err != nil {
-			return err
+
+		for _, id := range v.CourseIDs {
+			pivot := dtos.CourseCurriculumSchema{
+				CourseID:   id,
+				CourseLoad: v.CourseLoad,
+			}
+
+			if err := s.curriculumRepository.InsertCurriculum(m, pivot); err != nil {
+				return err
+			}
 		}
+
 	}
 	return nil
 }
