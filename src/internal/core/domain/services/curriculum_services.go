@@ -7,7 +7,8 @@ import (
 )
 
 type CurriculumServices interface {
-	CreateCurriculum(dto dtos.CurriculumCreateDTO) error
+	CreateCurriculum(dtos.CurriculumCreateDTO) error
+	FetchCurriculumByDepartmentID(uint) ([]dtos.CurriculumQueryReturnSchema, error)
 }
 
 type curriculumServices struct {
@@ -53,4 +54,9 @@ func (s *curriculumServices) CreateCurriculum(curriculum dtos.CurriculumCreateDT
 
 	}
 	return nil
+}
+
+func (s *curriculumServices) FetchCurriculumByDepartmentID(id uint) ([]dtos.CurriculumQueryReturnSchema, error) {
+
+	return s.curriculumRepository.QueryCurriculumByDepartmentID(id)
 }

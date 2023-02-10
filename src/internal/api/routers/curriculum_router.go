@@ -23,4 +23,5 @@ func CurriculumRouter(r *gin.RouterGroup, h handlers.CurriculumHandler) {
 	g.Use(checkRoleForCreate)
 
 	g.POST("/create", h.CreateCurriculum)
+	g.GET("/:id", h.GetCurriculumByDepartmentID)
 }

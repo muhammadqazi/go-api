@@ -7,6 +7,7 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"net/http"
+	"strconv"
 )
 
 /*
@@ -16,7 +17,8 @@ import (
 */
 
 type CurriculumHandler interface {
-	CreateCurriculum(c *gin.Context)
+	CreateCurriculum(*gin.Context)
+	GetCurriculumByDepartmentID(*gin.Context)
 }
 
 type curriculumHandler struct {
@@ -52,4 +54,18 @@ func (s *curriculumHandler) CreateCurriculum(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Curriculum Created Successfully"})
+}
+
+func (s *curriculumHandler) GetCurriculumByDepartmentID(c *gin.Context) {
+
+	id := c.Param("id")
+	departmentID, _ := strconv.ParseUint(id, 10, 64)
+
+	if doc, err := s.curriculumServices.FetchCurriculumByDepartmentID(uint(departmentID)); err == nil {
+		mappedData := s.curriculumMapper.CurriculumFetchMapper(doc)
+		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Internal Server Error"})
 }
