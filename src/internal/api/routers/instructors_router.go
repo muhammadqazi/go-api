@@ -9,8 +9,9 @@ import (
 func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 
 	allowedRolesForCreate := []string{"admin"}
+	allowedRolesForFetch := []string{"admin", "instructor"}
 
-	g := r.Group("/instructors")
+	g := r.Group("/instructor")
 
 	g.POST("/login", h.InstructorSignIn)
 
@@ -20,6 +21,11 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 		Place all the routes that require authentication below this line
 		"""
 	*/
+
+	checkRoleForFetch := middleware.RolesMiddleware(allowedRolesForFetch)
+	g.Use(checkRoleForFetch)
+
+	g.GET("/requests/enrollment", h.GetTermEnrollmentRequests)
 
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)

@@ -22,6 +22,7 @@ import (
 type InstructorsHandler interface {
 	CreateInstructors(c *gin.Context)
 	InstructorSignIn(c *gin.Context)
+	GetTermEnrollmentRequests(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -103,4 +104,25 @@ func (s *instructorsHandler) InstructorSignIn(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "No instructor found with this email"})
+}
+
+func (s *instructorsHandler) GetTermEnrollmentRequests(c *gin.Context) {
+
+	id := c.MustGet("id")
+	instructorID, _ := strconv.ParseUint(id.(string), 10, 64)
+
+	if doc, err := s.instructorsServices.FetchTermEnrollmentRequests(uint(instructorID)); err == nil {
+
+		if len(doc) > 0 {
+			mapped := s.instructorsMapper.InstructorTermRequestsMapper(doc)
+
+			c.JSON(http.StatusOK, gin.H{"status": true, "data": mapped})
+			return
+		}
+
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "No enrollment requests found"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
 }

@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"gorm.io/gorm"
 )
@@ -9,6 +10,7 @@ type InstructorsRepository interface {
 	InsertInstructors(entities.InstructorsEntity) error
 	QueryInstructorByEmail(string) (entities.InstructorsEntity, error)
 	QueryInstructorByPhone(string) (entities.InstructorsEntity, error)
+	QueryTermEnrollmentRequests(uint) ([]dtos.InstructorTermRequests, error)
 }
 
 type instructorsConnection struct {
@@ -36,4 +38,43 @@ func (r *instructorsConnection) QueryInstructorByPhone(phone string) (entities.I
 	var instructor entities.InstructorsEntity
 	err := r.conn.Unscoped().Where("phone_number =?", phone).First(&instructor).Error
 	return instructor, err
+}
+
+func (r *instructorsConnection) QueryTermEnrollmentRequests(id uint) ([]dtos.InstructorTermRequests, error) {
+
+	/**================================================================================================
+		 * *                                           INFO
+		 *
+		 *  	This is the query that is being executed by the below code
+
+				SELECT req.student_course_request_id AS request_id,
+				ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, ins.instructor_id AS supervisor_id,
+				en.created_at,en.updated_at,en.deleted_at,en.is_approved,en.semester,en.year,en.student_id,
+				std.first_name AS student_name,std.surname AS student_surname, std.status AS student_status, std.access_status,
+				en.course_id, co.name AS course_name,co.code AS course_code,co.credits AS course_credits,co.is_active AS course_status
+				FROM student_course_request_entity req
+				JOIN student_enrollments_entity en ON req.student_enrollment_id = en.student_enrollment_id
+				JOIN instructors_entity ins ON ins.instructor_id = req.instructor_id
+				JOIN students_entity std ON std.student_id = en.student_id
+				JOIN courses_entity co ON en.course_id = co.course_id
+				WHERE en.is_active=true AND en.is_approved=false AND req.instructor_id = 10;
+
+			 *
+		 *
+	* * ==============================================================================================*/
+
+	var result []dtos.InstructorTermRequests
+	if err := r.conn.Table("student_course_request_entity req").
+		Select("req.student_course_request_id AS request_id, ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, ins.instructor_id AS supervisor_id, en.created_at, en.updated_at, en.deleted_at, en.is_approved, en.semester, en.year, en.student_id, std.first_name AS student_name, std.surname AS student_surname, std.status AS student_status, std.access_status, en.course_id, co.name AS course_name, co.code AS course_code, co.credits AS course_credits, co.is_active AS course_status, co.ects AS ects, co.practical,co.theoretical").
+		Joins("JOIN student_enrollments_entity en ON req.student_enrollment_id = en.student_enrollment_id").
+		Joins("JOIN instructors_entity ins ON ins.instructor_id = req.instructor_id").
+		Joins("JOIN students_entity std ON std.student_id = en.student_id").
+		Joins("JOIN courses_entity co ON en.course_id = co.course_id").
+		Where("en.is_active = ? AND en.is_approved = ? AND req.instructor_id = ?", true, false, id).
+		Scan(&result).Error; err != nil {
+		return nil, err
+	}
+
+	return result, nil
+
 }

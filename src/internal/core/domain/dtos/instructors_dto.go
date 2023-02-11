@@ -1,5 +1,7 @@
 package dtos
 
+import "time"
+
 type role string
 
 const (
@@ -25,4 +27,45 @@ type InstructorCreateDTO struct {
 type InstructorSignInDTO struct {
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"password" validate:"required"`
+}
+
+type InstructorTermRequests struct {
+	RequestID         uint      `json:"request_id"`
+	SupervisorName    string    `json:"supervisor_name"`
+	SupervisorSurname string    `json:"supervisor_surname"`
+	SupervisorID      uint      `json:"supervisor_id"`
+	CreatedAt         time.Time `json:"created_at"`
+	UpdatedAt         time.Time `json:"updated_at"`
+	DeletedAt         time.Time `json:"deleted_at"`
+	IsApproved        bool      `json:"is_approved"`
+	Semester          string    `json:"semester"`
+	Year              int       `json:"year"`
+	StudentID         uint      `json:"student_id"`
+	StudentName       string    `json:"student_name"`
+	StudentSurname    string    `json:"student_surname"`
+	StudentStatus     string    `json:"student_status"`
+	AccessStatus      string    `json:"access_status"`
+	CourseID          uint      `json:"course_id"`
+	CourseName        string    `json:"course_name"`
+	CourseCode        string    `json:"course_code"`
+	CourseCredits     int       `json:"course_credits"`
+	CourseStatus      bool      `json:"course_status"`
+	ECTS              int       `json:"ects"`
+	Theoretical       int       `json:"theoretical"`
+	Practical         int       `json:"practical"`
+}
+
+type InstructorTermRequestsFetchDTO struct {
+	SupervisorID      uint         `json:"supervisor_id"`
+	SupervisorName    string       `json:"supervisor_name"`
+	SupervisorSurname string       `json:"supervisor_surname"`
+	StudentID         uint         `json:"student_id"`
+	StudentName       string       `json:"student_name"`
+	StudentSurname    string       `json:"student_surname"`
+	StudentStatus     string       `json:"student_status"`
+	AccessStatus      string       `json:"access_status"`
+	Semester          string       `json:"semester"`
+	Year              int          `json:"year"`
+	IsApproved        bool         `json:"is_approved"`
+	Courses           []CourseInfo `json:"courses"`
 }

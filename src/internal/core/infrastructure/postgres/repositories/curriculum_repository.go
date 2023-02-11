@@ -50,7 +50,7 @@ func (r *curriculumConnection) QueryCurriculumByDepartmentID(departmentID uint) 
 	/**================================================================================================
 	 * *                                           INFO
 	 *
-	 *  	 This is the query that is being executed by the below code
+	 *  	This is the query that is being executed by the below code
 
 			SELECT sc.course_id, sc.course_load, sc.created_at, sc.updated_at,sc.deleted_at,
 			cc.curriculum_id, cc.year,cc.semester, cc.department_id,

@@ -9,6 +9,7 @@ import (
 
 type InstructorsMapper interface {
 	InstructorCreateMapper(dtos.InstructorCreateDTO) entities.InstructorsEntity
+	InstructorTermRequestsMapper([]dtos.InstructorTermRequests) []dtos.InstructorTermRequestsFetchDTO
 }
 
 type instructorsMapper struct {
@@ -38,4 +39,46 @@ func (s *instructorsMapper) InstructorCreateMapper(instructor dtos.InstructorCre
 			IsActive:  true,
 		},
 	}
+}
+
+func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.InstructorTermRequests) []dtos.InstructorTermRequestsFetchDTO {
+	studentInfoMap := make(map[uint]dtos.InstructorTermRequestsFetchDTO)
+
+	for _, request := range requests {
+		studentID := request.StudentID
+		studentInfo, exists := studentInfoMap[studentID]
+		if !exists {
+			studentInfo = dtos.InstructorTermRequestsFetchDTO{
+				SupervisorID:      request.SupervisorID,
+				SupervisorName:    request.SupervisorName,
+				SupervisorSurname: request.SupervisorSurname,
+				StudentID:         request.StudentID,
+				StudentName:       request.StudentName,
+				StudentSurname:    request.StudentSurname,
+				StudentStatus:     request.StudentStatus,
+				AccessStatus:      request.AccessStatus,
+				Semester:          request.Semester,
+				Year:              request.Year,
+				IsApproved:        request.IsApproved,
+				Courses:           []dtos.CourseInfo{},
+			}
+		}
+		studentInfo.Courses = append(studentInfo.Courses, dtos.CourseInfo{
+			ID:          request.CourseID,
+			Name:        request.CourseName,
+			Code:        request.CourseCode,
+			Credits:     request.CourseCredits,
+			Ects:        request.ECTS,
+			Theoretical: request.Theoretical,
+			Practical:   request.Practical,
+		})
+		studentInfoMap[studentID] = studentInfo
+	}
+
+	var studentInfoArray []dtos.InstructorTermRequestsFetchDTO
+	for _, value := range studentInfoMap {
+		studentInfoArray = append(studentInfoArray, value)
+	}
+
+	return studentInfoArray
 }

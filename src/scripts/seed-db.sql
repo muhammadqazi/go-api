@@ -25,7 +25,7 @@ VALUES
     ('Emily', 'Jones', 'emilyjones@example.com', '555-555-5560', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1985-06-06', 'Phoenix', 'Female', 'American', 'Instructor',current_timestamp,true),
     ('David', 'Brown', 'davidbrown@example.com', '555-555-5561', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1986-07-07', 'San Antonio', 'Male', 'American', 'Instructor',current_timestamp,true),
     ('Sophie', 'Davis', 'sophiedavis@example.com', '555-555-5562', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1987-08-08', 'San Diego', 'Female', 'American', 'Instructor',current_timestamp,true),
-    ('Jacob', 'Miller', 'jacobmiller@example.com', '555-555-5563', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1988-09-09', 'Dallas', 'Male', 'American', 'Instructor',current_timestamp,true),
+    ('Jacob', 'Miller', 'jacobmiller@example.com', '555-555-5563', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', '1988-09-09', 'Dallas', 'Male', 'American', 'admin',current_timestamp,true),
     ( 'Olivia', 'Wilson', 'oliviawilson@example.com', '555-555-5564', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim0', '1989-10-10', 'San Jose', 'Female', 'American', 'admin',current_timestamp,true);
 
 INSERT INTO students_entity (student_id, first_name, surname, email, nationality, dob, place_of_birth, sex, password, role, status, access_status, acceptance_type, semester, graduation_date, is_graduated, department_id, supervisor_id , created_at, is_active)
