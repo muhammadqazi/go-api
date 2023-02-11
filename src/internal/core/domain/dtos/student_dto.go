@@ -49,3 +49,10 @@ type StudentResponseDTO struct {
 	IsDeleted      bool      `json:"is_deleted"`
 	IsGraduated    bool      `json:"is_graduated"`
 }
+
+type TermRegistrationDTO struct {
+	Semester string `json:"semester" validate:"required"`
+	Year     int    `json:"year" validate:"required"`
+
+	CourseIDs []uint `json:"course_ids" validate:"required,dive,required"`
+}

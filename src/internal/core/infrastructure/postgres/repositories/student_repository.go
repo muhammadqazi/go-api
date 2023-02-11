@@ -8,8 +8,9 @@ import (
 type StudentRepository interface {
 	InsertStudent(student entities.StudentsEntity) (uint, error)
 	QueryLastStudentID() (uint, error)
-	QueryStudentByEmail(email string) (entities.StudentsEntity, error)
-	QueryStudentByID(sid uint) (entities.StudentsEntity, error)
+	QueryStudentByEmail(string) (entities.StudentsEntity, error)
+	QueryStudentByID(uint) (entities.StudentsEntity, error)
+	InsertStudentEnrollment(entities.StudentEnrollmentsEntity, uint) error
 }
 
 type studentConnection struct {
@@ -60,4 +61,26 @@ func (r *studentConnection) QueryLastStudentID() (uint, error) {
 
 	return lastStudent.StudentID, nil
 
+}
+
+func (r *studentConnection) InsertStudentEnrollment(enrollment entities.StudentEnrollmentsEntity, supervisorID uint) error {
+
+	tx := r.conn.Begin()
+
+	if err := r.conn.Create(&enrollment).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	var pivot entities.StudentCourseRequestEntity
+	pivot.StudentEnrollmentID = enrollment.StudentEnrollmentID
+	pivot.InstructorID = supervisorID
+
+	if err := r.conn.Create(&pivot).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }

@@ -10,9 +10,10 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 
 	allowedRolesForCreate := []string{"admin"}
 
-	g := r.Group("/students")
+	g := r.Group("/student")
 
-	g.POST("/login", h.StudentSignIn)
+	g.POST("/login", h.PostStudentSignIn)
+	g.POST("/term/registration", h.PostTermRegistration)
 
 	/*
 		"""
@@ -24,7 +25,6 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.CreateStudent)
-
-	g.GET("/:id", h.FetchStudentByID)
+	g.POST("/create", h.PostCreateStudent)
+	g.GET("/:id", h.GetStudentByID)
 }

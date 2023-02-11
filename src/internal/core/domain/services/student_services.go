@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
@@ -12,6 +13,7 @@ type StudentServices interface {
 	FetchLastStudentID() (uint, error)
 	FetchStudentByEmail(string) (entities.StudentsEntity, error)
 	FetchStudentByID(uint) (entities.StudentsEntity, error)
+	CreateTermRegistration(dtos.TermRegistrationDTO, uint) error
 }
 
 type studentServices struct {
@@ -41,4 +43,32 @@ func (s *studentServices) FetchStudentByID(sid uint) (entities.StudentsEntity, e
 
 func (s *studentServices) FetchLastStudentID() (uint, error) {
 	return s.studentRepository.QueryLastStudentID()
+}
+
+func (s *studentServices) CreateTermRegistration(registration dtos.TermRegistrationDTO, sid uint) error {
+
+	m := s.studentMapper.TermRegistrationMapper(registration, sid)
+
+	/*
+		get the instructor id from student table and insert into student_course_request table,
+		so that the instructor can approve the request. Each student has a supervisor
+	*/
+
+	student, err := s.FetchStudentByID(sid)
+	if err != nil {
+		return err
+	}
+
+	supervisorID := student.SupervisorID
+
+	for _, v := range m {
+		fmt.Println(v.StudentID, "student id", v.CourseID, "course id", v.Semester, "semester")
+		err := s.studentRepository.InsertStudentEnrollment(v, supervisorID)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+	}
+
+	return nil
 }

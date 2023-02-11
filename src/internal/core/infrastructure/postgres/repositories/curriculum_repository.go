@@ -46,6 +46,26 @@ func (r *curriculumConnection) InsertCurriculum(curriculum entities.CurriculumEn
 
 func (r *curriculumConnection) QueryCurriculumByDepartmentID(departmentID uint) ([]dtos.CurriculumQueryReturnSchema, error) {
 	var courses []dtos.CurriculumQueryReturnSchema
+
+	/**================================================================================================
+	 * *                                           INFO
+	 *
+	 *  	 This is the query that is being executed by the below code
+
+			SELECT sc.course_id, sc.course_load, sc.created_at, sc.updated_at,sc.deleted_at,
+			cc.curriculum_id, cc.year,cc.semester, cc.department_id,
+			d.name AS department_name, d.department_code , d.number_of_years,
+			co.course_id, co.code, co.name,co.credits,co.ects,co.practical,co.theoretical
+			FROM course_curriculum_entity sc
+			JOIN curriculum_entity cc ON sc.curriculum_id = cc.curriculum_id
+			JOIN departments_entity d ON cc.department_id = d.department_id
+			JOIN courses_entity co ON sc.course_id = co.course_id
+			WHERE cc.department_id=2 AND sc.is_active=true;
+	 *
+	 *
+	 *
+	 *================================================================================================**/
+
 	err := r.conn.Table("course_curriculum_entity as sc").
 		Select("sc.course_id, sc.course_load, sc.created_at, sc.updated_at, sc.deleted_at, cc.curriculum_id, cc.year, cc.semester, cc.department_id, d.name as department_name, d.department_code, d.number_of_years, co.code as code, co.name as name, co.credits as credits, co.ects as ects, co.practical as practical, co.theoretical as theoretical").
 		Joins("join curriculum_entity cc on sc.curriculum_id = cc.curriculum_id").

@@ -22,10 +22,11 @@ import (
 */
 
 type StudentHandler interface {
-	CreateStudent(c *gin.Context)
-	FetchStudentByEmail(c *gin.Context)
-	FetchStudentByID(c *gin.Context)
-	StudentSignIn(c *gin.Context)
+	PostCreateStudent(c *gin.Context)
+	GetStudentByEmail(c *gin.Context)
+	GetStudentByID(c *gin.Context)
+	PostStudentSignIn(c *gin.Context)
+	PostTermRegistration(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -52,7 +53,7 @@ func NewStudentsHandler(service services.StudentServices, account services.Accou
 	}
 }
 
-func (s *studentHandler) CreateStudent(c *gin.Context) {
+func (s *studentHandler) PostCreateStudent(c *gin.Context) {
 
 	var student dtos.StudentCreateDTO
 
@@ -92,11 +93,11 @@ func (s *studentHandler) CreateStudent(c *gin.Context) {
 
 }
 
-func (s *studentHandler) FetchStudentByEmail(c *gin.Context) {
+func (s *studentHandler) GetStudentByEmail(c *gin.Context) {
 
 }
 
-func (s *studentHandler) StudentSignIn(c *gin.Context) {
+func (s *studentHandler) PostStudentSignIn(c *gin.Context) {
 
 	var student dtos.StudentSignInDTO
 
@@ -129,7 +130,7 @@ func (s *studentHandler) StudentSignIn(c *gin.Context) {
 	c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "No student found with this id"})
 }
 
-func (s *studentHandler) FetchStudentByID(c *gin.Context) {
+func (s *studentHandler) GetStudentByID(c *gin.Context) {
 
 	id := c.Param("id")
 	sid, _ := strconv.ParseUint(id, 10, 64)
@@ -143,4 +144,23 @@ func (s *studentHandler) FetchStudentByID(c *gin.Context) {
 
 	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No student found"})
 
+}
+
+func (s *studentHandler) PostTermRegistration(c *gin.Context) {
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	var registration dtos.TermRegistrationDTO
+
+	if err := s.validator.Validate(&registration, c); err != nil {
+		return
+	}
+
+	if err := s.studentServices.CreateTermRegistration(registration, uint(sid)); err == nil {
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Registered has been sent for approval"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error registering for term"})
 }

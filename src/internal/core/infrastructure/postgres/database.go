@@ -47,6 +47,7 @@ func Init(url string) *gorm.DB {
 		&entities.AttendanceLogsEntity{},
 		&entities.InstructorEnrollmentsEntity{},
 		&entities.CourseCurriculumEntity{},
+		&entities.StudentCourseRequestEntity{},
 	)
 
 	return db
