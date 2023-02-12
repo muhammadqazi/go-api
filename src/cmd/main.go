@@ -49,19 +49,6 @@ func main() {
 
 	/*
 		"""
-		Register All Repositories to db
-		"""
-	*/
-
-	var (
-		studentRepository    repositories.StudentRepository     = repositories.NewStudentRepository(db)
-		accountsRepository   repositories.AccountingRepository  = repositories.NewAccountingRepository(db)
-		curriculumRepository repositories.CurriculumRepository  = repositories.NewCurriculumRepository(db)
-		instructorRepository repositories.InstructorsRepository = repositories.NewInstructorsRepository(db)
-	)
-
-	/*
-		"""
 		Register All Mappers
 		"""
 	*/
@@ -71,6 +58,21 @@ func main() {
 		accountsMapper   mappers.AccountsMapper    = mappers.NewAccountingMapper()
 		curriculumMapper mappers.CurriculumMapper  = mappers.NewCurriculumMapper()
 		instructorMapper mappers.InstructorsMapper = mappers.NewInstructorsMapper()
+		courseMapper     mappers.CourseMapper      = mappers.NewCourseMapper()
+	)
+
+	/*
+		"""
+		Register All Repositories to db
+		"""
+	*/
+
+	var (
+		studentRepository    repositories.StudentRepository     = repositories.NewStudentRepository(db)
+		accountsRepository   repositories.AccountingRepository  = repositories.NewAccountingRepository(db)
+		curriculumRepository repositories.CurriculumRepository  = repositories.NewCurriculumRepository(db)
+		instructorRepository repositories.InstructorsRepository = repositories.NewInstructorsRepository(db)
+		courseRepository     repositories.CourseRepository      = repositories.NewCourseRepository(db, courseMapper)
 	)
 
 	/*
@@ -84,6 +86,7 @@ func main() {
 		accountServices    services.AccountingServices  = services.NewAccountingServices(accountsRepository, accountsMapper)
 		curriculumServices services.CurriculumServices  = services.NewCurriculumServices(curriculumRepository, curriculumMapper)
 		instructorServices services.InstructorsServices = services.NewInstructorsServices(instructorRepository, instructorMapper)
+		courseServices     services.CourseServices      = services.NewCourseServices(courseRepository, courseMapper)
 	)
 
 	/*
@@ -97,6 +100,7 @@ func main() {
 		accountsHandler   handlers.AccountingHandler  = handlers.NewAccountingHandler(accountServices, accountsMapper, validator)
 		curriculumHandler handlers.CurriculumHandler  = handlers.NewCurriculumHandler(curriculumServices, curriculumMapper, validator)
 		instructorHandler handlers.InstructorsHandler = handlers.NewInstructorsHandler(instructorServices, instructorMapper, jwtService, validator)
+		courseHandler     handlers.CourseHandler      = handlers.NewCourseHandler(courseServices, courseMapper, validator)
 	)
 
 	/*
@@ -120,6 +124,7 @@ func main() {
 	routers.AccountingRouter(auth, accountsHandler)
 	routers.CurriculumRouter(auth, curriculumHandler)
 	routers.InstructorsRouter(auth, instructorHandler)
+	routers.CourseRouter(auth, courseHandler)
 
 	/*
 		"""
