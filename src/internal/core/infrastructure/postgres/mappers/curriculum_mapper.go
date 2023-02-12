@@ -9,7 +9,8 @@ import (
 )
 
 type CurriculumMapper interface {
-	CurriculumCreateMapper(schema dtos.CurriculumSchema) entities.CurriculumEntity
+	CurriculumCreateMapper(schema dtos.CurriculumCreateDTO) entities.CurriculumEntity
+	CurriculumCourseMapper(dtos.Curriculum, uint, uint) entities.CourseCurriculumEntity
 	CurriculumFetchMapper(curriculum []dtos.CurriculumQueryReturnSchema) dtos.CurriculumFetchDTO
 }
 
@@ -20,11 +21,23 @@ func NewCurriculumMapper() CurriculumMapper {
 	return &curriculumMapper{}
 }
 
-func (s *curriculumMapper) CurriculumCreateMapper(curriculum dtos.CurriculumSchema) entities.CurriculumEntity {
+func (s *curriculumMapper) CurriculumCreateMapper(curriculum dtos.CurriculumCreateDTO) entities.CurriculumEntity {
 	return entities.CurriculumEntity{
+		DepartmentID: curriculum.DepartmentID,
+		BaseEntity: entities.BaseEntity{
+			CreatedAt: time.Now().UTC(),
+			IsActive:  true,
+		},
+	}
+}
+
+func (s *curriculumMapper) CurriculumCourseMapper(curriculum dtos.Curriculum, courseID uint, curriculumID uint) entities.CourseCurriculumEntity {
+	return entities.CourseCurriculumEntity{
+		CurriculumID: curriculumID,
+		CourseID:     courseID,
 		Semester:     curriculum.Semester,
 		Year:         curriculum.Year,
-		DepartmentID: curriculum.DepartmentID,
+		CourseLoad:   curriculum.CourseLoad,
 		BaseEntity: entities.BaseEntity{
 			CreatedAt: time.Now().UTC(),
 			IsActive:  true,

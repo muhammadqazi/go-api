@@ -4,10 +4,10 @@ import "time"
 
 type CurriculumCreateDTO struct {
 	DepartmentID uint         `json:"department_id" validate:"required"`
-	Curriculum   []curriculum `json:"curriculum" validate:"required,dive,required"`
+	Curriculum   []Curriculum `json:"curriculum" validate:"required,dive,required"`
 }
 
-type curriculum struct {
+type Curriculum struct {
 	Semester   string `json:"semester" validate:"required"`
 	Year       int    `json:"year" validate:"required"`
 	CourseIDs  []uint `json:"course_ids" validate:"required,dive,required"`

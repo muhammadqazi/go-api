@@ -33,11 +33,7 @@ func (s *courseServices) CreateCourse(course dtos.CourseCreateDTO) error {
 		schedule = append(schedule, v)
 	}
 
-	if err := s.courseRepository.InsertCourse(courseEntity, schedule); err != nil {
-		return err
-	}
-
-	return nil
+	return s.courseRepository.InsertCourse(courseEntity, schedule)
 }
 func (s *courseServices) FetchCourse() error {
 	return nil

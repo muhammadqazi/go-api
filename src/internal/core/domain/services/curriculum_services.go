@@ -33,27 +33,15 @@ func (s *curriculumServices) CreateCurriculum(curriculum dtos.CurriculumCreateDT
 		CurriculumSchema is the blueprint of the curriculum entity
 		"""
 	*/
+
+	curriculumEntity := s.curriculumMapper.CurriculumCreateMapper(curriculum)
+	var curriculumInfo []dtos.Curriculum
+
 	for _, v := range curriculum.Curriculum {
-		schema := dtos.CurriculumSchema{
-			Semester:     v.Semester,
-			Year:         v.Year,
-			DepartmentID: curriculum.DepartmentID,
-		}
-		m := s.curriculumMapper.CurriculumCreateMapper(schema)
-
-		for _, id := range v.CourseIDs {
-			pivot := dtos.CourseCurriculumSchema{
-				CourseID:   id,
-				CourseLoad: v.CourseLoad,
-			}
-
-			if err := s.curriculumRepository.InsertCurriculum(m, pivot); err != nil {
-				return err
-			}
-		}
-
+		curriculumInfo = append(curriculumInfo, v)
 	}
-	return nil
+
+	return s.curriculumRepository.InsertCurriculum(curriculumInfo, curriculumEntity)
 }
 
 func (s *curriculumServices) FetchCurriculumByDepartmentID(id uint) ([]dtos.CurriculumQueryReturnSchema, error) {

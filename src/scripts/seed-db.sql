@@ -82,16 +82,16 @@ VALUES
     ( 'Social Implications of Computing', 'CS440', 'Study of the social implications of computing', 3, 6, 45, 15, current_timestamp, true);
 
 
-INSERT INTO curriculum_entity (department_id, semester, year , created_at, is_active)
+INSERT INTO curriculum_entity (department_id, created_at, is_active)
 VALUES
-    (1, 'Fall', 1,current_timestamp , true),
-    (1 ,'Spring', 1,current_timestamp , true),
-    (1,  'Fall', 2,current_timestamp , true),
-    (1, 'Spring', 2,current_timestamp , true),
-    (1,  'Fall', 3,current_timestamp , true),
-    (1, 'Spring', 3,current_timestamp , true),
-    (1,  'Fall', 4,current_timestamp , true),
-    (1, 'Spring', 4,current_timestamp , true),
-    (1, 'Fall', 5,current_timestamp , true),
-    (1 ,'Spring', 5,current_timestamp , true);
+    (1,current_timestamp , true),
+    (1 ,current_timestamp , true),
+    (1,current_timestamp , true),
+    (1, current_timestamp , true),
+    (1,current_timestamp , true),
+    (1, current_timestamp , true),
+    (1,current_timestamp , true),
+    (1, current_timestamp , true),
+    (1,current_timestamp , true),
+    (1 ,current_timestamp , true);
 
