@@ -158,7 +158,7 @@ func (s *studentHandler) PostTermRegistration(c *gin.Context) {
 	}
 
 	if err := s.studentServices.CreateTermRegistration(registration, uint(sid)); err == nil {
-		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Registered has been sent for approval"})
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Registration has been sent for approval"})
 		return
 	}
 

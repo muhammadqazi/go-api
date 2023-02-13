@@ -17,7 +17,7 @@ type CoursesEntity struct {
 	CourseScheduleEntity        []CourseScheduleEntity        `gorm:"foreignkey:CourseID"`
 	ExamScheduleEntity          []ExamScheduleEntity          `gorm:"foreignkey:CourseID"`
 	ExamResultsEntity           []ExamResultsEntity           `gorm:"foreignkey:CourseID"`
-	StudentEnrollmentsEntity    []StudentEnrollmentsEntity    `gorm:"foreignkey:CourseID"`
+	StudentCourseRequestEntity  []StudentCourseRequestEntity  `gorm:"foreignkey:CourseID"`
 	AttendanceLogsEntity        []AttendanceLogsEntity        `gorm:"foreignkey:CourseID"`
 	CourseCurriculumEntity      []CourseCurriculumEntity      `gorm:"foreignkey:CourseID"`
 }

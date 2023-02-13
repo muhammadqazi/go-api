@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
@@ -47,8 +46,6 @@ func (s *studentServices) FetchLastStudentID() (uint, error) {
 
 func (s *studentServices) CreateTermRegistration(registration dtos.TermRegistrationDTO, sid uint) error {
 
-	m := s.studentMapper.TermRegistrationMapper(registration, sid)
-
 	/*
 		get the instructor id from student table and insert into student_course_request table,
 		so that the instructor can approve the request. Each student has a supervisor
@@ -60,15 +57,8 @@ func (s *studentServices) CreateTermRegistration(registration dtos.TermRegistrat
 	}
 
 	supervisorID := student.SupervisorID
+	m := s.studentMapper.TermRegistrationMapper(registration, sid, supervisorID)
 
-	for _, v := range m {
-		fmt.Println(v.StudentID, "student id", v.CourseID, "course id", v.Semester, "semester")
-		err := s.studentRepository.InsertStudentEnrollment(v, supervisorID)
-		if err != nil {
-			fmt.Println(err)
-			return err
-		}
-	}
-
-	return nil
+	courseIDs := registration.CourseIDs
+	return s.studentRepository.InsertStudentEnrollment(m, courseIDs)
 }

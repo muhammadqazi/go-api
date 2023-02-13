@@ -11,7 +11,8 @@ import (
 type StudentMapper interface {
 	StudentCreateMapper(dtos.StudentCreateDTO, uint, string) entities.StudentsEntity
 	StudentResponseMapper(entities.StudentsEntity) dtos.StudentResponseDTO
-	TermRegistrationMapper(dtos.TermRegistrationDTO, uint) []entities.StudentEnrollmentsEntity
+	TermRegistrationMapper(dtos.TermRegistrationDTO, uint, uint) entities.StudentEnrollmentsEntity
+	StudentCourseRequestMapper(uint, uint) entities.StudentCourseRequestEntity
 }
 
 type studentMapper struct {
@@ -87,24 +88,23 @@ func (m *studentMapper) StudentResponseMapper(student entities.StudentsEntity) d
 	}
 }
 
-func (m *studentMapper) TermRegistrationMapper(registration dtos.TermRegistrationDTO, sid uint) []entities.StudentEnrollmentsEntity {
-
-	var enrollments []entities.StudentEnrollmentsEntity
-
-	for _, courseID := range registration.CourseIDs {
-		enrollment := entities.StudentEnrollmentsEntity{
-			StudentID:  sid,
-			CourseID:   courseID,
-			IsApproved: false,
-			Semester:   registration.Semester,
-			Year:       registration.Year,
-			BaseEntity: entities.BaseEntity{
-				IsActive:  true,
-				CreatedAt: time.Now().UTC(),
-			},
-		}
-		enrollments = append(enrollments, enrollment)
+func (m *studentMapper) TermRegistrationMapper(registration dtos.TermRegistrationDTO, sid uint, supervisorID uint) entities.StudentEnrollmentsEntity {
+	return entities.StudentEnrollmentsEntity{
+		StudentID:    sid,
+		InstructorID: supervisorID,
+		Semester:     registration.Semester,
+		Year:         registration.Year,
+		BaseEntity: entities.BaseEntity{
+			IsActive:  true,
+			CreatedAt: time.Now().UTC(),
+		},
 	}
+}
 
-	return enrollments
+func (m *studentMapper) StudentCourseRequestMapper(enrollmentID uint, courseID uint) entities.StudentCourseRequestEntity {
+	return entities.StudentCourseRequestEntity{
+		CourseID:            courseID,
+		StudentEnrollmentID: enrollmentID,
+		IsApproved:          false,
+	}
 }

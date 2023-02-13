@@ -21,7 +21,7 @@ RIGHT JOIN course_curriculum_entity ON courses_entity.course_id = course_curricu
 
 
 SELECT sc.course_id, sc.course_load, sc.created_at, sc.updated_at,sc.deleted_at,
-       cc.curriculum_id, cc.year,cc.semester, cc.department_id,
+       cc.curriculum_id, sc.year,sc.semester, cc.department_id, sc.course_load,
        d.name AS department_name, d.department_code , d.number_of_years,
        co.course_id, co.code, co.name,co.credits,co.ects,co.practical,co.theoretical
 FROM course_curriculum_entity sc
@@ -30,15 +30,14 @@ FROM course_curriculum_entity sc
          JOIN courses_entity co ON sc.course_id = co.course_id
 WHERE cc.department_id=2 AND sc.is_active=true;
 
-
 SELECT req.student_course_request_id AS request_id,
        ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, ins.instructor_id AS supervisor_id,
        en.created_at,en.updated_at,en.deleted_at,en.is_approved,en.semester,en.year,en.student_id,
        std.first_name AS student_name,std.surname AS student_surname, std.status AS student_status, std.access_status,
-       en.course_id, co.name AS course_name,co.code AS course_code,co.credits AS course_credits,co.is_active AS course_status
+       req.course_id, co.name AS course_name,co.code AS course_code,co.credits AS course_credits,co.is_active AS course_status
 FROM student_course_request_entity req
          JOIN student_enrollments_entity en ON req.student_enrollment_id = en.student_enrollment_id
-         JOIN instructors_entity ins ON ins.instructor_id = req.instructor_id
+         JOIN instructors_entity ins ON ins.instructor_id = en.instructor_id
          JOIN students_entity std ON std.student_id = en.student_id
-         JOIN courses_entity co ON en.course_id = co.course_id
-WHERE en.is_active=true AND en.is_approved=false AND req.instructor_id = 10;
+         JOIN courses_entity co ON req.course_id = co.course_id
+WHERE en.is_active=true AND en.is_approved=false AND en.instructor_id = 10;

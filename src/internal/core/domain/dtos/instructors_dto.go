@@ -55,17 +55,34 @@ type InstructorTermRequests struct {
 	Practical         int       `json:"practical"`
 }
 
+type CourseApprovalInfo struct {
+	ID          uint   `json:"id"`
+	Name        string `json:"name"`
+	Code        string `json:"code"`
+	Credits     int    `json:"credits"`
+	Ects        int    `json:"ects"`
+	Practical   int    `json:"practical"`
+	Theoretical int    `json:"theoretical"`
+	IsApproved  bool   `json:"is_approved"`
+	RequestID   uint   `json:"request_id"`
+}
+
 type InstructorTermRequestsFetchDTO struct {
-	SupervisorID      uint         `json:"supervisor_id"`
-	SupervisorName    string       `json:"supervisor_name"`
-	SupervisorSurname string       `json:"supervisor_surname"`
-	StudentID         uint         `json:"student_id"`
-	StudentName       string       `json:"student_name"`
-	StudentSurname    string       `json:"student_surname"`
-	StudentStatus     string       `json:"student_status"`
-	AccessStatus      string       `json:"access_status"`
-	Semester          string       `json:"semester"`
-	Year              int          `json:"year"`
-	IsApproved        bool         `json:"is_approved"`
-	Courses           []CourseInfo `json:"courses"`
+	SupervisorID      uint                 `json:"supervisor_id"`
+	SupervisorName    string               `json:"supervisor_name"`
+	SupervisorSurname string               `json:"supervisor_surname"`
+	StudentID         uint                 `json:"student_id"`
+	StudentName       string               `json:"student_name"`
+	StudentSurname    string               `json:"student_surname"`
+	StudentStatus     string               `json:"student_status"`
+	AccessStatus      string               `json:"access_status"`
+	Semester          string               `json:"semester"`
+	Year              int                  `json:"year"`
+	IsApproved        bool                 `json:"is_approved"`
+	Courses           []CourseApprovalInfo `json:"courses"`
+}
+
+type InstructorApproveEnrollmentRequestDTO struct {
+	StudentID   uint   `json:"student_id" validate:"required"`
+	RequestsIDs []uint `json:"request_ids" validate:"required,dive"`
 }

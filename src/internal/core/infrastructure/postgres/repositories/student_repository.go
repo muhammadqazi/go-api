@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"gorm.io/gorm"
 )
 
@@ -10,16 +11,18 @@ type StudentRepository interface {
 	QueryLastStudentID() (uint, error)
 	QueryStudentByEmail(string) (entities.StudentsEntity, error)
 	QueryStudentByID(uint) (entities.StudentsEntity, error)
-	InsertStudentEnrollment(entities.StudentEnrollmentsEntity, uint) error
+	InsertStudentEnrollment(entities.StudentEnrollmentsEntity, []uint) error
 }
 
 type studentConnection struct {
-	conn *gorm.DB
+	conn          *gorm.DB
+	studentMapper mappers.StudentMapper
 }
 
-func NewStudentRepository(db *gorm.DB) StudentRepository {
+func NewStudentRepository(db *gorm.DB, studentMapper mappers.StudentMapper) StudentRepository {
 	return &studentConnection{
-		conn: db,
+		conn:          db,
+		studentMapper: studentMapper,
 	}
 }
 
@@ -63,7 +66,7 @@ func (r *studentConnection) QueryLastStudentID() (uint, error) {
 
 }
 
-func (r *studentConnection) InsertStudentEnrollment(enrollment entities.StudentEnrollmentsEntity, supervisorID uint) error {
+func (r *studentConnection) InsertStudentEnrollment(enrollment entities.StudentEnrollmentsEntity, courseIDs []uint) error {
 
 	tx := r.conn.Begin()
 
@@ -72,13 +75,13 @@ func (r *studentConnection) InsertStudentEnrollment(enrollment entities.StudentE
 		return err
 	}
 
-	var pivot entities.StudentCourseRequestEntity
-	pivot.StudentEnrollmentID = enrollment.StudentEnrollmentID
-	pivot.InstructorID = supervisorID
-
-	if err := r.conn.Create(&pivot).Error; err != nil {
-		tx.Rollback()
-		return err
+	enrollmentID := enrollment.StudentEnrollmentID
+	for _, cid := range courseIDs {
+		studentCourseRequest := r.studentMapper.StudentCourseRequestMapper(enrollmentID, cid)
+		if err := r.conn.Create(&studentCourseRequest).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
 	}
 
 	tx.Commit()

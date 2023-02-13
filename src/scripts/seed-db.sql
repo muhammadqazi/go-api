@@ -30,8 +30,8 @@ VALUES
 
 INSERT INTO students_entity (student_id, first_name, surname, email, nationality, dob, place_of_birth, sex, password, role, status, access_status, acceptance_type, semester, graduation_date, is_graduated, department_id, supervisor_id , created_at, is_active)
 VALUES
-    (21906778, 'John', 'Doe', 'johndoe@example.com', 'American', '01-01-1998', 'New York', 'Male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'Student', 'Enrolled', 'Active', 'Admitted', 'Fall 2021', '2025-05-25', false, 1, 9, current_timestamp, true),
-    (21906779, 'John', 'Doe', 'johndoe2@example.com', 'American', '01-01-1998', 'New York', 'Male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'Student', 'Enrolled', 'Active', 'Admitted', 'Fall 2021', '2025-05-25', false, 1, 10,current_timestamp, true);
+    (21906778, 'John', 'Doe', 'johndoe@example.com', 'American', '01-01-1998', 'New York', 'Male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'student', 'Enrolled', 'Active', 'Admitted', 'Fall 2021', '2025-05-25', false, 1, 10, current_timestamp, true),
+    (21906779, 'John', 'Doe', 'johndoe2@example.com', 'American', '01-01-1998', 'New York', 'Male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'student', 'Enrolled', 'Active', 'Admitted', 'Fall 2021', '2025-05-25', false, 1, 10,current_timestamp, true);
 
 INSERT INTO accounts_entity (approaching_dept, current_dept, discount, discount_type, installments, scholarship, student_id, total_dept, total_fee)
 VALUES

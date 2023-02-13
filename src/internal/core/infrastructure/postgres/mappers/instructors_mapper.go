@@ -60,10 +60,10 @@ func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.Instruc
 				Semester:          request.Semester,
 				Year:              request.Year,
 				IsApproved:        request.IsApproved,
-				Courses:           []dtos.CourseInfo{},
+				Courses:           []dtos.CourseApprovalInfo{},
 			}
 		}
-		studentInfo.Courses = append(studentInfo.Courses, dtos.CourseInfo{
+		studentInfo.Courses = append(studentInfo.Courses, dtos.CourseApprovalInfo{
 			ID:          request.CourseID,
 			Name:        request.CourseName,
 			Code:        request.CourseCode,
@@ -71,6 +71,8 @@ func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.Instruc
 			Ects:        request.ECTS,
 			Theoretical: request.Theoretical,
 			Practical:   request.Practical,
+			IsApproved:  request.IsApproved,
+			RequestID:   request.RequestID,
 		})
 		studentInfoMap[studentID] = studentInfo
 	}

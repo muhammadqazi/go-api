@@ -12,6 +12,7 @@ type InstructorsServices interface {
 	FetchInstructorByEmail(string) (entities.InstructorsEntity, error)
 	FetchInstructorByPhone(string) (entities.InstructorsEntity, error)
 	FetchTermEnrollmentRequests(uint) ([]dtos.InstructorTermRequests, error)
+	ApproveTermEnrollmentRequests(dtos.InstructorApproveEnrollmentRequestDTO) error
 }
 
 type instructorsServices struct {
@@ -42,4 +43,8 @@ func (s *instructorsServices) FetchInstructorByPhone(phone string) (entities.Ins
 
 func (s *instructorsServices) FetchTermEnrollmentRequests(id uint) ([]dtos.InstructorTermRequests, error) {
 	return s.instructorsRepository.QueryTermEnrollmentRequests(id)
+}
+
+func (s *instructorsServices) ApproveTermEnrollmentRequests(request dtos.InstructorApproveEnrollmentRequestDTO) error {
+	return s.instructorsRepository.UpdateTermEnrollmentRequests(request)
 }

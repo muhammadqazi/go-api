@@ -23,6 +23,7 @@ type InstructorsHandler interface {
 	CreateInstructors(c *gin.Context)
 	InstructorSignIn(c *gin.Context)
 	GetTermEnrollmentRequests(c *gin.Context)
+	ApproveTermEnrollmentRequests(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -125,4 +126,20 @@ func (s *instructorsHandler) GetTermEnrollmentRequests(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
+}
+
+func (s *instructorsHandler) ApproveTermEnrollmentRequests(c *gin.Context) {
+
+	var request dtos.InstructorApproveEnrollmentRequestDTO
+
+	if err := s.validator.Validate(&request, c); err != nil {
+		return
+	}
+
+	if err := s.instructorsServices.ApproveTermEnrollmentRequests(request); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Enrollment request approved successfully"})
 }
