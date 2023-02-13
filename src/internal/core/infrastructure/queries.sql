@@ -50,3 +50,11 @@ FROM student_enrollments_entity en
          JOIN courses_entity co ON req.course_id = co.course_id
          JOIN course_schedule_entity sch ON req.course_id = sch.course_id
 WHERE en.student_id = 21906778 AND en.semester = 'spring' AND en.year = 2023 AND req.is_approved;
+
+
+SELECT ex.created_at , ex.is_active , ex.exam_venue , ex.date ,  ex.exam_type, ex.duration , req.course_id , co.code , co.name , co.credits
+FROM student_course_request_entity req
+         JOIN student_enrollments_entity en ON en.student_enrollment_id = req.student_enrollment_id
+         JOIN exam_schedule_entity ex ON ex.course_id = req.course_id
+         JOIN courses_entity co ON co.course_id = req.course_id
+WHERE en.student_id = 21906778 AND en.semester = 'spring' AND en.year = 2023 AND req.is_approved;

@@ -4,6 +4,7 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"gorm.io/gorm"
+	"time"
 )
 
 type InstructorsRepository interface {
@@ -83,8 +84,19 @@ func (r *instructorsConnection) QueryTermEnrollmentRequests(id uint) ([]dtos.Ins
 func (r *instructorsConnection) UpdateTermEnrollmentRequests(dto dtos.InstructorApproveEnrollmentRequestDTO) error {
 
 	if *dto.IsDeclined {
-		return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Update("is_approved", false).Error
+		update := map[string]interface{}{
+			"is_approved": false,
+			"declined_at": time.Now().UTC(),
+		}
+		return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Updates(update).Error
+
 	}
 
-	return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Update("is_approved", true).Error
+	update := map[string]interface{}{
+		"is_approved": true,
+		"approved_at": time.Now().UTC(),
+	}
+
+	return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Updates(update).Error
+
 }

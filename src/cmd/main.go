@@ -59,6 +59,7 @@ func main() {
 		curriculumMapper mappers.CurriculumMapper  = mappers.NewCurriculumMapper()
 		instructorMapper mappers.InstructorsMapper = mappers.NewInstructorsMapper()
 		courseMapper     mappers.CourseMapper      = mappers.NewCourseMapper()
+		examMapper       mappers.ExamMapper        = mappers.NewExamMapper()
 	)
 
 	/*
@@ -73,6 +74,7 @@ func main() {
 		curriculumRepository repositories.CurriculumRepository  = repositories.NewCurriculumRepository(db, curriculumMapper)
 		instructorRepository repositories.InstructorsRepository = repositories.NewInstructorsRepository(db)
 		courseRepository     repositories.CourseRepository      = repositories.NewCourseRepository(db, courseMapper)
+		examRepository       repositories.ExamRepository        = repositories.NewExamRepository(db)
 	)
 
 	/*
@@ -87,6 +89,7 @@ func main() {
 		curriculumServices services.CurriculumServices  = services.NewCurriculumServices(curriculumRepository, curriculumMapper)
 		instructorServices services.InstructorsServices = services.NewInstructorsServices(instructorRepository, instructorMapper)
 		courseServices     services.CourseServices      = services.NewCourseServices(courseRepository, courseMapper)
+		examServices       services.ExamServices        = services.NewExamServices(examRepository, examMapper)
 	)
 
 	/*
@@ -101,6 +104,7 @@ func main() {
 		curriculumHandler handlers.CurriculumHandler  = handlers.NewCurriculumHandler(curriculumServices, curriculumMapper, validator)
 		instructorHandler handlers.InstructorsHandler = handlers.NewInstructorsHandler(instructorServices, instructorMapper, jwtService, validator)
 		courseHandler     handlers.CourseHandler      = handlers.NewCourseHandler(courseServices, courseMapper, validator)
+		examHandler       handlers.ExamHandler        = handlers.NewExamHandler(examServices, examMapper, validator)
 	)
 
 	/*
@@ -125,6 +129,7 @@ func main() {
 	routers.CurriculumRouter(auth, curriculumHandler)
 	routers.InstructorsRouter(auth, instructorHandler)
 	routers.CourseRouter(auth, courseHandler)
+	routers.ExamRouter(auth, examHandler)
 
 	/*
 		"""

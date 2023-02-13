@@ -15,6 +15,7 @@ type StudentRepository interface {
 	QueryStudentByID(uint) (entities.StudentsEntity, error)
 	InsertStudentEnrollment(entities.StudentEnrollmentsEntity, []uint) error
 	QueryTimetableByStudentID(uint) ([]dtos.TimetableSchema, error)
+	QueryExamScheduleByStudentID(uint) ([]dtos.ExamScheduleSchema, error)
 }
 
 type studentConnection struct {
@@ -126,4 +127,40 @@ func (r *studentConnection) QueryTimetableByStudentID(sid uint) ([]dtos.Timetabl
 	}
 
 	return timetable, nil
+}
+
+func (r *studentConnection) QueryExamScheduleByStudentID(sid uint) ([]dtos.ExamScheduleSchema, error) {
+
+	var examSchedule []dtos.ExamScheduleSchema
+
+	/**================================================================================================
+	 * *                                           INFO
+	 *
+	 *  	This is the query that is being executed by the below code
+
+			SELECT ex.created_at , ex.is_active , ex.exam_venue , ex.date ,  ex.exam_type, ex.duration , req.course_id , co.code , co.name , co.credits
+			FROM student_course_request_entity req
+			JOIN student_enrollments_entity en ON en.student_enrollment_id = req.student_enrollment_id
+			JOIN exam_schedule_entity ex ON ex.course_id = req.course_id
+			JOIN courses_entity co ON co.course_id = req.course_id
+			WHERE en.student_id = 21906778 AND en.semester = 'spring' AND en.year = 2023 AND req.is_approved;
+	 *
+	 *
+	 *
+	 *================================================================================================**/
+
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
+
+	if err := r.conn.Table("student_course_request_entity req").
+		Joins("JOIN student_enrollments_entity en ON en.student_enrollment_id = req.student_enrollment_id").
+		Joins("JOIN exam_schedule_entity ex ON ex.course_id = req.course_id").
+		Joins("JOIN courses_entity co ON co.course_id = req.course_id").
+		Select("ex.created_at, ex.is_active, ex.exam_venue, ex.date, ex.exam_type, ex.duration, req.course_id, co.code, co.name, co.credits").
+		Where("en.student_id = ? AND en.semester = ? AND en.year = ? AND req.is_approved = ?", sid, semester, year, true).
+		Scan(&examSchedule).Error; err != nil {
+		return nil, err
+	}
+
+	return examSchedule, nil
 }

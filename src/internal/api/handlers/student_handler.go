@@ -28,6 +28,7 @@ type StudentHandler interface {
 	PostSignIn(c *gin.Context)
 	PostTermRegistration(c *gin.Context)
 	GetStudentTimetable(c *gin.Context)
+	GetStudentExamSchedule(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -178,4 +179,18 @@ func (s *studentHandler) GetStudentTimetable(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No timetable found"})
+}
+
+func (s *studentHandler) GetStudentExamSchedule(c *gin.Context) {
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	if doc, err := s.studentServices.FetchStudentExamSchedule(uint(sid)); err == nil {
+		mappedData := s.studentMapper.StudentExamScheduleMapper(doc)
+		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+		return
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No exam schedule found"})
 }

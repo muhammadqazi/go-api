@@ -14,6 +14,7 @@ type StudentServices interface {
 	FetchStudentByID(uint) (entities.StudentsEntity, error)
 	CreateTermRegistration(dtos.TermRegistrationDTO, uint) error
 	FetchStudentTimetable(uint) ([]dtos.TimetableSchema, error)
+	FetchStudentExamSchedule(uint) ([]dtos.ExamScheduleSchema, error)
 }
 
 type studentServices struct {
@@ -66,4 +67,8 @@ func (s *studentServices) CreateTermRegistration(registration dtos.TermRegistrat
 
 func (s *studentServices) FetchStudentTimetable(sid uint) ([]dtos.TimetableSchema, error) {
 	return s.studentRepository.QueryTimetableByStudentID(sid)
+}
+
+func (s *studentServices) FetchStudentExamSchedule(sid uint) ([]dtos.ExamScheduleSchema, error) {
+	return s.studentRepository.QueryExamScheduleByStudentID(sid)
 }

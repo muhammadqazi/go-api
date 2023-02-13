@@ -36,7 +36,7 @@ import (
 */
 
 type ${name_cap}Handler interface {
-	Create${name_cap}(c *gin.Context)
+	Post${name_cap}(c *gin.Context)
 	Get${name_cap}(c *gin.Context)
 }
 
@@ -60,7 +60,7 @@ func New${name_cap}Handler(service services.${name_cap}Services, mapper mappers.
 	}
 }
 
-func (s *${file_name}Handler) Create${name_cap}(c *gin.Context) {}
+func (s *${file_name}Handler) Post${name_cap}(c *gin.Context) {}
 func (s *${file_name}Handler) Get${name_cap}(c *gin.Context) {}
 EOF
 
@@ -86,7 +86,7 @@ func ${name_cap}Router(r *gin.RouterGroup, h handlers.${name_cap}Handler) {
   checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
   g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.Create${name_cap})
+	g.POST("/create", h.Post${name_cap})
 	g.GET("/get", h.Get${name_cap})
 }
 

@@ -14,6 +14,7 @@ type StudentMapper interface {
 	TermRegistrationMapper(dtos.TermRegistrationDTO, uint, uint) entities.StudentEnrollmentsEntity
 	StudentCourseRequestMapper(uint, uint) entities.StudentCourseRequestEntity
 	StudentTimetableMapper([]dtos.TimetableSchema) dtos.TimetableFetchDTO
+	StudentExamScheduleMapper([]dtos.ExamScheduleSchema) dtos.ExamScheduleFetchDTO
 }
 
 type studentMapper struct {
@@ -148,4 +149,10 @@ func (m *studentMapper) StudentTimetableMapper(timetable []dtos.TimetableSchema)
 	}
 
 	return timetableFetchDTO
+}
+
+func (m *studentMapper) StudentExamScheduleMapper(examSchedule []dtos.ExamScheduleSchema) dtos.ExamScheduleFetchDTO {
+	return dtos.ExamScheduleFetchDTO{
+		Schedule: examSchedule,
+	}
 }
