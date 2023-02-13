@@ -13,7 +13,7 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 
 	g := r.Group("/instructor")
 
-	g.POST("/login", h.InstructorSignIn)
+	g.POST("/login", h.PostSignIn)
 
 	/*
 		"""
@@ -26,10 +26,10 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 	g.Use(checkRoleForFetch)
 
 	g.GET("/requests/enrollment", h.GetTermEnrollmentRequests)
-	g.POST("/requests/approve", h.ApproveTermEnrollmentRequests)
+	g.PATCH("/requests/:request-id", h.PatchTermEnrollmentRequests)
 
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.CreateInstructors)
+	g.POST("/create", h.PostInstructors)
 }

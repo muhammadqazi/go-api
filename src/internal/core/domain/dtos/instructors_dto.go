@@ -83,6 +83,6 @@ type InstructorTermRequestsFetchDTO struct {
 }
 
 type InstructorApproveEnrollmentRequestDTO struct {
-	StudentID   uint   `json:"student_id" validate:"required"`
-	RequestsIDs []uint `json:"request_ids" validate:"required,dive"`
+	RequestID  uint  `json:"request_id"`
+	IsDeclined *bool `json:"is_declined" validate:"required"`
 }

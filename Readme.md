@@ -38,3 +38,13 @@ cmd = "go build -o ./tmp/main ./src/cmd/main.go"
 ### ENVIRONMENT VARIABLES
 
 All the environment variables are in `.env.sample` file.
+
+
+## Conventions
+
+| Contex             | Handler | Service | Repository |
+| ------------------ |---------|---------|------------|
+| Creating Something | post    | create  | insert     |
+| Reading Some Data  | get     | fetch   | select     |
+| Update Some Data   | put     | modify  | update     |
+| Deleting Some Data | delete  | remove  | delete     |

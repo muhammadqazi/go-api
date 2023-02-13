@@ -9,5 +9,5 @@ func AccountingRouter(r *gin.RouterGroup, h handlers.AccountingHandler) {
 
 	g := r.Group("/accounts")
 
-	g.POST("/pay", h.MakePayment)
+	g.POST("/pay", h.PostPayment)
 }

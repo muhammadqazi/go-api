@@ -17,7 +17,7 @@ import (
 */
 
 type CurriculumHandler interface {
-	CreateCurriculum(*gin.Context)
+	PostCurriculum(*gin.Context)
 	GetCurriculumByDepartmentID(*gin.Context)
 }
 
@@ -41,7 +41,7 @@ func NewCurriculumHandler(service services.CurriculumServices, mapper mappers.Cu
 	}
 }
 
-func (s *curriculumHandler) CreateCurriculum(c *gin.Context) {
+func (s *curriculumHandler) PostCurriculum(c *gin.Context) {
 	var curriculum dtos.CurriculumCreateDTO
 
 	if err := s.validator.Validate(&curriculum, c); err != nil {

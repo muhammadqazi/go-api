@@ -13,6 +13,7 @@ type StudentMapper interface {
 	StudentResponseMapper(entities.StudentsEntity) dtos.StudentResponseDTO
 	TermRegistrationMapper(dtos.TermRegistrationDTO, uint, uint) entities.StudentEnrollmentsEntity
 	StudentCourseRequestMapper(uint, uint) entities.StudentCourseRequestEntity
+	StudentTimetableMapper([]dtos.TimetableSchema) dtos.TimetableFetchDTO
 }
 
 type studentMapper struct {
@@ -23,19 +24,19 @@ func NewStudentMapper() StudentMapper {
 }
 
 const (
-	New               = "New"
-	Active            = "Active"
-	InActive          = "InActive"
-	Pending           = "Pending"
-	FullAccess        = "FullAccess"
-	ProvisionalAccess = "ProvisionalAccess"
-	NoAccess          = "NoAccess"
-	Registered        = "Registered"
-	NotRegistered     = "NotRegistered"
+	New               = "new"
+	Active            = "active"
+	InActive          = "in-active"
+	Pending           = "pending"
+	FullAccess        = "full-access"
+	ProvisionalAccess = "provisional-access"
+	NoAccess          = "no-access"
+	Registered        = "registered"
+	NotRegistered     = "not-registered"
 )
 
 const (
-	Role = "Student"
+	Role = "student"
 )
 
 func (m *studentMapper) StudentCreateMapper(student dtos.StudentCreateDTO, sid uint, semester string) entities.StudentsEntity {
@@ -107,4 +108,44 @@ func (m *studentMapper) StudentCourseRequestMapper(enrollmentID uint, courseID u
 		StudentEnrollmentID: enrollmentID,
 		IsApproved:          false,
 	}
+}
+
+func (m *studentMapper) StudentTimetableMapper(timetable []dtos.TimetableSchema) dtos.TimetableFetchDTO {
+	timetableFetchDTO := dtos.TimetableFetchDTO{}
+	timeTableMap := make(map[string][]dtos.LectureInfo)
+
+	for _, t := range timetable {
+		lecture := dtos.LectureInfo{
+			CourseID:     t.CourseID,
+			CourseCode:   t.Code,
+			CourseName:   t.Name,
+			StartTime:    t.StartTime,
+			EndTime:      t.EndTime,
+			LectureVenue: t.LectureVenue,
+			Credits:      t.Credits,
+		}
+
+		dayLectures, ok := timeTableMap[t.Day]
+		if !ok {
+			dayLectures = []dtos.LectureInfo{}
+		}
+
+		dayLectures = append(dayLectures, lecture)
+		timeTableMap[t.Day] = dayLectures
+	}
+
+	timetableFetchDTO.StudentID = timetable[0].StudentID
+	timetableFetchDTO.Year = timetable[0].Year
+	timetableFetchDTO.Semester = timetable[0].Semester
+
+	for day, lectures := range timeTableMap {
+		timeTableInfo := dtos.TimeTableInfo{
+			Day:      day,
+			Lectures: lectures,
+		}
+
+		timetableFetchDTO.Timetable = append(timetableFetchDTO.Timetable, timeTableInfo)
+	}
+
+	return timetableFetchDTO
 }

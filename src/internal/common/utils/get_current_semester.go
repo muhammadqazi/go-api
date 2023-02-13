@@ -1,6 +1,9 @@
 package utils
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 func GetCurrentSemester() string {
 
@@ -8,12 +11,17 @@ func GetCurrentSemester() string {
 	var semester string
 	switch {
 	case month >= time.September && month <= time.January:
-		semester = "Fall"
+		semester = "fall"
 	case month >= time.February && month <= time.June:
-		semester = "Spring"
+		semester = "spring"
 	default:
-		semester = "Summer"
+		semester = "summer"
 	}
 
 	return semester
+}
+
+func GetCurrentYear() string {
+	year := time.Now().Year()
+	return strconv.Itoa(year)
 }

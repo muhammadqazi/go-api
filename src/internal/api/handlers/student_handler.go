@@ -22,11 +22,12 @@ import (
 */
 
 type StudentHandler interface {
-	PostCreateStudent(c *gin.Context)
+	PostStudent(c *gin.Context)
 	GetStudentByEmail(c *gin.Context)
 	GetStudentByID(c *gin.Context)
-	PostStudentSignIn(c *gin.Context)
+	PostSignIn(c *gin.Context)
 	PostTermRegistration(c *gin.Context)
+	GetStudentTimetable(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -53,7 +54,7 @@ func NewStudentsHandler(service services.StudentServices, account services.Accou
 	}
 }
 
-func (s *studentHandler) PostCreateStudent(c *gin.Context) {
+func (s *studentHandler) PostStudent(c *gin.Context) {
 
 	var student dtos.StudentCreateDTO
 
@@ -97,7 +98,7 @@ func (s *studentHandler) GetStudentByEmail(c *gin.Context) {
 
 }
 
-func (s *studentHandler) PostStudentSignIn(c *gin.Context) {
+func (s *studentHandler) PostSignIn(c *gin.Context) {
 
 	var student dtos.StudentSignInDTO
 
@@ -163,4 +164,18 @@ func (s *studentHandler) PostTermRegistration(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error registering for term"})
+}
+
+func (s *studentHandler) GetStudentTimetable(c *gin.Context) {
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	if doc, err := s.studentServices.FetchStudentTimetable(uint(sid)); err == nil {
+		mappedData := s.studentMapper.StudentTimetableMapper(doc)
+		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+		return
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No timetable found"})
 }

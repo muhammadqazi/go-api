@@ -22,6 +22,6 @@ func CurriculumRouter(r *gin.RouterGroup, h handlers.CurriculumHandler) {
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.CreateCurriculum)
+	g.POST("/create", h.PostCurriculum)
 	g.GET("/:id", h.GetCurriculumByDepartmentID)
 }

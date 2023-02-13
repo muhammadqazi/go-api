@@ -13,6 +13,7 @@ type StudentServices interface {
 	FetchStudentByEmail(string) (entities.StudentsEntity, error)
 	FetchStudentByID(uint) (entities.StudentsEntity, error)
 	CreateTermRegistration(dtos.TermRegistrationDTO, uint) error
+	FetchStudentTimetable(uint) ([]dtos.TimetableSchema, error)
 }
 
 type studentServices struct {
@@ -61,4 +62,8 @@ func (s *studentServices) CreateTermRegistration(registration dtos.TermRegistrat
 
 	courseIDs := registration.CourseIDs
 	return s.studentRepository.InsertStudentEnrollment(m, courseIDs)
+}
+
+func (s *studentServices) FetchStudentTimetable(sid uint) ([]dtos.TimetableSchema, error) {
+	return s.studentRepository.QueryTimetableByStudentID(sid)
 }

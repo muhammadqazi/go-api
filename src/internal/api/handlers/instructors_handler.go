@@ -20,10 +20,10 @@ import (
 */
 
 type InstructorsHandler interface {
-	CreateInstructors(c *gin.Context)
-	InstructorSignIn(c *gin.Context)
+	PostInstructors(c *gin.Context)
+	PostSignIn(c *gin.Context)
 	GetTermEnrollmentRequests(c *gin.Context)
-	ApproveTermEnrollmentRequests(c *gin.Context)
+	PatchTermEnrollmentRequests(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -48,7 +48,7 @@ func NewInstructorsHandler(service services.InstructorsServices, mapper mappers.
 	}
 }
 
-func (s *instructorsHandler) CreateInstructors(c *gin.Context) {
+func (s *instructorsHandler) PostInstructors(c *gin.Context) {
 	var instructor dtos.InstructorCreateDTO
 
 	if err := s.validator.Validate(&instructor, c); err != nil {
@@ -75,7 +75,7 @@ func (s *instructorsHandler) CreateInstructors(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Instructor created successfully"})
 }
 
-func (s *instructorsHandler) InstructorSignIn(c *gin.Context) {
+func (s *instructorsHandler) PostSignIn(c *gin.Context) {
 
 	var instructor dtos.InstructorSignInDTO
 
@@ -128,14 +128,18 @@ func (s *instructorsHandler) GetTermEnrollmentRequests(c *gin.Context) {
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
 }
 
-func (s *instructorsHandler) ApproveTermEnrollmentRequests(c *gin.Context) {
+func (s *instructorsHandler) PatchTermEnrollmentRequests(c *gin.Context) {
 
 	var request dtos.InstructorApproveEnrollmentRequestDTO
+
+	id := c.Param("request-id")
+	requestID, _ := strconv.ParseUint(id, 10, 64)
+
+	request.RequestID = uint(requestID)
 
 	if err := s.validator.Validate(&request, c); err != nil {
 		return
 	}
-
 	if err := s.instructorsServices.ApproveTermEnrollmentRequests(request); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
 		return

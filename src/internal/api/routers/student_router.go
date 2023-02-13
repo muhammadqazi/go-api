@@ -12,11 +12,7 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	allowedRolesForStudent := []string{"student"}
 
 	g := r.Group("/student")
-	g.POST("/login", h.PostStudentSignIn)
-
-	checkRoleForStudent := middleware.RolesMiddleware(allowedRolesForStudent)
-	g.Use(checkRoleForStudent)
-	g.POST("/term/registration", h.PostTermRegistration)
+	g.POST("/login", h.PostSignIn)
 
 	/*
 		"""
@@ -25,9 +21,16 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 		"""
 	*/
 
+	/* Student with Role 'student' */
+	checkRoleForStudent := middleware.RolesMiddleware(allowedRolesForStudent)
+	g.Use(checkRoleForStudent)
+	g.POST("/term/registration", h.PostTermRegistration)
+	g.GET("/timetable", h.GetStudentTimetable)
+
+	/*  Role 'admin' Handlers */
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.PostCreateStudent)
+	g.POST("/create", h.PostStudent)
 	g.GET("/:id", h.GetStudentByID)
 }

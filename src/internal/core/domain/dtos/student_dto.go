@@ -56,3 +56,43 @@ type TermRegistrationDTO struct {
 
 	CourseIDs []uint `json:"course_ids" validate:"required,dive,required"`
 }
+
+/* Student Timetable DTOs */
+
+type TimetableSchema struct {
+	StudentEnrollmentID uint   `gorm:"column:student_enrollment_id"`
+	StudentID           uint   `gorm:"column:student_id"`
+	Year                int    `gorm:"column:year"`
+	Semester            string `gorm:"column:semester"`
+	CourseID            uint   `gorm:"column:course_id"`
+	RequestID           uint   `gorm:"column:student_course_request_id"`
+	Name                string `gorm:"column:name"`
+	Code                string `gorm:"column:code"`
+	Day                 string `gorm:"column:day"`
+	StartTime           string `gorm:"column:start_time"`
+	EndTime             string `gorm:"column:end_time"`
+	Credits             int    `gorm:"column:credits"`
+	LectureVenue        string `gorm:"column:lecture_venue"`
+}
+
+type LectureInfo struct {
+	CourseID     uint   `json:"course_id"`
+	CourseCode   string `json:"course_code"`
+	CourseName   string `json:"course_name"`
+	StartTime    string `json:"start_time"`
+	EndTime      string `json:"end_time"`
+	LectureVenue string `json:"lecture_venue"`
+	Credits      int    `json:"credits"`
+}
+
+type TimeTableInfo struct {
+	Day      string        `json:"day"`
+	Lectures []LectureInfo `json:"lectures"`
+}
+
+type TimetableFetchDTO struct {
+	StudentID uint   `json:"student_id"`
+	Year      int    `json:"year"`
+	Semester  string `json:"semester"`
+	Timetable []TimeTableInfo
+}

@@ -28,8 +28,8 @@ func (v *structValidator) Validate(s interface{}, c *gin.Context) error {
 		BindJSON will bind the request body to the struct
 		"""
 	*/
-
 	if err := c.BindJSON(s); err != nil {
+		fmt.Println(err.Error(), "error")
 		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
 		return err
 	}

@@ -16,7 +16,7 @@ import (
 */
 
 type CourseHandler interface {
-	CreateCourse(c *gin.Context)
+	PostCourse(c *gin.Context)
 	GetCourse(c *gin.Context)
 }
 
@@ -40,7 +40,7 @@ func NewCourseHandler(service services.CourseServices, mapper mappers.CourseMapp
 	}
 }
 
-func (s *courseHandler) CreateCourse(c *gin.Context) {
+func (s *courseHandler) PostCourse(c *gin.Context) {
 	var course dtos.CourseCreateDTO
 
 	if err := s.validator.Validate(&course, c); err != nil {

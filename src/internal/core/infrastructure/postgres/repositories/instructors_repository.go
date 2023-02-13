@@ -82,11 +82,9 @@ func (r *instructorsConnection) QueryTermEnrollmentRequests(id uint) ([]dtos.Ins
 
 func (r *instructorsConnection) UpdateTermEnrollmentRequests(dto dtos.InstructorApproveEnrollmentRequestDTO) error {
 
-	for _, id := range dto.RequestsIDs {
-		if err := r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", id).Update("is_approved", true).Error; err != nil {
-			return err
-		}
+	if *dto.IsDeclined {
+		return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Update("is_approved", false).Error
 	}
 
-	return nil
+	return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Update("is_approved", true).Error
 }

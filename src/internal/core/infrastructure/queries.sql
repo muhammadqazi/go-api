@@ -41,3 +41,12 @@ FROM student_course_request_entity req
          JOIN students_entity std ON std.student_id = en.student_id
          JOIN courses_entity co ON req.course_id = co.course_id
 WHERE en.is_active=true AND en.is_approved=false AND en.instructor_id = 10;
+
+
+SELECT en.student_enrollment_id, en.student_id , req.course_id , req.student_course_request_id,
+       co.name,co.code , sch.day , sch.start_time , sch.end_time , co.credits , sch.lecture_venue, en.year,en.semester
+FROM student_enrollments_entity en
+         JOIN student_course_request_entity req ON en.student_enrollment_id = req.student_enrollment_id
+         JOIN courses_entity co ON req.course_id = co.course_id
+         JOIN course_schedule_entity sch ON req.course_id = sch.course_id
+WHERE en.student_id = 21906778 AND en.semester = 'spring' AND en.year = 2023 AND req.is_approved;

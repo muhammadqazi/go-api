@@ -16,7 +16,7 @@ import (
 */
 
 type AccountingHandler interface {
-	MakePayment(c *gin.Context)
+	PostPayment(c *gin.Context)
 }
 
 type accountingHandler struct {
@@ -39,7 +39,7 @@ func NewAccountingHandler(service services.AccountingServices, mapper mappers.Ac
 	}
 }
 
-func (s *accountingHandler) MakePayment(c *gin.Context) {
+func (s *accountingHandler) PostPayment(c *gin.Context) {
 
 	var payment dtos.MakePaymentDTO
 
@@ -50,7 +50,7 @@ func (s *accountingHandler) MakePayment(c *gin.Context) {
 		return
 	}
 
-	if err := s.accountingServices.MakePayment(payment, uint(payment.StudentID)); err == nil {
+	if err := s.accountingServices.CreatePayment(payment, uint(payment.StudentID)); err == nil {
 		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Transaction Successful"})
 		return
 	}
