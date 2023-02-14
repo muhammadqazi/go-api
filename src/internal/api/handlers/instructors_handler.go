@@ -24,6 +24,8 @@ type InstructorsHandler interface {
 	PostSignIn(c *gin.Context)
 	GetTermEnrollmentRequests(c *gin.Context)
 	PatchTermEnrollmentRequests(c *gin.Context)
+	PostInstructorCourseEnrollment(c *gin.Context)
+	GetInstructorCourseEnrollment(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -146,4 +148,34 @@ func (s *instructorsHandler) PatchTermEnrollmentRequests(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Enrollment request approved successfully"})
+}
+
+func (s *instructorsHandler) PostInstructorCourseEnrollment(c *gin.Context) {
+
+	var request dtos.InstructorCourseEnrollmentDTO
+
+	if err := s.validator.Validate(&request, c); err != nil {
+		return
+	}
+
+	if err := s.instructorsServices.CreateInstructorCourseEnrollment(request); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Instructor course enrollment created successfully"})
+}
+
+func (s *instructorsHandler) GetInstructorCourseEnrollment(c *gin.Context) {
+	id := c.Param("id")
+	instructorID, _ := strconv.ParseUint(id, 10, 64)
+
+	if doc, err := s.instructorsServices.FetchInstructorCourseEnrollment(uint(instructorID)); err == nil {
+
+		mappedData := s.instructorsMapper.InstructorFetchCoursesMapper(doc)
+		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
 }

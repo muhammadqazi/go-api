@@ -173,12 +173,17 @@ func (s *studentHandler) GetStudentTimetable(c *gin.Context) {
 	sid, _ := strconv.ParseUint(id, 10, 64)
 
 	if doc, err := s.studentServices.FetchStudentTimetable(uint(sid)); err == nil {
-		mappedData := s.studentMapper.StudentTimetableMapper(doc)
-		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+		if len(doc) > 0 {
+			mappedData := s.studentMapper.StudentTimetableMapper(doc)
+			c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+			return
+		}
+
+		c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "Not registered for any course"})
 		return
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No timetable found"})
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error fetching timetable"})
 }
 
 func (s *studentHandler) GetStudentExamSchedule(c *gin.Context) {

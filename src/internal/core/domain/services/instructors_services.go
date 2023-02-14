@@ -13,6 +13,8 @@ type InstructorsServices interface {
 	FetchInstructorByPhone(string) (entities.InstructorsEntity, error)
 	FetchTermEnrollmentRequests(uint) ([]dtos.InstructorTermRequests, error)
 	ApproveTermEnrollmentRequests(dtos.InstructorApproveEnrollmentRequestDTO) error
+	CreateInstructorCourseEnrollment(dtos.InstructorCourseEnrollmentDTO) error
+	FetchInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 }
 
 type instructorsServices struct {
@@ -47,4 +49,13 @@ func (s *instructorsServices) FetchTermEnrollmentRequests(id uint) ([]dtos.Instr
 
 func (s *instructorsServices) ApproveTermEnrollmentRequests(request dtos.InstructorApproveEnrollmentRequestDTO) error {
 	return s.instructorsRepository.UpdateTermEnrollmentRequests(request)
+}
+
+func (s *instructorsServices) CreateInstructorCourseEnrollment(enrollment dtos.InstructorCourseEnrollmentDTO) error {
+	entity := s.instructorsMapper.InstructorCourseEnrollmentMapper(enrollment)
+	return s.instructorsRepository.InsertInstructorCourseEnrollment(entity, enrollment)
+}
+
+func (s *instructorsServices) FetchInstructorCourseEnrollment(id uint) ([]dtos.InstructorEnrollmentsSchema, error) {
+	return s.instructorsRepository.QueryInstructorCourseEnrollment(id)
 }

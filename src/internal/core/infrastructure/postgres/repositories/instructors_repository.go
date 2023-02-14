@@ -1,8 +1,10 @@
 package repositories
 
 import (
+	"errors"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"gorm.io/gorm"
 	"time"
 )
@@ -11,17 +13,22 @@ type InstructorsRepository interface {
 	InsertInstructors(entities.InstructorsEntity) error
 	QueryInstructorByEmail(string) (entities.InstructorsEntity, error)
 	QueryInstructorByPhone(string) (entities.InstructorsEntity, error)
+	QueryInstructorByID(uint) (entities.InstructorsEntity, error)
 	QueryTermEnrollmentRequests(uint) ([]dtos.InstructorTermRequests, error)
 	UpdateTermEnrollmentRequests(dtos.InstructorApproveEnrollmentRequestDTO) error
+	InsertInstructorCourseEnrollment(entities.InstructorEnrollmentsEntity, dtos.InstructorCourseEnrollmentDTO) error
+	QueryInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 }
 
 type instructorsConnection struct {
-	conn *gorm.DB
+	conn             *gorm.DB
+	instructorMapper mappers.InstructorsMapper
 }
 
-func NewInstructorsRepository(db *gorm.DB) InstructorsRepository {
+func NewInstructorsRepository(db *gorm.DB, instructorMapper mappers.InstructorsMapper) InstructorsRepository {
 	return &instructorsConnection{
-		conn: db,
+		conn:             db,
+		instructorMapper: instructorMapper,
 	}
 }
 
@@ -39,6 +46,12 @@ func (r *instructorsConnection) QueryInstructorByEmail(email string) (entities.I
 func (r *instructorsConnection) QueryInstructorByPhone(phone string) (entities.InstructorsEntity, error) {
 	var instructor entities.InstructorsEntity
 	err := r.conn.Unscoped().Where("phone_number =?", phone).First(&instructor).Error
+	return instructor, err
+}
+
+func (r *instructorsConnection) QueryInstructorByID(id uint) (entities.InstructorsEntity, error) {
+	var instructor entities.InstructorsEntity
+	err := r.conn.Unscoped().Where("instructor_id =?", id).First(&instructor).Error
 	return instructor, err
 }
 
@@ -99,4 +112,79 @@ func (r *instructorsConnection) UpdateTermEnrollmentRequests(dto dtos.Instructor
 
 	return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Updates(update).Error
 
+}
+
+func (r *instructorsConnection) InsertInstructorCourseEnrollment(enrollment entities.InstructorEnrollmentsEntity, courseInfo dtos.InstructorCourseEnrollmentDTO) error {
+	tx := r.conn.Begin()
+
+	/*
+		First check if the instructor is already enrolled in the enrollments if yes then we will make only
+		courses in InstructorCoursesEntity table otherwise we will make a new entry in InstructorEnrollmentsEntity
+	*/
+
+	existingEnrollment := entities.InstructorEnrollmentsEntity{}
+	var err error
+	if err = tx.Where("instructor_id = ?", enrollment.InstructorID).First(&existingEnrollment).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		tx.Rollback()
+		return err
+	}
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		// Instructor is not enrolled, create a new enrollment entry
+		if err := tx.Create(&enrollment).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+		existingEnrollment = enrollment
+	}
+
+	// Create entries for the instructor's courses in the InstructorCoursesEntity table
+	for _, courseID := range courseInfo.CourseIDs {
+		entity := r.instructorMapper.InstructorCoursesMapper(existingEnrollment.InstructorEnrollmentID, courseID, courseInfo)
+		if err := tx.Create(&entity).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	return tx.Commit().Error
+}
+
+func (r *instructorsConnection) QueryInstructorCourseEnrollment(id uint) ([]dtos.InstructorEnrollmentsSchema, error) {
+
+	var result []dtos.InstructorEnrollmentsSchema
+
+	if err := r.conn.
+		Model(&entities.InstructorEnrollmentsEntity{}).
+		Select(`
+			en.created_at AS enrollment_date,
+			en.is_active,
+			en.instructor_id,
+			ins.first_name,
+			ins.last_name,
+			ins.email,
+			ins.is_active AS instructor_status,
+			co.course_id,
+			sch.day, 
+			sch.start_time, 
+			sch.end_time, 
+			sch.lecture_venue, 
+			sch.course_schedule_id,
+			co.name,
+			co.code,
+			co.credits,
+			co.theoretical,
+			co.practical`).
+		Joins(`
+			JOIN instructor_courses_entity inco ON en.instructor_enrollment_id = inco.instructor_enrollment_id
+			JOIN courses_entity co ON inco.course_id = co.course_id
+			JOIN course_schedule_entity sch ON sch.course_id = inco.course_id
+			JOIN instructors_entity ins ON ins.instructor_id = en.instructor_id`).
+		Where("en.instructor_id = ?", id).
+		Table("instructor_enrollments_entity en").
+		Scan(&result).Error; err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

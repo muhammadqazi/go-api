@@ -86,3 +86,65 @@ type InstructorApproveEnrollmentRequestDTO struct {
 	RequestID  uint  `json:"request_id"`
 	IsDeclined *bool `json:"is_declined" validate:"required"`
 }
+
+/* Enroll Instructor to courses */
+
+type InstructorCourseEnrollmentDTO struct {
+	InstructorID uint   `json:"instructor_id"`
+	Semester     string `json:"semester"`
+	Year         int    `json:"year"`
+	CourseIDs    []uint `json:"course_ids"`
+}
+
+/* Course Enrolments for instructors schema */
+
+type InstructorEnrollmentsSchema struct {
+	EnrollmentDate   time.Time `gorm:"column:enrollment_date"`
+	IsActive         bool      `gorm:"column:is_active"`
+	InstructorID     uint      `gorm:"column:instructor_id"`
+	FirstName        string    `gorm:"column:first_name"`
+	LastName         string    `gorm:"column:last_name"`
+	InstructorEmail  string    `gorm:"column:email"`
+	InstructorStatus bool      `gorm:"column:instructor_status"`
+	CourseID         uint      `gorm:"column:course_id"`
+	Day              string    `gorm:"column:day"`
+	StartTime        string    `gorm:"column:start_time"`
+	EndTime          string    `gorm:"column:end_time"`
+	LectureVenue     string    `gorm:"column:lecture_venue"`
+	CourseScheduleID uint      `gorm:"column:course_schedule_id"`
+	CourseName       string    `gorm:"column:name"`
+	CourseCode       string    `gorm:"column:code"`
+	Credits          int       `gorm:"column:credits"`
+	Theoretical      int       `gorm:"column:theoretical"`
+	Practical        int       `gorm:"column:practical"`
+}
+
+type CourseEnrollmentInfo struct {
+	EnrollmentDate   time.Time `json:"enrollment_date"`
+	EnrollmentStatus bool      `json:"enrollment_status"`
+	ID               uint      `json:"id"`
+	Name             string    `json:"name"`
+	Code             string    `json:"code"`
+	Credits          int       `json:"credits"`
+	Practical        int       `json:"practical"`
+	Theoretical      int       `json:"theoretical"`
+	Day              string    `json:"day"`
+	StartTime        string    `json:"start_time"`
+	EndTime          string    `json:"end_time"`
+	LectureVenue     string    `json:"lecture_venue"`
+	CourseScheduleID uint      `json:"course_schedule_id"`
+}
+
+type LecturesEnrollmentInfo struct {
+	Day     string                 `json:"day"`
+	Courses []CourseEnrollmentInfo `json:"courses"`
+}
+
+type InstructorEnrollmentsFetchDTO struct {
+	InstructorID     uint                     `json:"instructor_id"`
+	FirstName        string                   `json:"first_name"`
+	LastName         string                   `json:"last_name"`
+	InstructorEmail  string                   `json:"email"`
+	InstructorStatus bool                     `json:"instructor_status"`
+	Lectures         []LecturesEnrollmentInfo `json:"lectures"`
+}

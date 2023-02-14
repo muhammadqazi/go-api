@@ -25,11 +25,13 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 	checkRoleForFetch := middleware.RolesMiddleware(allowedRolesForFetch)
 	g.Use(checkRoleForFetch)
 
-	g.GET("/requests/enrollment", h.GetTermEnrollmentRequests)
+	g.GET("/requests", h.GetTermEnrollmentRequests)
 	g.PATCH("/requests/:request-id", h.PatchTermEnrollmentRequests)
+	g.GET("/enrollments/:id", h.GetInstructorCourseEnrollment)
 
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
 	g.POST("/create", h.PostInstructors)
+	g.POST("/enrollments", h.PostInstructorCourseEnrollment)
 }

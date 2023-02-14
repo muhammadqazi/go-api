@@ -12,12 +12,12 @@ type CoursesEntity struct {
 	Theoretical int    `gorm:"not null" json:"theoretical"`
 	Practical   int    `gorm:"not null" json:"practical"`
 
-	InstructorEnrollmentsEntity []InstructorEnrollmentsEntity `gorm:"foreignkey:CourseID"`
-	TranscriptEntity            []TranscriptEntity            `gorm:"foreignkey:CourseID"`
-	CourseScheduleEntity        []CourseScheduleEntity        `gorm:"foreignkey:CourseID"`
-	ExamScheduleEntity          []ExamScheduleEntity          `gorm:"foreignkey:CourseID"`
-	ExamResultsEntity           []ExamResultsEntity           `gorm:"foreignkey:CourseID"`
-	StudentCourseRequestEntity  []StudentCourseRequestEntity  `gorm:"foreignkey:CourseID"`
-	AttendanceLogsEntity        []AttendanceLogsEntity        `gorm:"foreignkey:CourseID"`
-	CourseCurriculumEntity      []CourseCurriculumEntity      `gorm:"foreignkey:CourseID"`
+	InstructorCoursesEntity    []InstructorCoursesEntity    `gorm:"foreignkey:CourseID"`
+	TranscriptEntity           []TranscriptEntity           `gorm:"foreignkey:CourseID"`
+	CourseScheduleEntity       []CourseScheduleEntity       `gorm:"foreignkey:CourseID"`
+	ExamScheduleEntity         []ExamScheduleEntity         `gorm:"foreignkey:CourseID"`
+	ExamResultsEntity          []ExamResultsEntity          `gorm:"foreignkey:CourseID"`
+	StudentCourseRequestEntity []StudentCourseRequestEntity `gorm:"foreignkey:CourseID"`
+	AttendanceLogsEntity       []AttendanceLogsEntity       `gorm:"foreignkey:CourseID"`
+	CourseCurriculumEntity     []CourseCurriculumEntity     `gorm:"foreignkey:CourseID"`
 }
