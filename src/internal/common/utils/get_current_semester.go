@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"strconv"
 	"time"
 )
 
@@ -21,7 +20,6 @@ func GetCurrentSemester() string {
 	return semester
 }
 
-func GetCurrentYear() string {
-	year := time.Now().Year()
-	return strconv.Itoa(year)
+func GetCurrentYear() int {
+	return time.Now().Year()
 }

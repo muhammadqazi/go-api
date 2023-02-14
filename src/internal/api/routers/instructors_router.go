@@ -28,7 +28,9 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 	g.GET("/requests", h.GetTermEnrollmentRequests)
 	g.PATCH("/requests/:request-id", h.PatchTermEnrollmentRequests)
 	g.GET("/enrollments/:id", h.GetInstructorCourseEnrollment)
+	g.PATCH("/attendance", h.PatchStudentAttendance)
 
+	/* Admin area */
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 

@@ -26,6 +26,7 @@ type InstructorsHandler interface {
 	PatchTermEnrollmentRequests(c *gin.Context)
 	PostInstructorCourseEnrollment(c *gin.Context)
 	GetInstructorCourseEnrollment(c *gin.Context)
+	PatchStudentAttendance(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -142,7 +143,7 @@ func (s *instructorsHandler) PatchTermEnrollmentRequests(c *gin.Context) {
 	if err := s.validator.Validate(&request, c); err != nil {
 		return
 	}
-	if err := s.instructorsServices.ApproveTermEnrollmentRequests(request); err != nil {
+	if err := s.instructorsServices.ModifyTermEnrollmentRequests(request); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
 		return
 	}
@@ -178,4 +179,20 @@ func (s *instructorsHandler) GetInstructorCourseEnrollment(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
+}
+
+func (s *instructorsHandler) PatchStudentAttendance(c *gin.Context) {
+
+	var attendance dtos.StudentAttendancePatchDTO
+
+	if err := s.validator.Validate(&attendance, c); err != nil {
+		return
+	}
+
+	if err := s.instructorsServices.ModifyStudentAttendance(attendance); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "There was an error performing this action"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Student attendance updated successfully"})
 }

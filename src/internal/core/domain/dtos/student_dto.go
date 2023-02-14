@@ -96,3 +96,12 @@ type TimetableFetchDTO struct {
 	Semester  string `json:"semester"`
 	Timetable []TimeTableInfo
 }
+
+/* Student Attendance DTOs */
+
+type StudentAttendancePatchDTO struct {
+	StudentID   uint      `json:"student_id" validate:"required"`
+	CourseID    uint      `json:"course_id" validate:"required"`
+	LectureTime time.Time `json:"lecture_time" validate:"required"`
+	IsAttended  *bool     `json:"is_attended" validate:"required"`
+}

@@ -2,6 +2,7 @@ package mappers
 
 import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"strings"
@@ -14,6 +15,8 @@ type InstructorsMapper interface {
 	InstructorCourseEnrollmentMapper(dtos.InstructorCourseEnrollmentDTO) entities.InstructorEnrollmentsEntity
 	InstructorCoursesMapper(uint, uint, dtos.InstructorCourseEnrollmentDTO) entities.InstructorCoursesEntity
 	InstructorFetchCoursesMapper([]dtos.InstructorEnrollmentsSchema) dtos.InstructorEnrollmentsFetchDTO
+	StudentAttendancePatchMapper(dtos.StudentAttendancePatchDTO) entities.StudentAttendanceEntity
+	CourseAttendancePatchMapper(dtos.StudentAttendancePatchDTO, uint) entities.CourseAttendanceEntity
 }
 
 type instructorsMapper struct {
@@ -154,4 +157,28 @@ func (s *instructorsMapper) InstructorFetchCoursesMapper(courses []dtos.Instruct
 	}
 
 	return enrollmentsFetchDTO
+}
+
+func (s *instructorsMapper) StudentAttendancePatchMapper(attendance dtos.StudentAttendancePatchDTO) entities.StudentAttendanceEntity {
+	year := utils.GetCurrentYear()
+	semester := utils.GetCurrentSemester()
+
+	return entities.StudentAttendanceEntity{
+		Year:      year,
+		Semester:  semester,
+		StudentID: attendance.StudentID,
+		BaseEntity: entities.BaseEntity{
+			CreatedAt: time.Now().UTC(),
+			IsActive:  true,
+		},
+	}
+}
+
+func (s *instructorsMapper) CourseAttendancePatchMapper(attendance dtos.StudentAttendancePatchDTO, attendanceID uint) entities.CourseAttendanceEntity {
+	return entities.CourseAttendanceEntity{
+		StudentAttendanceID: attendanceID,
+		CourseID:            attendance.CourseID,
+		LectureTime:         attendance.LectureTime,
+		IsAttended:          *attendance.IsAttended,
+	}
 }

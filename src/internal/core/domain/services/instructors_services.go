@@ -12,9 +12,10 @@ type InstructorsServices interface {
 	FetchInstructorByEmail(string) (entities.InstructorsEntity, error)
 	FetchInstructorByPhone(string) (entities.InstructorsEntity, error)
 	FetchTermEnrollmentRequests(uint) ([]dtos.InstructorTermRequests, error)
-	ApproveTermEnrollmentRequests(dtos.InstructorApproveEnrollmentRequestDTO) error
+	ModifyTermEnrollmentRequests(dtos.InstructorApproveEnrollmentRequestDTO) error
 	CreateInstructorCourseEnrollment(dtos.InstructorCourseEnrollmentDTO) error
 	FetchInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
+	ModifyStudentAttendance(dto dtos.StudentAttendancePatchDTO) error
 }
 
 type instructorsServices struct {
@@ -30,7 +31,6 @@ func NewInstructorsServices(repo repositories.InstructorsRepository, mapper mapp
 }
 
 func (s *instructorsServices) CreateInstructors(instructor dtos.InstructorCreateDTO) error {
-
 	m := s.instructorsMapper.InstructorCreateMapper(instructor)
 	return s.instructorsRepository.InsertInstructors(m)
 }
@@ -47,7 +47,7 @@ func (s *instructorsServices) FetchTermEnrollmentRequests(id uint) ([]dtos.Instr
 	return s.instructorsRepository.QueryTermEnrollmentRequests(id)
 }
 
-func (s *instructorsServices) ApproveTermEnrollmentRequests(request dtos.InstructorApproveEnrollmentRequestDTO) error {
+func (s *instructorsServices) ModifyTermEnrollmentRequests(request dtos.InstructorApproveEnrollmentRequestDTO) error {
 	return s.instructorsRepository.UpdateTermEnrollmentRequests(request)
 }
 
@@ -58,4 +58,9 @@ func (s *instructorsServices) CreateInstructorCourseEnrollment(enrollment dtos.I
 
 func (s *instructorsServices) FetchInstructorCourseEnrollment(id uint) ([]dtos.InstructorEnrollmentsSchema, error) {
 	return s.instructorsRepository.QueryInstructorCourseEnrollment(id)
+}
+
+func (s *instructorsServices) ModifyStudentAttendance(attendance dtos.StudentAttendancePatchDTO) error {
+	entity := s.instructorsMapper.StudentAttendancePatchMapper(attendance)
+	return s.instructorsRepository.UpdateStudentAttendance(entity, attendance)
 }

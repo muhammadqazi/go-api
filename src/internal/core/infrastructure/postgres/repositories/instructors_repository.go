@@ -18,6 +18,7 @@ type InstructorsRepository interface {
 	UpdateTermEnrollmentRequests(dtos.InstructorApproveEnrollmentRequestDTO) error
 	InsertInstructorCourseEnrollment(entities.InstructorEnrollmentsEntity, dtos.InstructorCourseEnrollmentDTO) error
 	QueryInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
+	UpdateStudentAttendance(entities.StudentAttendanceEntity, dtos.StudentAttendancePatchDTO) error
 }
 
 type instructorsConnection struct {
@@ -187,4 +188,35 @@ func (r *instructorsConnection) QueryInstructorCourseEnrollment(id uint) ([]dtos
 	}
 
 	return result, nil
+}
+
+func (r *instructorsConnection) UpdateStudentAttendance(attendance entities.StudentAttendanceEntity, lecture dtos.StudentAttendancePatchDTO) error {
+
+	tx := r.conn.Begin()
+
+	existingStudent := entities.StudentAttendanceEntity{}
+	var err error
+	if err = tx.Where("student_id = ? AND semester = ? AND year = ?", attendance.StudentID, attendance.Semester, attendance.Year).First(&existingStudent).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		tx.Rollback()
+		return err
+	}
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		if err := tx.Create(&attendance).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+		existingStudent = attendance
+	}
+
+	attendanceID := existingStudent.StudentAttendanceID
+	courseAttendance := r.instructorMapper.CourseAttendancePatchMapper(lecture, attendanceID)
+
+	if err := tx.Create(&courseAttendance).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+
 }
