@@ -105,3 +105,34 @@ type StudentAttendancePatchDTO struct {
 	LectureTime time.Time `json:"lecture_time" validate:"required"`
 	IsAttended  *bool     `json:"is_attended" validate:"required"`
 }
+
+/* Student Attendance Fetch */
+
+type StudentAttendanceSchema struct {
+	StudentAttendanceID uint   `gorm:"column:student_attendance_id"`
+	Year                int    `gorm:"column:year"`
+	Semester            string `gorm:"column:semester"`
+	CourseAttendanceID  uint   `gorm:"column:course_attendance_id"`
+	IsAttended          bool   `gorm:"column:is_attended"`
+	CourseID            uint   `gorm:"column:course_id"`
+	Code                string `gorm:"column:code"`
+	Name                string `gorm:"column:name"`
+	Credits             int    `gorm:"column:credits"`
+}
+
+type CourseAttendanceInfo struct {
+	CourseID             uint   `json:"course_id"`
+	CourseCode           string `json:"course_code"`
+	CourseName           string `json:"course_name"`
+	Credits              int    `json:"credits"`
+	TotalLectures        int    `json:"total_lectures"`
+	AttendedLectures     int    `json:"attended_lectures"`
+	AbsentLectures       int    `json:"absent_lectures"`
+	PercentageAttendance int    `json:"percentage_attendance"`
+}
+
+type StudentAttendanceFetchDTO struct {
+	Year       int                    `json:"year"`
+	Semester   string                 `json:"semester"`
+	Attendance []CourseAttendanceInfo `json:"attendance"`
+}

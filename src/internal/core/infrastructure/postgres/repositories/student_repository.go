@@ -16,6 +16,7 @@ type StudentRepository interface {
 	InsertStudentEnrollment(entities.StudentEnrollmentsEntity, []uint) error
 	QueryTimetableByStudentID(uint) ([]dtos.TimetableSchema, error)
 	QueryExamScheduleByStudentID(uint) ([]dtos.ExamScheduleSchema, error)
+	QueryStudentAttendanceByStudentID(uint) ([]dtos.StudentAttendanceSchema, error)
 }
 
 type studentConnection struct {
@@ -163,4 +164,36 @@ func (r *studentConnection) QueryExamScheduleByStudentID(sid uint) ([]dtos.ExamS
 	}
 
 	return examSchedule, nil
+}
+
+func (r *studentConnection) QueryStudentAttendanceByStudentID(sid uint) ([]dtos.StudentAttendanceSchema, error) {
+
+	var studentAttendance []dtos.StudentAttendanceSchema
+
+	year := utils.GetCurrentYear()
+	semester := utils.GetCurrentSemester()
+
+	if err := r.conn.
+		Model(&entities.StudentAttendanceEntity{}).
+		Table("student_attendance_entity st").
+		Select(`
+        st.student_attendance_id,
+        st.year,
+        st.semester,
+        ca.course_attendance_id,
+        ca.is_attended,
+        co.course_id,
+        co.code,
+        co.name,
+        co.credits`).
+		Joins(`
+        JOIN course_attendance_entity ca ON st.student_attendance_id = ca.student_attendance_id
+        JOIN courses_entity co ON co.course_id = ca.course_id`).
+		Where("st.student_id = ? AND st.year = ? AND st.semester = ?", sid, year, semester).
+		Scan(&studentAttendance).Error; err != nil {
+		return nil, err
+	}
+
+	return studentAttendance, nil
+
 }

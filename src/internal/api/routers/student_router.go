@@ -27,6 +27,7 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	g.POST("/term/registration", h.PostTermRegistration)
 	g.GET("/timetable", h.GetStudentTimetable)
 	g.GET("/exam", h.GetStudentExamSchedule)
+	g.GET("/attendance", h.GetStudentAttendance)
 
 	/*  Role 'admin' Handlers */
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
