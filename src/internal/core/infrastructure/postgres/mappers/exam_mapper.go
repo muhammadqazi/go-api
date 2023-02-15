@@ -1,6 +1,7 @@
 package mappers
 
 import (
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
 	"time"
@@ -8,6 +9,8 @@ import (
 
 type ExamMapper interface {
 	ExamScheduleCreateMapper(dto dtos.ExamScheduleCreateDTO) (entities.ExamScheduleEntity, error)
+	ExamResultsPatchMapper(dto dtos.ExamResultsPatchDTO) entities.ExamResultsEntity
+	ExamCourseResultsMapper(dtos.ExamResultsPatchDTO, uint) entities.ExamCourseResultsEntity
 }
 
 type examMapper struct {
@@ -30,4 +33,27 @@ func (m *examMapper) ExamScheduleCreateMapper(schedule dtos.ExamScheduleCreateDT
 			IsActive:  true,
 		},
 	}, nil
+}
+
+func (m *examMapper) ExamResultsPatchMapper(results dtos.ExamResultsPatchDTO) entities.ExamResultsEntity {
+
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
+	return entities.ExamResultsEntity{
+		Semester:  semester,
+		Year:      year,
+		StudentID: results.StudentID,
+		BaseEntity: entities.BaseEntity{
+			CreatedAt: time.Now().UTC(),
+			IsActive:  true,
+		},
+	}
+}
+
+func (m *examMapper) ExamCourseResultsMapper(results dtos.ExamResultsPatchDTO, examResultsID uint) entities.ExamCourseResultsEntity {
+	return entities.ExamCourseResultsEntity{
+		ExamResultID: examResultsID,
+		CourseID:     results.CourseID,
+		Results:      results.Results,
+	}
 }

@@ -17,7 +17,7 @@ import (
 
 type ExamHandler interface {
 	PostExamSchedule(c *gin.Context)
-	GetExam(c *gin.Context)
+	PatchExamResults(c *gin.Context)
 }
 
 type examHandler struct {
@@ -54,4 +54,17 @@ func (s *examHandler) PostExamSchedule(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Exam Schedule Created Successfully"})
 }
-func (s *examHandler) GetExam(c *gin.Context) {}
+func (s *examHandler) PatchExamResults(c *gin.Context) {
+	var results dtos.ExamResultsPatchDTO
+
+	if err := s.validator.Validate(&results, c); err != nil {
+		return
+	}
+
+	if err := s.examServices.ModifyExamResults(results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Exam Results Updated Successfully"})
+}

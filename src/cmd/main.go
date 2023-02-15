@@ -74,7 +74,7 @@ func main() {
 		curriculumRepository repositories.CurriculumRepository  = repositories.NewCurriculumRepository(db, curriculumMapper)
 		instructorRepository repositories.InstructorsRepository = repositories.NewInstructorsRepository(db, instructorMapper)
 		courseRepository     repositories.CourseRepository      = repositories.NewCourseRepository(db, courseMapper)
-		examRepository       repositories.ExamRepository        = repositories.NewExamRepository(db)
+		examRepository       repositories.ExamRepository        = repositories.NewExamRepository(db, examMapper)
 	)
 
 	/*

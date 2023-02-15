@@ -8,7 +8,7 @@ import (
 
 type ExamServices interface {
 	CreateExamSchedule(dtos.ExamScheduleCreateDTO) error
-	FetchExam()
+	ModifyExamResults(dtos.ExamResultsPatchDTO) error
 }
 
 type examServices struct {
@@ -33,4 +33,7 @@ func (s *examServices) CreateExamSchedule(exam dtos.ExamScheduleCreateDTO) error
 	return s.examRepository.InsertExamSchedule(entity)
 }
 
-func (s *examServices) FetchExam() {}
+func (s *examServices) ModifyExamResults(exam dtos.ExamResultsPatchDTO) error {
+	entity := s.examMapper.ExamResultsPatchMapper(exam)
+	return s.examRepository.UpdateExamResults(entity, exam)
+}

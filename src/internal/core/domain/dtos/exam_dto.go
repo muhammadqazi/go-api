@@ -27,3 +27,11 @@ type ExamScheduleSchema struct {
 type ExamScheduleFetchDTO struct {
 	Schedule []ExamScheduleSchema
 }
+
+/* Exam Results post DTO */
+
+type ExamResultsPatchDTO struct {
+	StudentID uint                   `json:"student_id" validate:"required"`
+	Results   map[string]interface{} `json:"results" validate:"required"`
+	CourseID  uint                   `json:"course_id" validate:"required"`
+}

@@ -8,7 +8,7 @@ import (
 
 func ExamRouter(r *gin.RouterGroup, h handlers.ExamHandler) {
 
-	allowedRolesForCreate := []string{"admin"}
+	allowedRolesForCreate := []string{"admin", "instructor"}
 	g := r.Group("/exam")
 
 	/*
@@ -20,6 +20,6 @@ func ExamRouter(r *gin.RouterGroup, h handlers.ExamHandler) {
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.PostExamSchedule)
-	g.GET("/get", h.GetExam)
+	g.POST("/schedule", h.PostExamSchedule)
+	g.PATCH("/results", h.PatchExamResults)
 }
