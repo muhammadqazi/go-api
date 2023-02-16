@@ -1,0 +1,809 @@
+{
+	"info": {
+		"_postman_id": "6f2e6fbb-87ce-4889-aea1-d1d20801f682",
+		"name": "StudentInformationSystem-SIS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16307097"
+	},
+	"item": [
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Admin\",\n    \"surname\": \"Admin\",\n    \"email\": \"admin2@admin.com\",\n    \"nationality\": \"US\",\n    \"dob\": \"2000-06-11\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"password\": \"root1234\",\n    \"role\" : \"student\",\n    \"scholarship\" : 50,\n    \"discount\" : 10,\n    \"discount_type\" : \"Sports\",\n    \"acceptance_type\" : \"foreign undergraduate\",\n    \"department_id\" : 1,\n    \"supervisor_id\" : 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/student/create",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by sid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/student/21906778",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"21906778"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Term Registration",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"semester\": \"spring\",\n    \"year\": 2023,\n    \"course_ids\": [\n        41,\n        42\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/student/term/registration",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"term",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"let token = jsonData.token;",
+									"",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\" : 21906778,\n    \"password\" : \"root\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/student/login",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Timetable",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/student/timetable",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"timetable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exam Schedule",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/student/exam",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Attendence",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/student/attendance",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"attendance"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"total_fee\": 10000,\n    \"scholarship\": 100,\n    \"discount\": 500,\n    \"discount_type\" : \"Sports scholarship\",\n    \"installments\": 2,\n    \"total_dept\": 8500\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/accounts/create",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"accounts",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Make Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1500,\n    \"process_type\": \"cash\",\n    \"currency\": \"USD\",\n    \"installment\" : 1,\n    \"student_id\" : 21906778\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/accounts/pay",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"accounts",
+								"pay"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Curriculum",
+			"item": [
+				{
+					"name": "Create Curriculum",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"department_id\": 2,\n    \"curriculum\": [\n        {\n            \"semester\": \"Fall\",\n            \"year\": 1,\n            \"course_ids\": [\n                1,\n                2,\n                3,\n                4,\n                5\n            ],\n            \"course_load\": 5\n        },\n        {\n            \"semester\": \"Spring\",\n            \"year\": 1,\n            \"course_ids\": [\n                6,\n                7,\n                8,\n                9,\n                10\n            ],\n            \"course_load\": 5\n        },\n        {\n            \"semester\": \"Fall\",\n            \"year\": 2,\n            \"course_ids\": [\n                11,\n                12,\n                13,\n                14,\n                15\n            ],\n            \"course_load\": 5\n        },\n        {\n            \"semester\": \"Spring\",\n            \"year\": 2,\n            \"course_ids\": [\n                16,\n                17,\n                18,\n                19,\n                20\n            ],\n            \"course_load\": 5\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/curriculum/create",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"curriculum",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By Department ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/curriculum/2",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"curriculum",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Instructor",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"phone_number\": \"555-555-555544\",\n    \"email\": \"root@root.com\",\n    \"password\": \"password123\",\n    \"dob\": \"01-01-1990\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"nationality\": \"American\",\n    \"role\": \"instructor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/instructor/create",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"let token = jsonData.token;",
+									"",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"oliviawilson@example.com\",\n    \"password\" : \"root\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/instructor/login",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Registration Requests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/instructor/requests",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Courses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_declined\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/instructor/requests/4",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"requests",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Enrollments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"instructor_id\": 9,\n    \"semester\": \"Fall\",\n    \"year\": 2023,\n    \"course_ids\": [\n        1,\n        2\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/instructor/enrollments",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"enrollments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Enrollments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/instructor/enrollments/9",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"enrollments",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendence",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": 21906778,\n    \"course_id\": 41,\n    \"lecture_time\": \"2023-02-14T10:36:10.849254Z\",\n    \"is_attended\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/instructor/attendance",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"attendance"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Introduction to Artificial Intelligence\",\n    \"code\": \"AI101\",\n    \"description\": \"This course provides an overview of the field of Artificial Intelligence and its applications.\",\n    \"credits\": 5,\n    \"ects\": 10,\n    \"theoretical\": 3,\n    \"practical\": 2,\n    \"course_schedule\": [\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\"\n        },\n        {\n            \"day\": \"Wednesday\",\n            \"start_time\": \"08:00\",\n            \"end_time\": \"16:00\",\n            \"lecture_venue\": \"ST231\"\n        },\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\"\n        },\n        {\n            \"day\": \"Wednesday\",\n            \"start_time\": \"08:00\",\n            \"end_time\": \"16:00\",\n            \"lecture_venue\": \"ST231\"\n        },\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/course/create",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"course",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exam",
+			"item": [
+				{
+					"name": "Create Schedule",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2023-03-01T10:00:00Z\",\n    \"exam_type\": \"Midterm\",\n    \"duration\": 120,\n    \"exam_venue\": \"Room 102\",\n    \"course_id\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/exam",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"exam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exam Results",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"results\": {\n        \"midterm\": 90,\n        \"final\": 100,\n        \"quizes\": 90\n    },\n    \"student_id\": 21906778,\n    \"course_id\": 20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/exam/results",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"exam",
+								"results"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
