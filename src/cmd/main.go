@@ -49,7 +49,7 @@ func main() {
 
 	/*
 		"""
-		Register All Mapperss
+		Register All Mappers
 		"""
 	*/
 
