@@ -160,6 +160,28 @@ func (s *studentHandler) PostTermRegistration(c *gin.Context) {
 		return
 	}
 
+	isExist, err := s.studentServices.FetchIsEnrollmentExists(uint(sid))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
+		return
+	}
+
+	if isExist {
+		isEnrolled, err := s.studentServices.FetchStudentEnrollmentStatus(uint(sid))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
+			return
+		}
+
+		if isEnrolled {
+			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "You have already registered for this term"})
+			return
+		}
+
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "You have already sent a registration request"})
+		return
+	}
+
 	if err := s.studentServices.CreateTermRegistration(registration, uint(sid)); err == nil {
 		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Registration has been sent for approval"})
 		return

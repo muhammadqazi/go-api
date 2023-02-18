@@ -16,6 +16,8 @@ type StudentServices interface {
 	FetchStudentTimetable(uint) ([]dtos.TimetableSchema, error)
 	FetchStudentExamSchedule(uint) ([]dtos.ExamScheduleSchema, error)
 	FetchStudentAttendance(uint) ([]dtos.StudentAttendanceSchema, error)
+	FetchStudentEnrollmentStatus(uint) (bool, error)
+	FetchIsEnrollmentExists(uint) (bool, error)
 }
 
 type studentServices struct {
@@ -45,6 +47,14 @@ func (s *studentServices) FetchStudentByID(sid uint) (entities.StudentsEntity, e
 
 func (s *studentServices) FetchLastStudentID() (uint, error) {
 	return s.studentRepository.QueryLastStudentID()
+}
+
+func (s *studentServices) FetchIsEnrollmentExists(sid uint) (bool, error) {
+	return s.studentRepository.QueryIsEnrollmentExists(sid)
+}
+
+func (s *studentServices) FetchStudentEnrollmentStatus(sid uint) (bool, error) {
+	return s.studentRepository.QueryStudentEnrollmentStatus(sid)
 }
 
 func (s *studentServices) CreateTermRegistration(registration dtos.TermRegistrationDTO, sid uint) error {

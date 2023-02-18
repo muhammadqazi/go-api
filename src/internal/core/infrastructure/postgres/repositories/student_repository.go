@@ -17,6 +17,8 @@ type StudentRepository interface {
 	QueryTimetableByStudentID(uint) ([]dtos.TimetableSchema, error)
 	QueryExamScheduleByStudentID(uint) ([]dtos.ExamScheduleSchema, error)
 	QueryStudentAttendanceByStudentID(uint) ([]dtos.StudentAttendanceSchema, error)
+	QueryStudentEnrollmentStatus(uint) (bool, error)
+	QueryIsEnrollmentExists(uint) (bool, error)
 }
 
 type studentConnection struct {
@@ -57,6 +59,7 @@ func (r *studentConnection) QueryStudentByID(sid uint) (entities.StudentsEntity,
 	return student, err
 
 }
+
 func (r *studentConnection) QueryLastStudentID() (uint, error) {
 
 	var lastStudent entities.StudentsEntity
@@ -69,6 +72,39 @@ func (r *studentConnection) QueryLastStudentID() (uint, error) {
 
 	return lastStudent.StudentID, nil
 
+}
+
+func (r *studentConnection) QueryIsEnrollmentExists(sid uint) (bool, error) {
+
+	var exists bool
+
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
+
+	if err := r.conn.Table("student_enrollments_entity").
+		Where("student_id = ? AND semester = ? AND year = ?", sid, semester, year).
+		Select("1").
+		Limit(1).
+		Scan(&exists).Error; err != nil {
+		return true, err
+	}
+
+	return exists, nil
+}
+
+func (r *studentConnection) QueryStudentEnrollmentStatus(sid uint) (bool, error) {
+	var isEnrolled bool
+
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
+
+	if err := r.conn.Table("student_enrollments_entity").
+		Where("student_id = ? AND semester = ? AND year = ?", sid, semester, year).
+		Pluck("is_enrolled", &isEnrolled).Error; err != nil {
+		return false, err
+	}
+
+	return isEnrolled, nil
 }
 
 func (r *studentConnection) InsertStudentEnrollment(enrollment entities.StudentEnrollmentsEntity, courseIDs []uint) error {
