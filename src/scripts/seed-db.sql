@@ -33,10 +33,19 @@ VALUES
     (21906778, 'John', 'Doe', 'johndoe@example.com', 'American', '01-01-1998', 'New York', 'Male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'student', 'registered', 'active', 'Admitted', 'Fall 2021', '2025-05-25', false, 1, 10, current_timestamp, true),
     (21906779, 'John', 'Doe', 'johndoe2@example.com', 'American', '01-01-1998', 'New York', 'Male', '$2a$14$Lo3A2ZYhrl3oHxAKqbgif.RaPFkm77XIOBiU05veQuEXl9T5xfXim', 'student', 'registered', 'active', 'Admitted', 'Fall 2021', '2025-05-25', false, 1, 10,current_timestamp, true);
 
-INSERT INTO accounts_entity (approaching_dept, current_dept, discount, discount_type, installments, scholarship, student_id, total_dept, total_fee)
+INSERT INTO accounts_entity (approaching_dept, current_dept, discount, discount_type, installments, scholarship, student_id, total_dept, total_fee,department_fee)
 VALUES
-    (0, 0, 10, 'Sports', 2, 50, 21906778, 1575, 3500),
-    (0, 0, 10, 'Sports', 2, 50, 21906778, 1575, 3500);
+    (0, 0, 10, 'Sports', 2, 50, 21906778, 1575, 1750 , 3500),
+    (0, 0, 10, 'Sports', 2, 50, 21906778, 1575, 1600 , 3500);
+
+
+INSERT INTO invoices_entity (invoice_id, date, amount, description, installment, term, account_id)
+VALUES
+    (1, current_timestamp, 100.0, 'Invoice 1', 1, 'Term 1', 1),
+    (2, current_timestamp, 150.0, 'Invoice 2', 2, 'Term 1', 1),
+    (3, current_timestamp, 200.0, 'Invoice 3', 3, 'Term 2', 1),
+    (4, current_timestamp, 250.0, 'Invoice 4', 4, 'Term 2', 1),
+    (5, current_timestamp, 300.0, 'Invoice 5', 5, 'Term 3', 1);
 
 INSERT INTO courses_entity (name, code, description, credits, ects, theoretical, practical, created_at, is_active)
 VALUES

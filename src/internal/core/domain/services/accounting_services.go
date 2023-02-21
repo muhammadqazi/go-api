@@ -9,6 +9,7 @@ import (
 type AccountingServices interface {
 	CreateAccounts(dtos.StudentCreateDTO, uint) (uint, error)
 	CreatePayment(dtos.MakePaymentDTO, uint) error
+	FetchAccountDetails(uint) ([]dtos.AccountDetails, error)
 }
 
 type accountingServices struct {
@@ -33,4 +34,8 @@ func (s *accountingServices) CreatePayment(payment dtos.MakePaymentDTO, sid uint
 	m := s.accountingMapper.MakePaymentMapper(payment)
 
 	return s.accountingRepository.InsertPayment(m, sid)
+}
+
+func (s *accountingServices) FetchAccountDetails(sid uint) ([]dtos.AccountDetails, error) {
+	return s.accountingRepository.QueryAccountDetailsByStudentID(sid)
 }

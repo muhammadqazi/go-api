@@ -7,6 +7,7 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"net/http"
+	"strconv"
 )
 
 /*
@@ -17,6 +18,7 @@ import (
 
 type AccountingHandler interface {
 	PostPayment(c *gin.Context)
+	GetAccountDetails(c *gin.Context)
 }
 
 type accountingHandler struct {
@@ -52,6 +54,21 @@ func (s *accountingHandler) PostPayment(c *gin.Context) {
 
 	if err := s.accountingServices.CreatePayment(payment, uint(payment.StudentID)); err == nil {
 		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Transaction Successful"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "An Error occurred while performing this transaction"})
+
+}
+
+func (s *accountingHandler) GetAccountDetails(c *gin.Context) {
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	if account, err := s.accountingServices.FetchAccountDetails(uint(sid)); err == nil {
+		mappedData := s.accountingMapper.AccountsFetchMapper(account)
+		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
 		return
 	}
 

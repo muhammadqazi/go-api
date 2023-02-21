@@ -18,6 +18,7 @@ type StudentCreateDTO struct {
 	AcceptanceType string `json:"acceptance_type" validate:"required,min=2,max=50"`
 	DepartmentID   uint   `json:"department_id" validate:"required"`
 	SupervisorID   uint   `json:"supervisor_id" validate:"required"`
+	Installments   int    `json:"installments"`
 }
 
 type StudentSignInDTO struct {

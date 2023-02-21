@@ -8,11 +8,13 @@ import (
 
 func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 
-	allowedRolesForCreate := []string{"admin"}
 	allowedRolesForStudent := []string{"student"}
+	allowedRolesForAdmin := []string{"admin"}
 
-	g := r.Group("/student")
-	g.POST("/login", h.PostSignIn)
+	student := r.Group("/student")
+	admin := r.Group("/student")
+
+	student.POST("/login", h.PostSignIn)
 
 	/*
 		"""
@@ -21,18 +23,20 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 		"""
 	*/
 
+	/*  Role 'admin' Handlers */
+	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForAdmin)
+	admin.Use(checkRoleForCreate)
+
+	admin.POST("/create", h.PostStudent)
+	admin.GET("/:id", h.GetStudentByID)
+
 	/* Student with Role 'student' */
 	checkRoleForStudent := middleware.RolesMiddleware(allowedRolesForStudent)
-	g.Use(checkRoleForStudent)
-	g.POST("/term/registration", h.PostTermRegistration)
-	g.GET("/timetable", h.GetStudentTimetable)
-	g.GET("/exam", h.GetStudentExamSchedule)
-	g.GET("/attendance", h.GetStudentAttendance)
+	student.Use(checkRoleForStudent)
 
-	/*  Role 'admin' Handlers */
-	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
-	g.Use(checkRoleForCreate)
+	student.POST("/term/registration", h.PostTermRegistration)
+	student.GET("/timetable", h.GetStudentTimetable)
+	student.GET("/exam", h.GetStudentExamSchedule)
+	student.GET("/attendance", h.GetStudentAttendance)
 
-	g.POST("/create", h.PostStudent)
-	g.GET("/:id", h.GetStudentByID)
 }

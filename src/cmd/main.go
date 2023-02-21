@@ -24,7 +24,10 @@ func main() {
 	*/
 
 	viper.SetConfigFile(".env")
-	viper.ReadInConfig()
+	err := viper.ReadInConfig()
+	if err != nil {
+		return
+	}
 
 	port := viper.Get("PORT").(string)
 	dbUrl := viper.Get("DB_URL").(string)
