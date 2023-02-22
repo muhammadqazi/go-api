@@ -137,3 +137,10 @@ type StudentAttendanceFetchDTO struct {
 	Semester   string                 `json:"semester"`
 	Attendance []CourseAttendanceInfo `json:"attendance"`
 }
+
+/* Reset Password */
+
+type ResetPasswordDTO struct {
+	CurrentPassword string `json:"current_password" validate:"required"`
+	NewPassword     string `json:"new_password" validate:"required,min=8,max=20"`
+}

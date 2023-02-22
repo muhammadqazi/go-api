@@ -73,3 +73,11 @@ type AccountFetchDTO struct {
 	Payments        []PaymentsInfo `json:"payments"`
 	Invoices        []InvoicesInfo `json:"invoices"`
 }
+
+/* Accounts Patch DTO */
+
+type AccountPatchDTO struct {
+	Scholarship  int    `json:"scholarship"`
+	Discount     int    `json:"discount"`
+	DiscountType string `json:"discount_type"`
+}

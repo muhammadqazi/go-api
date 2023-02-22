@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
 	"net/http"
 )
 
@@ -25,21 +26,46 @@ func (v *structValidator) Validate(s interface{}, c *gin.Context) error {
 
 	/*
 		"""
-		BindJSON will bind the request body to the struct
+		BindJSON will bind the request body to the given struct.
 		"""
 	*/
+
 	if err := c.BindJSON(s); err != nil {
-		fmt.Println(err.Error(), "error")
-		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  false,
+			"message": err.Error(),
+		})
 		return err
 	}
 
 	err := v.validate.Struct(s)
 	if err != nil {
-		for _, e := range err.(validator.ValidationErrors) {
-			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": fmt.Sprintf("%s: %s", e.Namespace(), e.Tag())})
-			return err
+		validationErrors := err.(validator.ValidationErrors)
+		var errorMessage string
+
+		for _, validationError := range validationErrors {
+			fieldName := utils.ConvertToSnakeCase(validationError.Field())
+			tag := validationError.Tag()
+			param := validationError.Param()
+
+			switch tag {
+			case "required":
+				errorMessage = fmt.Sprintf("%s is required", fieldName)
+			case "min":
+				errorMessage = fmt.Sprintf("%s must be at least %s", fieldName, param)
+			case "max":
+				errorMessage = fmt.Sprintf("%s must be at most %s", fieldName, param)
+			default:
+				errorMessage = fmt.Sprintf("%s is invalid", fieldName)
+			}
 		}
+
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  false,
+			"message": errorMessage,
+		})
+		return err
 	}
+
 	return nil
 }

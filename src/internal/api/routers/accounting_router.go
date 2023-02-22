@@ -9,8 +9,10 @@ import (
 func AccountingRouter(r *gin.RouterGroup, h handlers.AccountingHandler) {
 
 	allowedRolesForStudent := []string{"student"}
+	allowedRolesForAdmin := []string{"admin"}
 
 	student := r.Group("/accounts")
+	admin := r.Group("/accounts")
 
 	/*
 		"""
@@ -28,4 +30,7 @@ func AccountingRouter(r *gin.RouterGroup, h handlers.AccountingHandler) {
 
 	/* Handlers with 'admin' roles */
 
+	admin.Use(middleware.RolesMiddleware(allowedRolesForAdmin))
+
+	admin.PATCH("/info", h.PatchAccountDetailsByStudentID)
 }

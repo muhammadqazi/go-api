@@ -19,6 +19,7 @@ type StudentRepository interface {
 	QueryStudentAttendanceByStudentID(uint) ([]dtos.StudentAttendanceSchema, error)
 	QueryStudentEnrollmentStatus(uint) (bool, error)
 	QueryIsEnrollmentExists(uint) (bool, error)
+	UpdateStudentPassword(uint, string) error
 }
 
 type studentConnection struct {
@@ -232,4 +233,15 @@ func (r *studentConnection) QueryStudentAttendanceByStudentID(sid uint) ([]dtos.
 
 	return studentAttendance, nil
 
+}
+
+func (r *studentConnection) UpdateStudentPassword(sid uint, password string) error {
+
+	if err := r.conn.Model(&entities.StudentsEntity{}).
+		Where("student_id = ?", sid).
+		Update("password", password).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

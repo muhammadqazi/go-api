@@ -19,6 +19,7 @@ import (
 type AccountingHandler interface {
 	PostPayment(c *gin.Context)
 	GetAccountDetails(c *gin.Context)
+	PatchAccountDetailsByStudentID(c *gin.Context)
 }
 
 type accountingHandler struct {
@@ -74,4 +75,7 @@ func (s *accountingHandler) GetAccountDetails(c *gin.Context) {
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "An Error occurred while performing this transaction"})
 
+}
+
+func (s *accountingHandler) PatchAccountDetailsByStudentID(c *gin.Context) {
 }

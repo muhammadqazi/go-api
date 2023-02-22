@@ -18,6 +18,7 @@ type StudentServices interface {
 	FetchStudentAttendance(uint) ([]dtos.StudentAttendanceSchema, error)
 	FetchStudentEnrollmentStatus(uint) (bool, error)
 	FetchIsEnrollmentExists(uint) (bool, error)
+	ModifyStudentPassword(uint, string) error
 }
 
 type studentServices struct {
@@ -86,4 +87,8 @@ func (s *studentServices) FetchStudentExamSchedule(sid uint) ([]dtos.ExamSchedul
 
 func (s *studentServices) FetchStudentAttendance(sid uint) ([]dtos.StudentAttendanceSchema, error) {
 	return s.studentRepository.QueryStudentAttendanceByStudentID(sid)
+}
+
+func (s *studentServices) ModifyStudentPassword(sid uint, password string) error {
+	return s.studentRepository.UpdateStudentPassword(sid, password)
 }

@@ -38,5 +38,6 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	student.GET("/timetable", h.GetStudentTimetable)
 	student.GET("/exam", h.GetStudentExamSchedule)
 	student.GET("/attendance", h.GetStudentAttendance)
+	student.PATCH("/reset-password", h.PatchResetPassword)
 
 }

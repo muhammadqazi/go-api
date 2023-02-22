@@ -30,6 +30,7 @@ type StudentHandler interface {
 	GetStudentTimetable(c *gin.Context)
 	GetStudentExamSchedule(c *gin.Context)
 	GetStudentAttendance(c *gin.Context)
+	PatchResetPassword(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -242,4 +243,36 @@ func (s *studentHandler) GetStudentAttendance(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error fetching attendance"})
+}
+
+func (s *studentHandler) PatchResetPassword(c *gin.Context) {
+	var password dtos.ResetPasswordDTO
+
+	if err := s.validator.Validate(&password, c); err != nil {
+		return
+	}
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	student, err := s.studentServices.FetchStudentByID(uint(sid))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
+		return
+	}
+
+	if match := security.CheckPasswordHash(password.CurrentPassword, student.Password); !match {
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Invalid old password"})
+		return
+	}
+
+	if hashedPassword, err := security.HashPassword(password.NewPassword); err == nil {
+		if err := s.studentServices.ModifyStudentPassword(uint(sid), hashedPassword); err == nil {
+			c.JSON(http.StatusOK, gin.H{"status": true, "message": "Password updated successfully"})
+			return
+		}
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating password"})
+
 }
