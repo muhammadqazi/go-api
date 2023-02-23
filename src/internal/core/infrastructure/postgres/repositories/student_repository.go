@@ -20,6 +20,10 @@ type StudentRepository interface {
 	QueryStudentEnrollmentStatus(uint) (bool, error)
 	QueryIsEnrollmentExists(uint) (bool, error)
 	UpdateStudentPassword(uint, string) error
+	InsertForgotPasswordRequest(entities.StudentPasswordResetsEntity) error
+	QueryForgotPasswordCode(uint) (entities.StudentPasswordResetsEntity, error)
+	UpdateForgotPasswordFlag(uint) error
+	DeleteForgotPasswordCode(uint) error
 }
 
 type studentConnection struct {
@@ -240,6 +244,50 @@ func (r *studentConnection) UpdateStudentPassword(sid uint, password string) err
 	if err := r.conn.Model(&entities.StudentsEntity{}).
 		Where("student_id = ?", sid).
 		Update("password", password).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *studentConnection) InsertForgotPasswordRequest(entity entities.StudentPasswordResetsEntity) error {
+
+	if err := r.conn.Create(&entity).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *studentConnection) QueryForgotPasswordCode(sid uint) (entities.StudentPasswordResetsEntity, error) {
+
+	var entity entities.StudentPasswordResetsEntity
+
+	if err := r.conn.Model(&entities.StudentPasswordResetsEntity{}).
+		Where("student_id = ?", sid).
+		First(&entity).Error; err != nil {
+		return entity, err
+	}
+
+	return entity, nil
+}
+
+func (r *studentConnection) DeleteForgotPasswordCode(sid uint) error {
+
+	if err := r.conn.Model(&entities.StudentPasswordResetsEntity{}).
+		Where("student_id = ?", sid).
+		Delete(&entities.StudentPasswordResetsEntity{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *studentConnection) UpdateForgotPasswordFlag(sid uint) error {
+
+	if err := r.conn.Model(&entities.StudentPasswordResetsEntity{}).
+		Where("student_id = ?", sid).
+		Update("is_verified", true).Error; err != nil {
 		return err
 	}
 

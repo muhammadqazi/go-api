@@ -15,6 +15,9 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	admin := r.Group("/student")
 
 	student.POST("/login", h.PostSignIn)
+	student.POST("/forgot-password", h.PostForgotPasswordRequest)
+	student.PUT("/forgot-password", h.PutForgotPasswordCode)
+	student.PATCH("/forgot-password", h.PatchNewPassword)
 
 	/*
 		"""

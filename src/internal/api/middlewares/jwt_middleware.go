@@ -19,10 +19,44 @@ func AuthorizeJWT(jwtService security.TokenManager) gin.HandlerFunc {
 		route := c.Request.URL.Path
 		basePath := path.Base(route)
 
-		exceptions := []string{"login"}
+		exceptions := []string{"login", "forgot-password"}
 
 		for _, exc := range exceptions {
 			if basePath == exc {
+				if exc == "forgot-password" {
+
+					if c.Request.Method == "POST" {
+						c.Next()
+						return
+					}
+
+					/*
+						"""
+						Use ValidatePasswordResetToken method for /forgot-password endpoint
+						"""
+					*/
+
+					authHeader := c.GetHeader("Authorization")
+					if authHeader == "" {
+						c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": false, "message": "Authorization token is required"})
+						return
+					}
+
+					_, err := jwtService.ValidatePasswordResetToken(authHeader[7:])
+					if err != nil {
+						c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": false, "message": "Invalid password reset token"})
+						return
+					}
+
+					claims := jwt.MapClaims{}
+					sub, err := jwt.ParseWithClaims(authHeader[7:], claims, func(token *jwt.Token) (interface{}, error) {
+						return []byte("secret"), nil
+					})
+
+					id := sub.Claims.(jwt.MapClaims)["jti"]
+
+					c.Set("id", id)
+				}
 				c.Next()
 				return
 			}

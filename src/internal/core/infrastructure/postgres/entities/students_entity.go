@@ -26,11 +26,12 @@ type StudentsEntity struct {
 	SupervisorID uint `gorm:"column:supervisor_id" json:"supervisor_id"`
 	DepartmentID uint `gorm:"column:department_id" json:"department_id"`
 
-	AccountsEntity           []AccountsEntity           `gorm:"foreignkey:StudentID"`
-	PersonalInfoEntity       []PersonalInfoEntity       `gorm:"foreignkey:StudentID"`
-	ContactInfoEntity        []ContactInfoEntity        `gorm:"foreignkey:StudentID"`
-	TranscriptEntity         []TranscriptEntity         `gorm:"foreignkey:StudentID"`
-	ExamResultsEntity        []ExamResultsEntity        `gorm:"foreignkey:StudentID"`
-	StudentEnrollmentsEntity []StudentEnrollmentsEntity `gorm:"foreignkey:StudentID"`
-	StudentAttendanceEntity  []StudentAttendanceEntity  `gorm:"foreignkey:StudentID"`
+	AccountsEntity              []AccountsEntity              `gorm:"foreignkey:StudentID"`
+	PersonalInfoEntity          []PersonalInfoEntity          `gorm:"foreignkey:StudentID"`
+	ContactInfoEntity           []ContactInfoEntity           `gorm:"foreignkey:StudentID"`
+	TranscriptEntity            []TranscriptEntity            `gorm:"foreignkey:StudentID"`
+	ExamResultsEntity           []ExamResultsEntity           `gorm:"foreignkey:StudentID"`
+	StudentEnrollmentsEntity    []StudentEnrollmentsEntity    `gorm:"foreignkey:StudentID"`
+	StudentAttendanceEntity     []StudentAttendanceEntity     `gorm:"foreignkey:StudentID"`
+	StudentPasswordResetsEntity []StudentPasswordResetsEntity `gorm:"foreignkey:StudentID"`
 }

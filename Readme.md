@@ -37,7 +37,9 @@ cmd = "go build -o ./tmp/main ./src/cmd/main.go"
 
 ### ENVIRONMENT VARIABLES
 
-All the environment variables are in `.env.sample` file.
+All the environment variables are in `config.sample.json` file.
+
+Environment variables should be in config.json file.
 
 
 ## Conventions

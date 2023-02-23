@@ -6,6 +6,7 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
@@ -31,6 +32,9 @@ type StudentHandler interface {
 	GetStudentExamSchedule(c *gin.Context)
 	GetStudentAttendance(c *gin.Context)
 	PatchResetPassword(c *gin.Context)
+	PostForgotPasswordRequest(c *gin.Context)
+	PutForgotPasswordCode(c *gin.Context)
+	PatchNewPassword(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -275,4 +279,101 @@ func (s *studentHandler) PatchResetPassword(c *gin.Context) {
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating password"})
 
+}
+
+func (s *studentHandler) PostForgotPasswordRequest(c *gin.Context) {
+	var request dtos.ForgotPasswordRequestDTO
+
+	if err := s.validator.Validate(&request, c); err != nil {
+		return
+	}
+
+	_, err := s.studentServices.FetchStudentByID(request.StudentID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
+		return
+	}
+
+	if err := s.studentServices.CreateForgotPasswordRequest(request); err == nil {
+		token, _ := s.jwtService.NewPasswordResetJWT(strconv.FormatUint(uint64(request.StudentID), 10))
+
+		c.JSON(http.StatusOK, gin.H{"status": true, "token": token})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error sending request"})
+
+}
+
+func (s *studentHandler) PutForgotPasswordCode(c *gin.Context) {
+
+	var code dtos.ForgotPasswordVerifyDTO
+
+	if err := s.validator.Validate(&code, c); err != nil {
+		return
+	}
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	if doc, err := s.studentServices.VerifyForgotPasswordCode(uint(sid)); err == nil {
+
+		if doc.ExpiresAt.Before(time.Now()) {
+			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Code has been expired"})
+			return
+		}
+
+		if doc.IsVerified {
+			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Code has already been used"})
+			return
+		}
+
+		if doc.ResetCode != code.Code {
+			c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Invalid code"})
+			return
+		}
+
+		if err := s.studentServices.ModifyForgotPasswordFlag(uint(sid)); err == nil {
+			c.JSON(http.StatusOK, gin.H{"status": true, "message": "Code verified successfully"})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error verifying code"})
+		return
+
+	}
+
+	c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Invalid code"})
+
+}
+
+func (s *studentHandler) PatchNewPassword(c *gin.Context) {
+
+	var password dtos.NewPasswordDTO
+
+	if err := s.validator.Validate(&password, c); err != nil {
+		return
+	}
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	if hashedPassword, err := security.HashPassword(password.Password); err == nil {
+		if doc, err := s.studentServices.VerifyForgotPasswordCode(uint(sid)); err == nil {
+			if doc.IsVerified {
+				if err := s.studentServices.ModifyStudentPassword(uint(sid), hashedPassword); err == nil {
+					if err := s.studentServices.RemoveForgotPasswordCode(uint(sid)); err == nil {
+						c.JSON(http.StatusOK, gin.H{"status": true, "message": "Password updated successfully"})
+						return
+					}
+				}
+			}
+			c.JSON(http.StatusUnauthorized, gin.H{"status": false, "message": "Unauthorized"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "No password reset request found"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating password"})
 }

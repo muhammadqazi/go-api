@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
 	"net/http"
 )
 
@@ -44,7 +43,7 @@ func (v *structValidator) Validate(s interface{}, c *gin.Context) error {
 		var errorMessage string
 
 		for _, validationError := range validationErrors {
-			fieldName := utils.ConvertToSnakeCase(validationError.Field())
+			fieldName := validationError.Field()
 			tag := validationError.Tag()
 			param := validationError.Param()
 

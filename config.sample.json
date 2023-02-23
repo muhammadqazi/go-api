@@ -1,0 +1,14 @@
+{
+  "ENVIRONMENT": "",
+  "DB_URL": "",
+  "PORT": ":",
+  "GIN_MODE": "",
+  "JWT_SECRET": "",
+  "RESET_PASSWORD_JWT_SECRET": "",
+  "JWT_ALGORITHM": "",
+  "RESET_PASSWORD_JWT_ALGORITHM": "",
+  "POSTGRES_CONTAINER_NAME": "",
+  "POSTGRES_USER": "",
+  "POSTGRES_PASSWORD": "",
+  "POSTGRES_DB": ""
+}

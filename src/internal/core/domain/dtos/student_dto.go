@@ -144,3 +144,17 @@ type ResetPasswordDTO struct {
 	CurrentPassword string `json:"current_password" validate:"required"`
 	NewPassword     string `json:"new_password" validate:"required,min=8,max=20"`
 }
+
+/* Forgot Password */
+
+type ForgotPasswordRequestDTO struct {
+	StudentID uint `json:"student_id" validate:"required"`
+}
+
+type ForgotPasswordVerifyDTO struct {
+	Code int `json:"code" validate:"required"`
+}
+
+type NewPasswordDTO struct {
+	Password string `json:"password" validate:"required,min=8,max=20"`
+}

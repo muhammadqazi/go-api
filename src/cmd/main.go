@@ -7,38 +7,32 @@ import (
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/routers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
+	core "github.com/muhammadqazi/SIS-Backend-Go/src/internal/config"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
 	database "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
-	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
 
 func main() {
-
 	/*
 		"""
 		Load the environment variables from .env file
 		"""
 	*/
 
-	viper.SetConfigFile(".env")
-	err := viper.ReadInConfig()
+	config, err := core.LoadConfig()
 	if err != nil {
-		return
+		panic(err)
 	}
-
-	port := viper.Get("PORT").(string)
-	dbUrl := viper.Get("DB_URL").(string)
-	secretKey := viper.Get("JWT_SECRET").(string)
 
 	/*
 		"""
 		Connect to the database
 		"""
 	*/
-	var db *gorm.DB = database.Init(dbUrl)
+	var db *gorm.DB = database.Init(config.DBUrl)
 	defer database.CloseDatabaseConnection(db)
 
 	/*
@@ -47,7 +41,7 @@ func main() {
 		"""
 	*/
 
-	var jwtService security.TokenManager = security.NewTokenManager(secretKey)
+	var jwtService security.TokenManager = security.NewTokenManager(config)
 	var validator validation.Validator = validation.NewStructValidator()
 
 	/*
@@ -136,10 +130,10 @@ func main() {
 
 	/*
 		"""
-		Start the server, when you use 'localhost' it will not ask you for the permision again and again "MAC trick"
+		Start the server, when you use 'localhost' it will not ask you for the permission again and again "MAC trick"
 		"""
 	*/
 
-	r.Run("localhost" + port)
+	r.Run("localhost" + config.Port)
 
 }

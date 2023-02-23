@@ -1,6 +1,7 @@
 package mappers
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
@@ -16,6 +17,7 @@ type StudentMapper interface {
 	StudentTimetableMapper([]dtos.TimetableSchema) dtos.TimetableFetchDTO
 	StudentExamScheduleMapper([]dtos.ExamScheduleSchema) dtos.ExamScheduleFetchDTO
 	StudentAttendanceFetchMapper([]dtos.StudentAttendanceSchema) dtos.StudentAttendanceFetchDTO
+	ForgotPasswordRequestMapper(dtos.ForgotPasswordRequestDTO) entities.StudentPasswordResetsEntity
 }
 
 type studentMapper struct {
@@ -207,4 +209,16 @@ func (m *studentMapper) StudentAttendanceFetchMapper(attendance []dtos.StudentAt
 	}
 
 	return result
+}
+
+func (m *studentMapper) ForgotPasswordRequestMapper(request dtos.ForgotPasswordRequestDTO) entities.StudentPasswordResetsEntity {
+	code := security.CodeGenerator(6)
+	codeInt, _ := strconv.Atoi(code)
+	return entities.StudentPasswordResetsEntity{
+		StudentID:  request.StudentID,
+		ResetCode:  codeInt,
+		CreatedAt:  time.Now().UTC(),
+		ExpiresAt:  time.Now().UTC().Add(time.Minute * 60),
+		IsVerified: false,
+	}
 }

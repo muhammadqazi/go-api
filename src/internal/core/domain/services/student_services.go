@@ -19,6 +19,10 @@ type StudentServices interface {
 	FetchStudentEnrollmentStatus(uint) (bool, error)
 	FetchIsEnrollmentExists(uint) (bool, error)
 	ModifyStudentPassword(uint, string) error
+	CreateForgotPasswordRequest(dtos.ForgotPasswordRequestDTO) error
+	VerifyForgotPasswordCode(uint) (entities.StudentPasswordResetsEntity, error)
+	ModifyForgotPasswordFlag(uint) error
+	RemoveForgotPasswordCode(uint) error
 }
 
 type studentServices struct {
@@ -91,4 +95,21 @@ func (s *studentServices) FetchStudentAttendance(sid uint) ([]dtos.StudentAttend
 
 func (s *studentServices) ModifyStudentPassword(sid uint, password string) error {
 	return s.studentRepository.UpdateStudentPassword(sid, password)
+}
+
+func (s *studentServices) CreateForgotPasswordRequest(request dtos.ForgotPasswordRequestDTO) error {
+	m := s.studentMapper.ForgotPasswordRequestMapper(request)
+	return s.studentRepository.InsertForgotPasswordRequest(m)
+}
+
+func (s *studentServices) VerifyForgotPasswordCode(sid uint) (entities.StudentPasswordResetsEntity, error) {
+	return s.studentRepository.QueryForgotPasswordCode(sid)
+}
+
+func (s *studentServices) RemoveForgotPasswordCode(sid uint) error {
+	return s.studentRepository.DeleteForgotPasswordCode(sid)
+}
+
+func (s *studentServices) ModifyForgotPasswordFlag(sid uint) error {
+	return s.studentRepository.UpdateForgotPasswordFlag(sid)
 }
