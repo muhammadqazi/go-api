@@ -8,7 +8,9 @@ import (
 
 type CourseServices interface {
 	CreateCourse(dtos.CourseCreateDTO) error
-	FetchCourse() error
+	FetchCourseByCourseCode(string) ([]dtos.CourseFetchByCodeSchema, error)
+	ModifyCourseByCourseCode(string, dtos.CourseUpdateDTO) error
+	RemoveCourseByCourseCode(string) error
 }
 
 type courseServices struct {
@@ -35,6 +37,16 @@ func (s *courseServices) CreateCourse(course dtos.CourseCreateDTO) error {
 
 	return s.courseRepository.InsertCourse(courseEntity, schedule)
 }
-func (s *courseServices) FetchCourse() error {
-	return nil
+
+func (s *courseServices) FetchCourseByCourseCode(code string) ([]dtos.CourseFetchByCodeSchema, error) {
+	return s.courseRepository.QueryCourseByCourseCode(code)
+}
+
+func (s *courseServices) ModifyCourseByCourseCode(code string, course dtos.CourseUpdateDTO) error {
+	entity := s.courseMapper.CourseUpdateMapper(course)
+	return s.courseRepository.UpdateCourseByCourseCode(code, entity)
+}
+
+func (s *courseServices) RemoveCourseByCourseCode(code string) error {
+	return s.courseRepository.DeleteCourseByCourseCode(code)
 }

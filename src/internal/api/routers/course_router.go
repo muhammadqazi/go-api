@@ -21,5 +21,8 @@ func CourseRouter(r *gin.RouterGroup, h handlers.CourseHandler) {
 	g.Use(checkRoleForCreate)
 
 	g.POST("/create", h.PostCourse)
-	g.GET("/get", h.GetCourse)
+	g.GET("/:code", h.GetCourseByCourseCode)
+	g.PATCH("/:code", h.PatchCourseByCourseCode)
+	g.DELETE("/:code", h.DeleteCourseByCourseCode)
+
 }

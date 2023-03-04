@@ -10,6 +10,8 @@ import (
 type CourseMapper interface {
 	CourseCreateMapper(dtos.CourseCreateDTO) entities.CoursesEntity
 	CourseScheduleMapper(dtos.CourseSchedule, uint) (entities.CourseScheduleEntity, error)
+	CourseFetchByCodeMapper([]dtos.CourseFetchByCodeSchema) []dtos.CourseFetchByCodeDTO
+	CourseUpdateMapper(dtos.CourseUpdateDTO) entities.CoursesEntity
 }
 
 type courseMapper struct {
@@ -56,4 +58,64 @@ func (m *courseMapper) CourseScheduleMapper(schedule dtos.CourseSchedule, id uin
 		EndTime:      schedule.EndTime,
 		LectureVenue: schedule.LectureVenue,
 	}, nil
+}
+
+func (m *courseMapper) CourseFetchByCodeMapper(courses []dtos.CourseFetchByCodeSchema) []dtos.CourseFetchByCodeDTO {
+	coursesMap := make(map[string]dtos.CourseFetchByCodeDTO)
+
+	for _, t := range courses {
+		if course, ok := coursesMap[t.Code]; ok {
+			schedule := dtos.CourseSchedule{
+				Day:          t.Day,
+				StartTime:    t.StartTime,
+				EndTime:      t.EndTime,
+				LectureVenue: t.LectureVenue,
+			}
+
+			course.CourseSchedule = append(course.CourseSchedule, schedule)
+			coursesMap[t.Code] = course
+		} else {
+			courseDTO := dtos.CourseFetchByCodeDTO{
+				Name:        t.Name,
+				Code:        t.Code,
+				Description: t.Description,
+				Credits:     t.Credits,
+				ECTS:        t.Ects,
+				Theoretical: t.Theoretical,
+				Practical:   t.Practical,
+				IsActive:    t.IsActive,
+				CourseSchedule: []dtos.CourseSchedule{
+					{
+						Day:          t.Day,
+						StartTime:    t.StartTime,
+						EndTime:      t.EndTime,
+						LectureVenue: t.LectureVenue,
+					},
+				},
+			}
+			coursesMap[t.Code] = courseDTO
+		}
+	}
+
+	coursesList := make([]dtos.CourseFetchByCodeDTO, 0, len(coursesMap))
+	for _, courseDTO := range coursesMap {
+		coursesList = append(coursesList, courseDTO)
+	}
+
+	return coursesList
+}
+
+func (m *courseMapper) CourseUpdateMapper(dto dtos.CourseUpdateDTO) entities.CoursesEntity {
+	return entities.CoursesEntity{
+		Name:        dto.Name,
+		Code:        dto.Code,
+		Description: dto.Description,
+		Credits:     dto.Credits,
+		ECTS:        dto.ECTS,
+		Theoretical: dto.Theoretical,
+		Practical:   dto.Practical,
+		BaseEntity: entities.BaseEntity{
+			UpdatedAt: time.Now().UTC(),
+		},
+	}
 }

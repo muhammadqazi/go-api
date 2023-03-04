@@ -254,7 +254,7 @@ func (r *instructorsConnection) QueryRegisteredStudentsBySupervisorID(id uint) (
         JOIN students_entity std ON en.student_id = std.student_id
         JOIN departments_entity dep ON std.department_id = dep.department_id
         JOIN faculties_entity fac ON fac.department_id = std.department_id`).
-		Where("std.supervisor_id = ? AND en.is_enrolled", 10).
+		Where("std.supervisor_id = ? AND en.is_enrolled", id).
 		Table("student_enrollments_entity en").
 		Scan(&result).Error; err != nil {
 		return nil, err
