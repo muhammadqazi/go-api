@@ -3,11 +3,11 @@ package handlers
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/validation"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/services"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
@@ -135,10 +135,10 @@ func (s *instructorsHandler) PatchTermEnrollmentRequests(c *gin.Context) {
 
 	var request dtos.InstructorApproveEnrollmentRequestDTO
 
-	id := c.Param("request-id")
-	requestID, _ := strconv.ParseUint(id, 10, 64)
+	id := c.Param("enrollment-id")
+	enrollmentID, _ := strconv.ParseUint(id, 10, 64)
 
-	request.RequestID = uint(requestID)
+	request.EnrollmentID = uint(enrollmentID)
 
 	if err := s.validator.Validate(&request, c); err != nil {
 		return
@@ -168,13 +168,16 @@ func (s *instructorsHandler) PostInstructorCourseEnrollment(c *gin.Context) {
 }
 
 func (s *instructorsHandler) GetInstructorCourseEnrollment(c *gin.Context) {
-	id := c.Param("id")
+	id := c.MustGet("id").(string)
 	instructorID, _ := strconv.ParseUint(id, 10, 64)
-
 	if doc, err := s.instructorsServices.FetchInstructorCourseEnrollment(uint(instructorID)); err == nil {
+		if len(doc) > 0 {
+			mappedData := s.instructorsMapper.InstructorFetchCoursesMapper(doc)
+			c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+			return
+		}
 
-		mappedData := s.instructorsMapper.InstructorFetchCoursesMapper(doc)
-		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Not enrolled in any course"})
 		return
 	}
 

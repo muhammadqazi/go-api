@@ -2,17 +2,17 @@ package handlers
 
 import (
 	"errors"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/validation"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/services"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
 	"gorm.io/gorm"
 )
 

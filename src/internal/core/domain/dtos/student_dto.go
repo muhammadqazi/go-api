@@ -52,9 +52,6 @@ type StudentResponseDTO struct {
 }
 
 type TermRegistrationDTO struct {
-	Semester string `json:"semester" validate:"required"`
-	Year     int    `json:"year" validate:"required"`
-
 	CourseIDs []uint `json:"course_ids" validate:"required,dive,required"`
 }
 

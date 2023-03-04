@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
 	"net/http"
 	"path"
 )

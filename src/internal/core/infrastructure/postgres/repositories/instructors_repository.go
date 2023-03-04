@@ -2,9 +2,9 @@ package repositories
 
 import (
 	"errors"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
 	"gorm.io/gorm"
 	"time"
 )
@@ -63,7 +63,7 @@ func (r *instructorsConnection) QueryTermEnrollmentRequests(id uint) ([]dtos.Ins
 		 *
 		 *  	This is the query that is being executed by the below code
 
-				SELECT req.student_course_request_id AS request_id,
+				SELECT en.student_enrollment_id AS enrollment_id,
 				ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, en.instructor_id AS supervisor_id,
 				en.created_at,en.updated_at,en.deleted_at req.is_approved,en.semester,en.year,en.student_id,
 				std.first_name AS student_name,std.surname AS student_surname, std.status AS student_status, std.access_status,
@@ -81,12 +81,12 @@ func (r *instructorsConnection) QueryTermEnrollmentRequests(id uint) ([]dtos.Ins
 
 	var result []dtos.InstructorTermRequests
 	if err := r.conn.Table("student_course_request_entity req").
-		Select("req.student_course_request_id AS request_id, ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, en.instructor_id AS supervisor_id, en.created_at, en.updated_at, en.deleted_at, req.is_approved, en.semester, en.year, en.student_id, std.first_name AS student_name, std.surname AS student_surname, std.status AS student_status, std.access_status, req.course_id, co.name AS course_name, co.code AS course_code, co.credits AS course_credits, co.is_active AS course_status, co.ects AS ects, co.practical,co.theoretical").
+		Select("en.student_enrollment_id AS enrollment_id,ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, en.instructor_id AS supervisor_id, en.created_at, en.updated_at, en.deleted_at, en.is_enrolled, en.semester, en.year, en.student_id, std.first_name AS student_name, std.surname AS student_surname, std.status AS student_status, std.access_status, req.course_id, co.name AS course_name, co.code AS course_code, co.credits AS course_credits, co.is_active AS course_status, co.ects AS ects, co.practical,co.theoretical").
 		Joins("JOIN student_enrollments_entity en ON req.student_enrollment_id = en.student_enrollment_id").
 		Joins("JOIN instructors_entity ins ON ins.instructor_id = en.instructor_id").
 		Joins("JOIN students_entity std ON std.student_id = en.student_id").
 		Joins("JOIN courses_entity co ON co.course_id = req.course_id").
-		Where("en.is_active = ? AND req.is_approved = ? AND en.instructor_id = ?", true, false, id).
+		Where("en.is_active = ? AND en.is_enrolled = ? AND en.instructor_id = ?", true, false, id).
 		Scan(&result).Error; err != nil {
 		return nil, err
 	}
@@ -99,19 +99,19 @@ func (r *instructorsConnection) UpdateTermEnrollmentRequests(dto dtos.Instructor
 
 	if *dto.IsDeclined {
 		update := map[string]interface{}{
-			"is_approved": false,
+			"is_enrolled": false,
 			"declined_at": time.Now().UTC(),
 		}
-		return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Updates(update).Error
+		return r.conn.Table("student_enrollments_entity").Where("student_enrollment_id = ?", dto.EnrollmentID).Updates(update).Error
 
 	}
 
 	update := map[string]interface{}{
-		"is_approved": true,
+		"is_enrolled": true,
 		"approved_at": time.Now().UTC(),
 	}
 
-	return r.conn.Table("student_course_request_entity").Where("student_course_request_id = ?", dto.RequestID).Updates(update).Error
+	return r.conn.Table("student_enrollments_entity").Where("student_enrollment_id = ?", dto.EnrollmentID).Updates(update).Error
 
 }
 

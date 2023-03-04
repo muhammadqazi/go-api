@@ -1,10 +1,10 @@
 package services
 
 import (
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/repositories"
 )
 
 type InstructorsServices interface {

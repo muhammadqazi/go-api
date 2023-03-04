@@ -30,14 +30,14 @@ type InstructorSignInDTO struct {
 }
 
 type InstructorTermRequests struct {
-	RequestID         uint      `json:"request_id"`
+	EnrollmentID      uint      `json:"enrollment_id"`
 	SupervisorName    string    `json:"supervisor_name"`
 	SupervisorSurname string    `json:"supervisor_surname"`
 	SupervisorID      uint      `json:"supervisor_id"`
 	CreatedAt         time.Time `json:"created_at"`
 	UpdatedAt         time.Time `json:"updated_at"`
 	DeletedAt         time.Time `json:"deleted_at"`
-	IsApproved        bool      `json:"is_approved"`
+	IsEnrolled        bool      `json:"is_enrolled"`
 	Semester          string    `json:"semester"`
 	Year              int       `json:"year"`
 	StudentID         uint      `json:"student_id"`
@@ -63,11 +63,10 @@ type CourseApprovalInfo struct {
 	Ects        int    `json:"ects"`
 	Practical   int    `json:"practical"`
 	Theoretical int    `json:"theoretical"`
-	IsApproved  bool   `json:"is_approved"`
-	RequestID   uint   `json:"request_id"`
 }
 
 type InstructorTermRequestsFetchDTO struct {
+	EnrollmentID      uint                 `json:"enrollment_id"`
 	SupervisorID      uint                 `json:"supervisor_id"`
 	SupervisorName    string               `json:"supervisor_name"`
 	SupervisorSurname string               `json:"supervisor_surname"`
@@ -78,13 +77,12 @@ type InstructorTermRequestsFetchDTO struct {
 	AccessStatus      string               `json:"access_status"`
 	Semester          string               `json:"semester"`
 	Year              int                  `json:"year"`
-	IsApproved        bool                 `json:"is_approved"`
 	Courses           []CourseApprovalInfo `json:"courses"`
 }
 
 type InstructorApproveEnrollmentRequestDTO struct {
-	RequestID  uint  `json:"request_id"`
-	IsDeclined *bool `json:"is_declined" validate:"required"`
+	EnrollmentID uint  `json:"enrollment_id" validate:"required"`
+	IsDeclined   *bool `json:"is_declined" validate:"required"`
 }
 
 /* Enroll Instructor to courses */

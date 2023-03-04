@@ -11,7 +11,7 @@ If you need performance and productivity, you will love Gin.
 Clone the project
 
 ```
-git clone git@github.com:muhammadqazi/SIS-Backend-Go.git
+git clone git@github.com:muhammadqazi/campus-hq-api.git
 ```
 
 ### Scripts

@@ -2,7 +2,7 @@ package security
 
 import (
 	"fmt"
-	core "github.com/muhammadqazi/SIS-Backend-Go/src/internal/config"
+	core "github.com/muhammadqazi/campus-hq-api/src/internal/config"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"

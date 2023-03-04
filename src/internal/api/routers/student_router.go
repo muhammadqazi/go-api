@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
-	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
+	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
 )
 
 func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {

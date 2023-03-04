@@ -3,7 +3,7 @@ package core
 import (
 	"log"
 
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"

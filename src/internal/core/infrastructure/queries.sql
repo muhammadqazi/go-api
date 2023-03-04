@@ -30,7 +30,7 @@ FROM course_curriculum_entity sc
          JOIN courses_entity co ON sc.course_id = co.course_id
 WHERE cc.department_id=2 AND sc.is_active=true;
 
-SELECT req.student_course_request_id AS request_id,
+SELECT en.student_enrollment_id AS enrollment_id,
        ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, ins.instructor_id AS supervisor_id,
        en.created_at,en.updated_at,en.deleted_at,en.is_approved,en.semester,en.year,en.student_id,
        std.first_name AS student_name,std.surname AS student_surname, std.status AS student_status, std.access_status,

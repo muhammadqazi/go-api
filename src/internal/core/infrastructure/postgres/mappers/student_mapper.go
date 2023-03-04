@@ -1,18 +1,19 @@
 package mappers
 
 import (
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
 	"strconv"
 	"time"
 
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 )
 
 type StudentMapper interface {
 	StudentCreateMapper(dtos.StudentCreateDTO, uint, string) entities.StudentsEntity
 	StudentResponseMapper(entities.StudentsEntity) dtos.StudentResponseDTO
-	TermRegistrationMapper(dtos.TermRegistrationDTO, uint, uint) entities.StudentEnrollmentsEntity
+	TermRegistrationMapper(uint, uint) entities.StudentEnrollmentsEntity
 	StudentCourseRequestMapper(uint, uint) entities.StudentCourseRequestEntity
 	StudentTimetableMapper([]dtos.TimetableSchema) dtos.TimetableFetchDTO
 	StudentExamScheduleMapper([]dtos.ExamScheduleSchema) dtos.ExamScheduleFetchDTO
@@ -93,12 +94,16 @@ func (m *studentMapper) StudentResponseMapper(student entities.StudentsEntity) d
 	}
 }
 
-func (m *studentMapper) TermRegistrationMapper(registration dtos.TermRegistrationDTO, sid uint, supervisorID uint) entities.StudentEnrollmentsEntity {
+func (m *studentMapper) TermRegistrationMapper(sid uint, supervisorID uint) entities.StudentEnrollmentsEntity {
+
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
+
 	return entities.StudentEnrollmentsEntity{
 		StudentID:    sid,
 		InstructorID: supervisorID,
-		Semester:     registration.Semester,
-		Year:         registration.Year,
+		Semester:     semester,
+		Year:         year,
 		BaseEntity: entities.BaseEntity{
 			IsActive:  true,
 			CreatedAt: time.Now().UTC(),
@@ -110,7 +115,6 @@ func (m *studentMapper) StudentCourseRequestMapper(enrollmentID uint, courseID u
 	return entities.StudentCourseRequestEntity{
 		CourseID:            courseID,
 		StudentEnrollmentID: enrollmentID,
-		IsApproved:          false,
 	}
 }
 

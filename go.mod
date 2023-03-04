@@ -1,4 +1,4 @@
-module github.com/muhammadqazi/SIS-Backend-Go
+module github.com/muhammadqazi/campus-hq-api
 
 go 1.17
 

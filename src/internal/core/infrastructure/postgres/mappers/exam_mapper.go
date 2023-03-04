@@ -1,9 +1,9 @@
 package mappers
 
 import (
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"time"
 )
 

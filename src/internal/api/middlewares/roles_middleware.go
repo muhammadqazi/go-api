@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
 )
 
 func RolesMiddleware(allowedRoles []string) gin.HandlerFunc {

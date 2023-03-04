@@ -2,16 +2,16 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
-	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/routers"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
-	core "github.com/muhammadqazi/SIS-Backend-Go/src/internal/config"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
-	database "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
+	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/api/routers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/validation"
+	core "github.com/muhammadqazi/campus-hq-api/src/internal/config"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/services"
+	database "github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/repositories"
 	"gorm.io/gorm"
 )
 

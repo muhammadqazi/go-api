@@ -1,10 +1,10 @@
 package mappers
 
 import (
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/security"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/utils"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"strings"
 	"time"
 )
@@ -56,6 +56,7 @@ func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.Instruc
 		studentInfo, exists := studentInfoMap[studentID]
 		if !exists {
 			studentInfo = dtos.InstructorTermRequestsFetchDTO{
+				EnrollmentID:      request.EnrollmentID,
 				SupervisorID:      request.SupervisorID,
 				SupervisorName:    request.SupervisorName,
 				SupervisorSurname: request.SupervisorSurname,
@@ -66,7 +67,6 @@ func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.Instruc
 				AccessStatus:      request.AccessStatus,
 				Semester:          request.Semester,
 				Year:              request.Year,
-				IsApproved:        request.IsApproved,
 				Courses:           []dtos.CourseApprovalInfo{},
 			}
 		}
@@ -78,8 +78,6 @@ func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.Instruc
 			Ects:        request.ECTS,
 			Theoretical: request.Theoretical,
 			Practical:   request.Practical,
-			IsApproved:  request.IsApproved,
-			RequestID:   request.RequestID,
 		})
 		studentInfoMap[studentID] = studentInfo
 	}

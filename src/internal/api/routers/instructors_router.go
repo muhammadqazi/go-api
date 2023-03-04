@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
-	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
+	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
 )
 
 func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
@@ -26,8 +26,8 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 	g.Use(checkRoleForFetch)
 
 	g.GET("/requests", h.GetTermEnrollmentRequests)
-	g.PATCH("/requests/:request-id", h.PatchTermEnrollmentRequests)
-	g.GET("/enrollments/:id", h.GetInstructorCourseEnrollment)
+	g.PATCH("/requests/:enrollment-id", h.PatchTermEnrollmentRequests)
+	g.GET("/enrollments", h.GetInstructorCourseEnrollment)
 	g.PATCH("/attendance", h.PatchStudentAttendance)
 
 	/* Admin area */
