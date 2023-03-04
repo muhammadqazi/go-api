@@ -101,7 +101,7 @@ func (m *studentMapper) TermRegistrationMapper(sid uint, supervisorID uint) enti
 
 	return entities.StudentEnrollmentsEntity{
 		StudentID:    sid,
-		InstructorID: supervisorID,
+		SupervisorID: supervisorID,
 		Semester:     semester,
 		Year:         year,
 		BaseEntity: entities.BaseEntity{

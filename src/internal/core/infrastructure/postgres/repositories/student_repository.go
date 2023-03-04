@@ -163,7 +163,7 @@ func (r *studentConnection) QueryTimetableByStudentID(sid uint) ([]dtos.Timetabl
 		Joins("JOIN courses_entity co ON req.course_id = co.course_id").
 		Joins("JOIN course_schedule_entity sch ON req.course_id = sch.course_id").
 		Select("en.student_enrollment_id, en.student_id , en.year, en.semester, req.course_id , req.student_course_request_id, co.name,co.code , sch.day , sch.start_time , sch.end_time , co.credits , sch.lecture_venue").
-		Where("en.student_id = ? AND en.semester = ? AND en.year = ? AND en.is_enrolled = ?", sid, semester, year, true).
+		Where("en.student_id = ? AND en.semester = ? AND en.year = ? AND en.is_enrolled", sid, semester, year).
 		Scan(&timetable).Error; err != nil {
 		return nil, err
 	}
@@ -203,7 +203,6 @@ func (r *studentConnection) QueryExamScheduleByStudentID(sid uint) ([]dtos.ExamS
 		Scan(&examSchedule).Error; err != nil {
 		return nil, err
 	}
-
 	return examSchedule, nil
 }
 

@@ -11,7 +11,7 @@ type StudentEnrollmentsEntity struct {
 	DeclinedAt          string `gorm:"not null" json:"declined_at"`
 
 	StudentID    uint `gorm:"not null" json:"student_id"`
-	InstructorID uint `gorm:"not null" json:"instructor_id"`
+	SupervisorID uint `gorm:"not null" json:"supervisor_id"`
 
 	StudentCourseRequestEntity []StudentCourseRequestEntity `gorm:"foreignkey:StudentEnrollmentID"`
 }

@@ -22,5 +22,5 @@ type InstructorsEntity struct {
 	DepartmentsEntity           []DepartmentsEntity           `gorm:"foreignkey:HeadID"`
 	StudentsEntity              []StudentsEntity              `gorm:"foreignkey:SupervisorID"`
 
-	StudentEnrollmentsEntity []StudentEnrollmentsEntity `gorm:"foreignkey:InstructorID"`
+	StudentEnrollmentsEntity []StudentEnrollmentsEntity `gorm:"foreignkey:SupervisorID"`
 }

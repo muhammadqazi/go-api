@@ -20,6 +20,7 @@ type InstructorsRepository interface {
 	QueryInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 	UpdateStudentAttendance(entities.StudentAttendanceEntity, dtos.StudentAttendancePatchDTO) error
 	QuerySupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
+	QueryRegisteredStudentsBySupervisorID(uint) ([]entities.StudentEnrollmentsEntity, error)
 }
 
 type instructorsConnection struct {
@@ -82,12 +83,12 @@ func (r *instructorsConnection) QueryTermEnrollmentRequests(id uint) ([]dtos.Ins
 
 	var result []dtos.InstructorTermRequests
 	if err := r.conn.Table("student_course_request_entity req").
-		Select("en.student_enrollment_id AS enrollment_id,ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, en.instructor_id AS supervisor_id, en.created_at, en.updated_at, en.deleted_at, en.is_enrolled, en.semester, en.year, en.student_id, std.first_name AS student_name, std.surname AS student_surname, std.status AS student_status, std.access_status, req.course_id, co.name AS course_name, co.code AS course_code, co.credits AS course_credits, co.is_active AS course_status, co.ects AS ects, co.practical,co.theoretical").
+		Select("en.student_enrollment_id AS enrollment_id,ins.last_name AS supervisor_name, ins.last_name AS supervisor_surname, en.supervisor_id, en.created_at, en.updated_at, en.deleted_at, en.is_enrolled, en.semester, en.year, en.student_id, std.first_name AS student_name, std.surname AS student_surname, std.status AS student_status, std.access_status, req.course_id, co.name AS course_name, co.code AS course_code, co.credits AS course_credits, co.is_active AS course_status, co.ects AS ects, co.practical,co.theoretical").
 		Joins("JOIN student_enrollments_entity en ON req.student_enrollment_id = en.student_enrollment_id").
-		Joins("JOIN instructors_entity ins ON ins.instructor_id = en.instructor_id").
+		Joins("JOIN instructors_entity ins ON ins.instructor_id = en.supervisor_id").
 		Joins("JOIN students_entity std ON std.student_id = en.student_id").
 		Joins("JOIN courses_entity co ON co.course_id = req.course_id").
-		Where("en.is_active = ? AND en.is_enrolled = ? AND en.instructor_id = ?", true, false, id).
+		Where("en.is_active = ? AND en.is_enrolled = ? AND en.supervisor_id = ?", true, false, id).
 		Scan(&result).Error; err != nil {
 		return nil, err
 	}
@@ -230,6 +231,17 @@ func (r *instructorsConnection) QuerySupervisedStudents(id uint) ([]dtos.Supervi
 		Joins("JOIN departments_entity dep ON std.department_id = dep.department_id").
 		Joins("JOIN faculties_entity fac ON fac.department_id = std.department_id").
 		Where("std.supervisor_id = ? AND std.is_active", id).
+		Scan(&doc).Error; err != nil {
+		return nil, err
+	}
+	return doc, nil
+}
+
+func (r *instructorsConnection) QueryRegisteredStudentsBySupervisorID(id uint) ([]entities.StudentEnrollmentsEntity, error) {
+	var doc []entities.StudentEnrollmentsEntity
+	if err := r.conn.
+		Table("student_enrollments_entity").
+		Where("supervisor_id = ? AND is_enrolled", id).
 		Scan(&doc).Error; err != nil {
 		return nil, err
 	}

@@ -17,6 +17,7 @@ type InstructorsServices interface {
 	FetchInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 	ModifyStudentAttendance(dto dtos.StudentAttendancePatchDTO) error
 	FetchSupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
+	FetchRegisteredStudentsBySupervisorID(uint) ([]entities.StudentEnrollmentsEntity, error)
 }
 
 type instructorsServices struct {
@@ -68,4 +69,8 @@ func (s *instructorsServices) ModifyStudentAttendance(attendance dtos.StudentAtt
 
 func (s *instructorsServices) FetchSupervisedStudents(id uint) ([]dtos.SupervisedStudentSchema, error) {
 	return s.instructorsRepository.QuerySupervisedStudents(id)
+}
+
+func (s *instructorsServices) FetchRegisteredStudentsBySupervisorID(id uint) ([]entities.StudentEnrollmentsEntity, error) {
+	return s.instructorsRepository.QueryRegisteredStudentsBySupervisorID(id)
 }
