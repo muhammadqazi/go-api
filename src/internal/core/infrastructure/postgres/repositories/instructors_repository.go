@@ -19,6 +19,7 @@ type InstructorsRepository interface {
 	InsertInstructorCourseEnrollment(entities.InstructorEnrollmentsEntity, dtos.InstructorCourseEnrollmentDTO) error
 	QueryInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 	UpdateStudentAttendance(entities.StudentAttendanceEntity, dtos.StudentAttendancePatchDTO) error
+	QuerySupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
 }
 
 type instructorsConnection struct {
@@ -219,4 +220,18 @@ func (r *instructorsConnection) UpdateStudentAttendance(attendance entities.Stud
 
 	return tx.Commit().Error
 
+}
+
+func (r *instructorsConnection) QuerySupervisedStudents(id uint) ([]dtos.SupervisedStudentSchema, error) {
+	var doc []dtos.SupervisedStudentSchema
+	if err := r.conn.
+		Table("students_entity std").
+		Select("std.student_id, std.first_name, std.surname, std.email, std.nationality, std.dob, std.sex, std.role, std.status, std.access_status, dep.department_id, dep.department_code, dep.name AS department_name, dep.number_of_years, dep.description AS department_description, fac.faculty_id, fac.name AS faculty_name").
+		Joins("JOIN departments_entity dep ON std.department_id = dep.department_id").
+		Joins("JOIN faculties_entity fac ON fac.department_id = std.department_id").
+		Where("std.supervisor_id = ? AND std.is_active", id).
+		Scan(&doc).Error; err != nil {
+		return nil, err
+	}
+	return doc, nil
 }

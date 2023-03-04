@@ -146,3 +146,36 @@ type InstructorEnrollmentsFetchDTO struct {
 	InstructorStatus bool                     `json:"instructor_status"`
 	Lectures         []LecturesEnrollmentInfo `json:"lectures"`
 }
+
+type SupervisedStudentSchema struct {
+	StudentID             uint   `json:"student_id"`
+	FirstName             string `json:"first_name"`
+	Surname               string `json:"surname"`
+	Email                 string `json:"email"`
+	Nationality           string `json:"nationality"`
+	DOB                   string `json:"dob"`
+	Sex                   string `json:"sex"`
+	Role                  string `json:"role"`
+	Status                string `json:"status"`
+	AccessStatus          string `json:"access_status"`
+	DepartmentID          uint   `json:"department_id"`
+	DepartmentCode        string `json:"department_code"`
+	DepartmentName        string `json:"department_name"`
+	NumberOfYears         uint   `json:"number_of_years"`
+	DepartmentDescription string `json:"department_description"`
+	FacultyID             uint   `json:"faculty_id"`
+	FacultyName           string `json:"faculty_name"`
+}
+
+type SupervisedStudentsDTO struct {
+	StudentID    uint   `json:"student_id"`
+	FirstName    string `json:"first_name"`
+	SurName      string `json:"surname"`
+	Email        string `json:"email"`
+	Nationality  string `json:"nationality"`
+	DOB          string `json:"dob"`
+	Sex          string `json:"sex"`
+	Role         string `json:"role"`
+	Status       string `json:"status"`
+	AccessStatus string `json:"access_status"`
+}

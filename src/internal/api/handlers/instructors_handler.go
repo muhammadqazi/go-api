@@ -27,6 +27,7 @@ type InstructorsHandler interface {
 	PostInstructorCourseEnrollment(c *gin.Context)
 	GetInstructorCourseEnrollment(c *gin.Context)
 	PatchStudentAttendance(c *gin.Context)
+	GetSupervisedStudents(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -198,4 +199,22 @@ func (s *instructorsHandler) PatchStudentAttendance(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Student attendance updated successfully"})
+}
+
+func (s *instructorsHandler) GetSupervisedStudents(c *gin.Context) {
+
+	id := c.MustGet("id").(string)
+	supervisorID, _ := strconv.ParseUint(id, 10, 64)
+
+	if doc, err := s.instructorsServices.FetchSupervisedStudents(uint(supervisorID)); err == nil {
+		if len(doc) > 0 {
+			c.JSON(http.StatusOK, gin.H{"status": true, "data": doc})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "No students found"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error fetching students"})
 }
