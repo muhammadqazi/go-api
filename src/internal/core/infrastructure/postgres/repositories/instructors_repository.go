@@ -20,7 +20,7 @@ type InstructorsRepository interface {
 	QueryInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 	UpdateStudentAttendance(entities.StudentAttendanceEntity, dtos.StudentAttendancePatchDTO) error
 	QuerySupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
-	QueryRegisteredStudentsBySupervisorID(uint) ([]entities.StudentEnrollmentsEntity, error)
+	QueryRegisteredStudentsBySupervisorID(uint) ([]dtos.RegisteredStudentsDTO, error)
 }
 
 type instructorsConnection struct {
@@ -237,13 +237,28 @@ func (r *instructorsConnection) QuerySupervisedStudents(id uint) ([]dtos.Supervi
 	return doc, nil
 }
 
-func (r *instructorsConnection) QueryRegisteredStudentsBySupervisorID(id uint) ([]entities.StudentEnrollmentsEntity, error) {
-	var doc []entities.StudentEnrollmentsEntity
+func (r *instructorsConnection) QueryRegisteredStudentsBySupervisorID(id uint) ([]dtos.RegisteredStudentsDTO, error) {
+	var result []dtos.RegisteredStudentsDTO
 	if err := r.conn.
-		Table("student_enrollments_entity").
-		Where("supervisor_id = ? AND is_enrolled", id).
-		Scan(&doc).Error; err != nil {
+		Select(`
+        en.year, 
+        en.semester, 
+        en.is_enrolled, 
+        en.approved_at, 
+        en.declined_at,
+        CONCAT(std.first_name, ' ', std.surname) AS name, 
+        std.student_id, 
+        dep.department_code, 
+        dep.name AS department_name`).
+		Joins(`
+        JOIN students_entity std ON en.student_id = std.student_id
+        JOIN departments_entity dep ON std.department_id = dep.department_id
+        JOIN faculties_entity fac ON fac.department_id = std.department_id`).
+		Where("std.supervisor_id = ? AND en.is_enrolled", 10).
+		Table("student_enrollments_entity en").
+		Scan(&result).Error; err != nil {
 		return nil, err
 	}
-	return doc, nil
+
+	return result, nil
 }

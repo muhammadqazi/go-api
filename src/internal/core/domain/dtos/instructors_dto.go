@@ -179,3 +179,15 @@ type SupervisedStudentsDTO struct {
 	Status       string `json:"status"`
 	AccessStatus string `json:"access_status"`
 }
+
+type RegisteredStudentsDTO struct {
+	Year           int    `json:"year"`
+	Semester       string `json:"semester"`
+	IsEnrolled     bool   `json:"is_enrolled"`
+	ApprovedAt     string `json:"approved_at"`
+	DeclinedAt     string `json:"declined_at"`
+	Name           string `json:"name"`
+	StudentID      uint   `json:"student_id"`
+	DepartmentCode string `json:"department_code"`
+	DepartmentName string `json:"department_name"`
+}
