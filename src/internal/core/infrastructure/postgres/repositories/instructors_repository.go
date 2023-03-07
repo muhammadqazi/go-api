@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
@@ -21,6 +22,7 @@ type InstructorsRepository interface {
 	UpdateStudentAttendance(entities.StudentAttendanceEntity, dtos.StudentAttendancePatchDTO) error
 	QuerySupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
 	QueryRegisteredStudentsBySupervisorID(uint) ([]dtos.RegisteredStudentsDTO, error)
+	InsertCourseAttendanceLog(uint) error
 }
 
 type instructorsConnection struct {
@@ -261,4 +263,138 @@ func (r *instructorsConnection) QueryRegisteredStudentsBySupervisorID(id uint) (
 	}
 
 	return result, nil
+}
+
+func (r *instructorsConnection) InsertCourseAttendanceLog(id uint) error {
+
+	tx := r.conn.Begin()
+
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
+
+	var result []dtos.CourseLogSchema
+	if err := tx.
+		Table("student_enrollments_entity en").
+		Joins("JOIN student_course_request_entity req ON req.student_enrollment_id = en.student_enrollment_id").
+		Joins("JOIN courses_entity co ON co.course_id = req.course_id").
+		Joins("JOIN course_schedule_entity sch ON sch.course_id = req.course_id").
+		Select("en.student_id, co.practical AS practical_hours, co.theoretical AS theoretical_hours, co.course_id, co.credits, sch.day, sch.start_time, sch.end_time, sch.is_theoretical").
+		Where("en.student_enrollment_id = ? AND en.is_enrolled AND en.semester = ? AND en.year = ?", id, semester, year).
+		Scan(&result).
+		Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	attendance := entities.StudentAttendanceEntity{
+		StudentID: result[0].StudentID,
+		Year:      year,
+		Semester:  semester,
+	}
+
+	var err error
+	existingStudent := entities.StudentAttendanceEntity{}
+	if err = tx.Where("student_id = ? AND semester = ? AND year = ?", attendance.StudentID, semester, year).First(&existingStudent).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		tx.Rollback()
+		return err
+	}
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		if err := tx.Create(&attendance).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+		existingStudent = attendance
+	}
+
+	var attendanceLogs []entities.CourseAttendanceEntity
+
+	for _, schedule := range result {
+		practicalHours := schedule.PracticalHours
+		theoreticalHours := schedule.TheoreticalHours
+
+		totalHours := practicalHours + theoreticalHours
+		totalWeeks := totalHours / schedule.Credits
+
+		//theoreticalPerWeek := theoreticalHours / totalWeeks
+		//practicalPerWeek := practicalHours / totalWeeks
+
+		semesterStartDate := time.Date(2023, 3, 6, 0, 0, 0, 0, time.UTC)
+		semesterStartDay := semesterStartDate.Weekday()
+
+		if schedule.Day != semesterStartDay.String() {
+			scheduleWeekday := time.Weekday(0)
+			for i := 0; i < 7; i++ {
+				if time.Weekday(i).String() == schedule.Day {
+					scheduleWeekday = time.Weekday(i)
+					break
+				}
+			}
+
+			diff := int(scheduleWeekday - semesterStartDay)
+			if diff < 0 {
+				diff += 7
+			}
+
+			semesterStartDate = semesterStartDate.AddDate(0, 0, diff)
+		}
+
+		for i := 0; i < totalWeeks; i++ {
+
+			/*
+				Move this line inside the lectureSlots loop
+				semesterStartDate := time.Date(2023, 3, 6, 0, 0, 0, 0, time.UTC)
+				semesterStartDay := semesterStartDate.Weekday()
+				schedule.StartTime and schedule.EndTime are in string format
+				divide them into one hour intervals and insert them into the database
+				Convert start and end time strings to time.Time objects
+			*/
+
+			startTime, _ := time.Parse("15:04", schedule.StartTime)
+			endTime, _ := time.Parse("15:04", schedule.EndTime)
+
+			/* Initialize a slice to store the hourly timestamps */
+			var timestamps []time.Time
+
+			/* Initialize a slice to store the lecture slots */
+			var lectureSlots [][2]string
+
+			/* Iterate over hours from start to end time */
+			for t := startTime; t.Before(endTime); t = t.Add(time.Hour) {
+				/* Add the current hour to the timestamp slice */
+				timestamps = append(timestamps, t)
+				/* Add one hour to the current hour to get the end time of the time slot */
+				endOfSlot := t.Add(time.Hour)
+				/* If the end of the time slot is after the lecture end time, set it to the lecture end time */
+				if endOfSlot.After(endTime) {
+					endOfSlot = endTime
+				}
+				/* Append the start and end times of the time slot to the lectureSlots array */
+				lectureSlots = append(lectureSlots, [2]string{t.Format("15:04"), endOfSlot.Format("15:04")})
+			}
+
+			for _, slot := range lectureSlots {
+				attendanceLogs = append(attendanceLogs, entities.CourseAttendanceEntity{
+					StudentAttendanceID: existingStudent.StudentAttendanceID,
+					Day:                 schedule.Day,
+					StartTime:           slot[0],
+					EndTime:             slot[1],
+					IsAttended:          false,
+					LectureTime:         semesterStartDate,
+					CourseID:            schedule.CourseID,
+					IsTheoretical:       schedule.IsTheoretical,
+				})
+			}
+			semesterStartDate = semesterStartDate.AddDate(0, 0, 7)
+		}
+	}
+
+	for _, log := range attendanceLogs {
+		if err := tx.Create(&log).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	return tx.Commit().Error
 }

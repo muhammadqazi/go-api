@@ -90,12 +90,12 @@ VALUES
     ( 'Philosophy of Computing', 'CS439', 'Introduction to the philosophy of computing', 4, 8, 60, 20, current_timestamp, true),
     ( 'Social Implications of Computing', 'CS440', 'Study of the social implications of computing', 3, 6, 45, 15, current_timestamp, true);
 
-INSERT INTO course_schedule_entity (created_at, day, start_time, end_time, lecture_venue, course_id)
-VALUES (current_timestamp, 'Monday', '09:00', '11:00', 'Room 101', 6),
-       (current_timestamp, 'Tuesday', '13:00', '15:00', 'Room 102', 7),
-       (current_timestamp, 'Wednesday', '10:00', '12:00', 'Room 103', 8),
-       (current_timestamp, 'Thursday', '11:00', '13:00', 'Room 104', 9),
-       (current_timestamp, 'Friday', '14:00', '16:00', 'Room 105', 10);
+INSERT INTO course_schedule_entity (created_at, day, start_time, end_time, lecture_venue, course_id,is_theoretical)
+VALUES (current_timestamp, 'Monday', '09:00', '11:00', 'Room 101', 6, false),
+       (current_timestamp, 'Tuesday', '13:00', '15:00', 'Room 102', 7,false),
+       (current_timestamp, 'Wednesday', '10:00', '12:00', 'Room 103', 8,true),
+       (current_timestamp, 'Thursday', '11:00', '13:00', 'Room 104', 9,true),
+       (current_timestamp, 'Friday', '14:00', '16:00', 'Room 105', 10,false);
 
 INSERT INTO curriculum_entity (department_id, created_at, is_active)
 VALUES

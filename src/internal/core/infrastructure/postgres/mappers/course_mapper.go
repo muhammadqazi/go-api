@@ -2,9 +2,10 @@ package mappers
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
-	"time"
 )
 
 type CourseMapper interface {
@@ -52,11 +53,12 @@ func (m *courseMapper) CourseScheduleMapper(schedule dtos.CourseSchedule, id uin
 	}
 
 	return entities.CourseScheduleEntity{
-		CourseID:     id,
-		Day:          schedule.Day,
-		StartTime:    schedule.StartTime,
-		EndTime:      schedule.EndTime,
-		LectureVenue: schedule.LectureVenue,
+		CourseID:      id,
+		Day:           schedule.Day,
+		StartTime:     schedule.StartTime,
+		EndTime:       schedule.EndTime,
+		LectureVenue:  schedule.LectureVenue,
+		IsTheoretical: *schedule.IsTheoretical,
 	}, nil
 }
 
@@ -66,10 +68,11 @@ func (m *courseMapper) CourseFetchByCodeMapper(courses []dtos.CourseFetchByCodeS
 	for _, t := range courses {
 		if course, ok := coursesMap[t.Code]; ok {
 			schedule := dtos.CourseSchedule{
-				Day:          t.Day,
-				StartTime:    t.StartTime,
-				EndTime:      t.EndTime,
-				LectureVenue: t.LectureVenue,
+				Day:           t.Day,
+				StartTime:     t.StartTime,
+				EndTime:       t.EndTime,
+				LectureVenue:  t.LectureVenue,
+				IsTheoretical: &t.IsTheoretical,
 			}
 
 			course.CourseSchedule = append(course.CourseSchedule, schedule)
@@ -86,10 +89,11 @@ func (m *courseMapper) CourseFetchByCodeMapper(courses []dtos.CourseFetchByCodeS
 				IsActive:    t.IsActive,
 				CourseSchedule: []dtos.CourseSchedule{
 					{
-						Day:          t.Day,
-						StartTime:    t.StartTime,
-						EndTime:      t.EndTime,
-						LectureVenue: t.LectureVenue,
+						Day:           t.Day,
+						StartTime:     t.StartTime,
+						EndTime:       t.EndTime,
+						LectureVenue:  t.LectureVenue,
+						IsTheoretical: &t.IsTheoretical,
 					},
 				},
 			}

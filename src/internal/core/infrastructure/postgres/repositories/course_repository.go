@@ -1,11 +1,12 @@
 package repositories
 
 import (
+	"time"
+
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
 	"gorm.io/gorm"
-	"time"
 )
 
 type CourseRepository interface {
@@ -67,6 +68,7 @@ func (r *courseConnection) QueryCourseByCourseCode(code string) ([]dtos.CourseFe
         co.practical,
 		co.is_active,
         sch.day,
+		sch.is_theoretical,
         sch.start_time,
         sch.end_time,
         sch.lecture_venue`).

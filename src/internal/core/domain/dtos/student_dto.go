@@ -71,16 +71,18 @@ type TimetableSchema struct {
 	EndTime             string `gorm:"column:end_time"`
 	Credits             int    `gorm:"column:credits"`
 	LectureVenue        string `gorm:"column:lecture_venue"`
+	IsTheoretical       bool   `gorm:"column:is_theoretical"`
 }
 
 type LectureInfo struct {
-	CourseID     uint   `json:"course_id"`
-	CourseCode   string `json:"course_code"`
-	CourseName   string `json:"course_name"`
-	StartTime    string `json:"start_time"`
-	EndTime      string `json:"end_time"`
-	LectureVenue string `json:"lecture_venue"`
-	Credits      int    `json:"credits"`
+	CourseID      uint   `json:"course_id"`
+	CourseCode    string `json:"course_code"`
+	CourseName    string `json:"course_name"`
+	StartTime     string `json:"start_time"`
+	EndTime       string `json:"end_time"`
+	LectureVenue  string `json:"lecture_venue"`
+	Credits       int    `json:"credits"`
+	IsTheoretical bool   `json:"is_theoretical"`
 }
 
 type TimeTableInfo struct {

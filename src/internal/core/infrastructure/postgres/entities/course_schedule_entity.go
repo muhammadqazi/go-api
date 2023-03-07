@@ -8,6 +8,7 @@ type CourseScheduleEntity struct {
 	StartTime        string `gorm:"type:varchar(255);not null" json:"start_time"`
 	EndTime          string `gorm:"type:varchar(255);not null" json:"end_time"`
 	LectureVenue     string `gorm:"type:varchar(255);not null" json:"room"`
+	IsTheoretical    bool   `gorm:"not null" json:"is_theoretical"`
 
 	CourseID uint `gorm:"not null" json:"course_id"`
 }

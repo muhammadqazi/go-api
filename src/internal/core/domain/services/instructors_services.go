@@ -18,6 +18,7 @@ type InstructorsServices interface {
 	ModifyStudentAttendance(dto dtos.StudentAttendancePatchDTO) error
 	FetchSupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
 	FetchRegisteredStudentsBySupervisorID(uint) ([]dtos.RegisteredStudentsDTO, error)
+	CreateCourseAttendanceLog(uint) error
 }
 
 type instructorsServices struct {
@@ -73,4 +74,8 @@ func (s *instructorsServices) FetchSupervisedStudents(id uint) ([]dtos.Supervise
 
 func (s *instructorsServices) FetchRegisteredStudentsBySupervisorID(id uint) ([]dtos.RegisteredStudentsDTO, error) {
 	return s.instructorsRepository.QueryRegisteredStudentsBySupervisorID(id)
+}
+
+func (s *instructorsServices) CreateCourseAttendanceLog(id uint) error {
+	return s.instructorsRepository.InsertCourseAttendanceLog(id)
 }

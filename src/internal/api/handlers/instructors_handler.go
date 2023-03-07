@@ -150,6 +150,13 @@ func (s *instructorsHandler) PatchTermEnrollmentRequests(c *gin.Context) {
 		return
 	}
 
+	if *request.IsDeclined {
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Enrollment request declined successfully"})
+		return
+	}
+
+	s.instructorsServices.CreateCourseAttendanceLog(request.EnrollmentID)
+
 	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Enrollment request approved successfully"})
 }
 

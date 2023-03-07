@@ -124,13 +124,14 @@ func (m *studentMapper) StudentTimetableMapper(timetable []dtos.TimetableSchema)
 
 	for _, t := range timetable {
 		lecture := dtos.LectureInfo{
-			CourseID:     t.CourseID,
-			CourseCode:   t.Code,
-			CourseName:   t.Name,
-			StartTime:    t.StartTime,
-			EndTime:      t.EndTime,
-			LectureVenue: t.LectureVenue,
-			Credits:      t.Credits,
+			CourseID:      t.CourseID,
+			CourseCode:    t.Code,
+			CourseName:    t.Name,
+			StartTime:     t.StartTime,
+			EndTime:       t.EndTime,
+			LectureVenue:  t.LectureVenue,
+			Credits:       t.Credits,
+			IsTheoretical: t.IsTheoretical,
 		}
 
 		dayLectures, ok := timeTableMap[t.Day]
