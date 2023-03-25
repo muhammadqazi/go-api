@@ -15,7 +15,7 @@ type StudentServices interface {
 	CreateTermRegistration(dtos.TermRegistrationDTO, uint) error
 	FetchStudentTimetable(uint) ([]dtos.TimetableSchema, error)
 	FetchStudentExamSchedule(uint) ([]dtos.ExamScheduleSchema, error)
-	FetchStudentAttendance(uint) ([]dtos.StudentAttendanceSchema, error)
+	FetchStudentCoursesAttendance(uint) ([]dtos.StudentAttendanceSchema, error)
 	FetchStudentEnrollmentStatus(uint) (bool, error)
 	FetchIsEnrollmentExists(uint) (bool, error)
 	ModifyStudentPassword(uint, string) error
@@ -89,8 +89,8 @@ func (s *studentServices) FetchStudentExamSchedule(sid uint) ([]dtos.ExamSchedul
 	return s.studentRepository.QueryExamScheduleByStudentID(sid)
 }
 
-func (s *studentServices) FetchStudentAttendance(sid uint) ([]dtos.StudentAttendanceSchema, error) {
-	return s.studentRepository.QueryStudentAttendanceByStudentID(sid)
+func (s *studentServices) FetchStudentCoursesAttendance(sid uint) ([]dtos.StudentAttendanceSchema, error) {
+	return s.studentRepository.QueryStudentCourseAttendanceByStudentID(sid)
 }
 
 func (s *studentServices) ModifyStudentPassword(sid uint, password string) error {

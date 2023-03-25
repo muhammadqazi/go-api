@@ -30,7 +30,7 @@ type StudentHandler interface {
 	PostTermRegistration(c *gin.Context)
 	GetStudentTimetable(c *gin.Context)
 	GetStudentExamSchedule(c *gin.Context)
-	GetStudentAttendance(c *gin.Context)
+	GetStudentCoursesAttendance(c *gin.Context)
 	PatchResetPassword(c *gin.Context)
 	PostForgotPasswordRequest(c *gin.Context)
 	PutForgotPasswordCode(c *gin.Context)
@@ -228,15 +228,15 @@ func (s *studentHandler) GetStudentExamSchedule(c *gin.Context) {
 	c.JSON(http.StatusNotFound, gin.H{"status": false, "message": "No exam schedule found"})
 }
 
-func (s *studentHandler) GetStudentAttendance(c *gin.Context) {
+func (s *studentHandler) GetStudentCoursesAttendance(c *gin.Context) {
 
 	id := c.MustGet("id").(string)
 	sid, _ := strconv.ParseUint(id, 10, 64)
 
-	if doc, err := s.studentServices.FetchStudentAttendance(uint(sid)); err == nil {
+	if doc, err := s.studentServices.FetchStudentCoursesAttendance(uint(sid)); err == nil {
 
 		if len(doc) > 0 {
-			mappedData := s.studentMapper.StudentAttendanceFetchMapper(doc)
+			mappedData := s.studentMapper.StudentCourseAttendanceFetchMapper(doc)
 			c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
 			return
 		}

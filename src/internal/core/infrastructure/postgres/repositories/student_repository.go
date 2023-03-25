@@ -16,7 +16,7 @@ type StudentRepository interface {
 	InsertStudentEnrollment(entities.StudentEnrollmentsEntity, []uint) error
 	QueryTimetableByStudentID(uint) ([]dtos.TimetableSchema, error)
 	QueryExamScheduleByStudentID(uint) ([]dtos.ExamScheduleSchema, error)
-	QueryStudentAttendanceByStudentID(uint) ([]dtos.StudentAttendanceSchema, error)
+	QueryStudentCourseAttendanceByStudentID(uint) ([]dtos.StudentAttendanceSchema, error)
 	QueryStudentEnrollmentStatus(uint) (bool, error)
 	QueryIsEnrollmentExists(uint) (bool, error)
 	UpdateStudentPassword(uint, string) error
@@ -206,7 +206,7 @@ func (r *studentConnection) QueryExamScheduleByStudentID(sid uint) ([]dtos.ExamS
 	return examSchedule, nil
 }
 
-func (r *studentConnection) QueryStudentAttendanceByStudentID(sid uint) ([]dtos.StudentAttendanceSchema, error) {
+func (r *studentConnection) QueryStudentCourseAttendanceByStudentID(sid uint) ([]dtos.StudentAttendanceSchema, error) {
 
 	var studentAttendance []dtos.StudentAttendanceSchema
 
@@ -215,21 +215,22 @@ func (r *studentConnection) QueryStudentAttendanceByStudentID(sid uint) ([]dtos.
 
 	if err := r.conn.
 		Model(&entities.StudentAttendanceEntity{}).
-		Table("student_attendance_entity st").
+		Table("student_attendance_entity sa").
 		Select(`
-        st.student_attendance_id,
-        st.year,
-        st.semester,
-        ca.course_attendance_id,
-        ca.is_attended,
-        co.course_id,
-        co.code,
-        co.name,
-        co.credits`).
+        co.lecture_time ,  
+		co.day , 
+		co.start_time, 
+		co.end_time, 
+		co.is_attended, 
+		co.is_theoretical, 
+		cu.code AS course_code , 
+		cu.name AS course_name , 
+		cu.credits
+		`).
 		Joins(`
-        JOIN course_attendance_entity ca ON st.student_attendance_id = ca.student_attendance_id
-        JOIN courses_entity co ON co.course_id = ca.course_id`).
-		Where("st.student_id = ? AND st.year = ? AND st.semester = ?", sid, year, semester).
+        JOIN course_attendance_entity co ON co.student_attendance_id = sa.student_attendance_id
+        JOIN courses_entity cu ON cu.course_id = co.course_id`).
+		Where("sa.student_id = ? AND sa.year = ? AND sa.semester = ?", sid, year, semester).
 		Scan(&studentAttendance).Error; err != nil {
 		return nil, err
 	}

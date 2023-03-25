@@ -40,7 +40,7 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	student.POST("/term/registration", h.PostTermRegistration)
 	student.GET("/timetable", h.GetStudentTimetable)
 	student.GET("/exam", h.GetStudentExamSchedule)
-	student.GET("/attendance", h.GetStudentAttendance)
+	student.GET("/attendance", h.GetStudentCoursesAttendance)
 	student.PATCH("/reset-password", h.PatchResetPassword)
 
 }

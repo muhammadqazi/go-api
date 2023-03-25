@@ -109,32 +109,36 @@ type StudentAttendancePatchDTO struct {
 /* Student Attendance Fetch */
 
 type StudentAttendanceSchema struct {
-	StudentAttendanceID uint   `gorm:"column:student_attendance_id"`
-	Year                int    `gorm:"column:year"`
-	Semester            string `gorm:"column:semester"`
-	CourseAttendanceID  uint   `gorm:"column:course_attendance_id"`
-	IsAttended          bool   `gorm:"column:is_attended"`
-	CourseID            uint   `gorm:"column:course_id"`
-	Code                string `gorm:"column:code"`
-	Name                string `gorm:"column:name"`
-	Credits             int    `gorm:"column:credits"`
-}
-
-type CourseAttendanceInfo struct {
-	CourseID             uint   `json:"course_id"`
-	CourseCode           string `json:"course_code"`
-	CourseName           string `json:"course_name"`
-	Credits              int    `json:"credits"`
-	TotalLectures        int    `json:"total_lectures"`
-	AttendedLectures     int    `json:"attended_lectures"`
-	AbsentLectures       int    `json:"absent_lectures"`
-	PercentageAttendance int    `json:"percentage_attendance"`
+	LectureTime   string `gorm:"column:lecture_time"`
+	Day           string `gorm:"column:day"`
+	StartTime     string `gorm:"column:start_time"`
+	EndTime       string `gorm:"column:end_time"`
+	IsAttended    bool   `gorm:"column:is_attended"`
+	IsTheoretical bool   `gorm:"column:is_theoretical"`
+	CourseCode    string `gorm:"column:course_code"`
+	CourseName    string `gorm:"column:course_name"`
+	Credits       int    `gorm:"column:credits"`
 }
 
 type StudentAttendanceFetchDTO struct {
-	Year       int                    `json:"year"`
-	Semester   string                 `json:"semester"`
-	Attendance []CourseAttendanceInfo `json:"attendance"`
+	LectureTIme                          string  `json:"lecture_time"`
+	Day                                  string  `json:"day"`
+	StartTime                            string  `json:"start_time"`
+	EndTime                              string  `json:"end_time"`
+	IsAttended                           bool    `json:"is_attended"`
+	IsTheoretical                        bool    `json:"is_theoretical"`
+	CourseCode                           string  `json:"course_code"`
+	CourseName                           string  `json:"course_name"`
+	Credits                              int     `json:"credits"`
+	TotalLectures                        int     `json:"total_lectures"`
+	AttendedLectures                     int     `json:"attended_lectures"`
+	TotalTheoreticalLectures             int     `json:"total_theoretical_lectures"`
+	AttendedTheoreticalLectures          int     `json:"attended_theoretical_lectures"`
+	TotalPracticalLectures               int     `json:"total_practical_lectures"`
+	AttendedPracticalLectures            int     `json:"attended_practical_lectures"`
+	TotalLectureAttendancePercentage     float64 `json:"total_lecture_attendance_percentage"`
+	TotalTheoreticalAttendancePercentage float64 `json:"total_theoretical_attendance_percentage"`
+	TotalPracticalAttendancePercentage   float64 `json:"total_practical_attendance_percentage"`
 }
 
 /* Reset Password */

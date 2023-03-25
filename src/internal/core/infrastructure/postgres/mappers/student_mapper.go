@@ -17,7 +17,7 @@ type StudentMapper interface {
 	StudentCourseRequestMapper(uint, uint) entities.StudentCourseRequestEntity
 	StudentTimetableMapper([]dtos.TimetableSchema) dtos.TimetableFetchDTO
 	StudentExamScheduleMapper([]dtos.ExamScheduleSchema) dtos.ExamScheduleFetchDTO
-	StudentAttendanceFetchMapper([]dtos.StudentAttendanceSchema) dtos.StudentAttendanceFetchDTO
+	StudentCourseAttendanceFetchMapper([]dtos.StudentAttendanceSchema) []dtos.StudentAttendanceFetchDTO
 	ForgotPasswordRequestMapper(dtos.ForgotPasswordRequestDTO) entities.StudentPasswordResetsEntity
 }
 
@@ -165,52 +165,54 @@ func (m *studentMapper) StudentExamScheduleMapper(examSchedule []dtos.ExamSchedu
 	}
 }
 
-func (m *studentMapper) StudentAttendanceFetchMapper(attendance []dtos.StudentAttendanceSchema) dtos.StudentAttendanceFetchDTO {
-	// Initialize the result object
-	result := dtos.StudentAttendanceFetchDTO{
-		Attendance: make([]dtos.CourseAttendanceInfo, 0, len(attendance)),
-	}
+func (m *studentMapper) StudentCourseAttendanceFetchMapper(attendance []dtos.StudentAttendanceSchema) []dtos.StudentAttendanceFetchDTO {
+	result := make([]dtos.StudentAttendanceFetchDTO, 0, len(attendance))
 
-	// Map the attendance records to CourseAttendanceInfo objects
-	courseAttendanceMap := make(map[uint]*dtos.CourseAttendanceInfo)
+	// Group attendance records by course code
+	groups := make(map[string][]dtos.StudentAttendanceSchema)
 	for _, a := range attendance {
-		courseID := a.CourseID
-		if info, ok := courseAttendanceMap[courseID]; ok {
-			// Update the existing CourseAttendanceInfo object
-			info.TotalLectures++
-			if a.IsAttended {
-				info.AttendedLectures++
-			} else {
-				info.AbsentLectures++
-			}
-		} else {
-			// Create a new CourseAttendanceInfo object
-			info := &dtos.CourseAttendanceInfo{
-				CourseID:      courseID,
-				CourseCode:    a.Code,
-				CourseName:    a.Name,
-				Credits:       a.Credits,
-				TotalLectures: 1,
-			}
-			if a.IsAttended {
-				info.AttendedLectures = 1
-			} else {
-				info.AbsentLectures = 1
-			}
-			courseAttendanceMap[courseID] = info
+		groups[a.CourseCode] = append(groups[a.CourseCode], a)
+	}
+
+	// Calculate attendance statistics for each course
+	for code, records := range groups {
+		info := dtos.StudentAttendanceFetchDTO{
+			CourseCode:  code,
+			CourseName:  records[0].CourseName,
+			Credits:     records[0].Credits,
+			LectureTIme: records[0].LectureTime,
+			StartTime:   records[0].StartTime,
+			EndTime:     records[0].EndTime,
+			Day:         records[0].Day,
 		}
-	}
+		for _, r := range records {
+			info.TotalLectures++
+			if r.IsAttended {
+				info.AttendedLectures++
+			}
+			if r.IsTheoretical {
+				info.TotalTheoreticalLectures++
+				if r.IsAttended {
+					info.AttendedTheoreticalLectures++
+				}
+			} else {
+				info.TotalPracticalLectures++
+				if r.IsAttended {
+					info.AttendedPracticalLectures++
+				}
+			}
+		}
 
-	// Calculate the attendance percentage for each course
-	for _, info := range courseAttendanceMap {
-		info.PercentageAttendance = int(float64(info.AttendedLectures) / float64(info.TotalLectures) * 100)
-		result.Attendance = append(result.Attendance, *info)
-	}
-
-	// Set the year and semester fields in the result object
-	if len(attendance) > 0 {
-		result.Year = attendance[0].Year
-		result.Semester = attendance[0].Semester
+		if info.AttendedLectures == 0 || info.AttendedPracticalLectures == 0 || info.AttendedTheoreticalLectures == 0 {
+			info.TotalLectureAttendancePercentage = 0
+			info.TotalTheoreticalAttendancePercentage = 0
+			info.TotalPracticalAttendancePercentage = 0
+		} else {
+			info.TotalLectureAttendancePercentage = float64(info.AttendedLectures / info.TotalLectures * 100)
+			info.TotalTheoreticalAttendancePercentage = float64(info.AttendedTheoreticalLectures / info.TotalTheoreticalLectures * 100)
+			info.TotalPracticalAttendancePercentage = float64(info.AttendedPracticalLectures / info.TotalPracticalLectures * 100)
+		}
+		result = append(result, info)
 	}
 
 	return result
