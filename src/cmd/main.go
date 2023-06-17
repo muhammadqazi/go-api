@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
 	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
@@ -24,7 +25,8 @@ func main() {
 
 	config, err := core.LoadConfig()
 	if err != nil {
-		panic(err)
+		errfmt := "Error loading config: %s"
+		panic(fmt.Errorf(errfmt, err))
 	}
 
 	/*
