@@ -1,26 +1,21 @@
-# Base image
-FROM golang:1.16-alpine
+# Use the official Golang image as the base
+FROM golang:1.17
 
-# Set the working directory inside the container
+# Set the working directory inside the Docker image
 WORKDIR /app
 
-# Copy the Go modules files
+# Copy the Go project files
 COPY go.mod go.sum ./
-
-# Download the Go module dependencies
 RUN go mod download
 
-# Copy the source code
-COPY . .
+# Copy the rest of the project files
+COPY . ./
 
-# Build the application
-RUN go build -o /app/main ./src/cmd/main.go
+# Build the Go project using the Makefile
+RUN make server
 
-# Expose the port your application listens on
+# Expose the necessary port(s) if your application requires it
 EXPOSE 9000
 
-# Run the database seed script
-RUN chmod +x ./src/scripts/seed-db.sh
-RUN ./src/scripts/seed-db.sh
-
-RUN make server
+# Define the default command to run when the container starts
+CMD ["make", "server"]
