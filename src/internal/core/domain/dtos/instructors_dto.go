@@ -16,7 +16,7 @@ type InstructorCreateDTO struct {
 	LastName     string `json:"last_name" validate:"required,min=3,max=255"`
 	PhoneNumber  string `json:"phone_number" validate:"required,min=3,max=255"`
 	Email        string `json:"email" validate:"required,email"`
-	Password     string `json:"password" validate:"required,min=8,max=255"`
+	Password     string `json:"password"`
 	DOB          string `json:"dob" validate:"required,min=3,max=255"`
 	PlaceOfBirth string `json:"place_of_birth" validate:"required,min=3,max=255"`
 	Sex          string `json:"sex" validate:"required"`

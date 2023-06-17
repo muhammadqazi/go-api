@@ -13,8 +13,9 @@ type DepartmentsEntity struct {
 	PhoneNumber      string   `gorm:"type:varchar(50);not null" json:"phone_number"`
 	DeanEmail        string   `gorm:"type:varchar(50);not null" json:"dean_email"`
 	DeanPhone        string   `gorm:"type:varchar(50);not null" json:"dean_phone"`
-	OfferedSemesters []string `gorm:"type:varchar(50);not null" json:"offered_semesters"`
+	OfferedSemesters []string `gorm:"type:varchar(50);not null" json:"offered_semesters"` // TODO
 	NumberOfYears    int      `gorm:"not null" json:"number_of_years"`
+	// TODO : department_id needs to be added to the database
 
 	HeadID uint `gorm:"column:head_id" json:"head_id"`
 

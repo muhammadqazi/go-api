@@ -5,7 +5,7 @@ type FacultiesEntity struct {
 
 	FacultyID   uint   `gorm:"primaryKey;not null;uniqueIndex" json:"faculty_id"`
 	Name        string `gorm:"type:varchar(50);not null" json:"name"`
-	Code        string `gorm:"type:varchar(50);not null;uniqueIndex" json:"code"`
+	Code        string `gorm:"type:varchar(50);not null;uniqueIndex" json:"code"` // TODO
 	Description string `gorm:"type:varchar(255);not null" json:"description"`
 	Dean        string `gorm:"type:varchar(50);not null" json:"dean"`
 	ViceDean    string `gorm:"type:varchar(50);not null" json:"vice_dean"`

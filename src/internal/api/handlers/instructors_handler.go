@@ -60,6 +60,9 @@ func (s *instructorsHandler) PostInstructors(c *gin.Context) {
 		return
 	}
 
+	oneTimePassword := security.GeneratePassword(10, 10)
+	instructor.Password = oneTimePassword
+
 	_, err := s.instructorsServices.FetchInstructorByEmail(instructor.Email)
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Email already associated with another instructor"})
@@ -77,7 +80,7 @@ func (s *instructorsHandler) PostInstructors(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Instructor created successfully"})
+	c.JSON(http.StatusCreated, gin.H{"status": true, "message": "Instructor created successfully", "otp": oneTimePassword})
 }
 
 func (s *instructorsHandler) PostSignIn(c *gin.Context) {
@@ -102,9 +105,19 @@ func (s *instructorsHandler) PostSignIn(c *gin.Context) {
 			return
 		}
 
+		if !doc.IsVerified {
+			c.JSON(http.StatusOK, gin.H{
+				"token":          token,
+				"force_password": true,
+				"expires_in":     60,
+			})
+			return
+		}
+
 		c.JSON(http.StatusOK, gin.H{
-			"token":      token,
-			"expires_in": 60,
+			"token":          token,
+			"force_password": false,
+			"expires_in":     60,
 		})
 		return
 	}

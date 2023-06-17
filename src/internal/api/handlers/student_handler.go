@@ -135,7 +135,11 @@ func (s *studentHandler) PostSignIn(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
 			"token":      token,
-			"expires_in": 60,
+			"role":       doc.Role,
+			"student_id": doc.StudentID,
+			"email":      doc.Email,
+			"first_name": doc.FirstName,
+			"last_name":  doc.Surname,
 		})
 		return
 	}

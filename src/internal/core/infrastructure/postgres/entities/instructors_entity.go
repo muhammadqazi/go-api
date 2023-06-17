@@ -14,6 +14,7 @@ type InstructorsEntity struct {
 	Sex          string `gorm:"type:varchar(255);not null" json:"sex"`
 	Nationality  string `gorm:"type:varchar(255);not null" json:"nationality"`
 	Role         string `gorm:"type:varchar(255);not null" json:"role"`
+	IsVerified   bool   `gorm:"type:boolean;not null;default:false" json:"is_verified"`
 	// Office       string `gorm:"type:varchar(255);not null" json:"office"`
 	// OfficeLine  string `gorm:"type:varchar(255);not null" json:"office_line"`
 	// OfficeHours string `gorm:"type:varchar(255);not null" json:"office_hours"`

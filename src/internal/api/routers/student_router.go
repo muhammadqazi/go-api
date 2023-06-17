@@ -32,12 +32,11 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	admin.Use(checkRoleForCreate)
 
 	admin.POST("/create", h.PostStudent)
-	admin.GET("/:id", h.GetStudentByID)
 
 	/* Student with Role 'student' */
 	checkRoleForStudent := middleware.RolesMiddleware(allowedRolesForStudent)
 	student.Use(checkRoleForStudent)
-
+	student.GET("/:id", h.GetStudentByID)
 	student.POST("/term/registration", h.PostTermRegistration)
 	student.GET("/timetable", h.GetStudentTimetable)
 	student.GET("/exam", h.GetStudentExamSchedule)
