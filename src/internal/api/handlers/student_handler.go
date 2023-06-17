@@ -35,6 +35,7 @@ type StudentHandler interface {
 	PostForgotPasswordRequest(c *gin.Context)
 	PutForgotPasswordCode(c *gin.Context)
 	PatchNewPassword(c *gin.Context)
+	TestApi(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -59,6 +60,10 @@ func NewStudentsHandler(service services.StudentServices, account services.Accou
 		jwtService:      jwtService,
 		validator:       v,
 	}
+}
+
+func (s *studentHandler) TestApi(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"status": true, "message": "API is working"})
 }
 
 func (s *studentHandler) PostStudent(c *gin.Context) {

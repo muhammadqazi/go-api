@@ -14,6 +14,7 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	student := r.Group("/student")
 	admin := r.Group("/student")
 
+	student.GET("/test", h.TestApi)
 	student.POST("/login", h.PostSignIn)
 	student.POST("/forgot-password", h.PostForgotPasswordRequest)
 	student.PUT("/forgot-password", h.PutForgotPasswordCode)
