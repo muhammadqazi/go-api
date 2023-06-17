@@ -1,22 +1,26 @@
-# Use an official Golang runtime as the base image
-FROM golang:1.16 as build
+# Base image
+FROM golang:1.16-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Go module files and download dependencies
+# Copy the Go modules files
 COPY go.mod go.sum ./
+
+# Download the Go module dependencies
 RUN go mod download
 
-# Copy the entire project
+# Copy the source code
 COPY . .
 
-# Build the Go app
-RUN go build -o out ./src/cmd
+# Build the application
+RUN go build -o /app/main ./src/cmd/main.go
 
-# Final image
-FROM gcr.io/distroless/base
-COPY --from=build /app/out /
+# Expose the port your application listens on
+EXPOSE 9000
 
-# Set the entrypoint
-ENTRYPOINT ["/out"]
+# Run the database seed script
+RUN chmod +x ./src/scripts/seed-db.sh
+RUN ./src/scripts/seed-db.sh
+
+RUN make server
