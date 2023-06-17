@@ -1,0 +1,14 @@
+{
+  "ENVIRONMENT": "development",
+  "DB_URL": "postgres://postgres:password@localhost:5432/sis",
+  "PORT": ":9000",
+  "GIN_MODE": "debug",
+  "JWT_SECRET": "ASLJKDF34swdnj234DJKF23MASD1W2sf23kSDSW",
+  "RESET_PASSWORD_JWT_SECRET": "ASLJKDF34swdnj234DJKF23MASD1W2sf23kSDSW",
+  "JWT_ALGORITHM": "HS256",
+  "RESET_PASSWORD_JWT_ALGORITHM": "HS384",
+  "POSTGRES_CONTAINER_NAME": "sis_postgres",
+  "POSTGRES_USER": "postgres",
+  "POSTGRES_PASSWORD": "password",
+  "POSTGRES_DB": "sis"
+}
