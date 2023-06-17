@@ -3,12 +3,133 @@
 		"_postman_id": "6f2e6fbb-87ce-4889-aea1-d1d20801f682",
 		"name": "StudentInformationSystem-SIS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16307097"
+		"_exporter_id": "16307097",
+		"_collection_link": "https://campushq.postman.co/workspace/Personal-Workspace~e7776c75-59e7-4377-8da8-5e774fc354d8/collection/16307097-6f2e6fbb-87ce-4889-aea1-d1d20801f682?action=share&creator=16307097&source=collection_link"
 	},
 	"item": [
 		{
 			"name": "Students",
 			"item": [
+				{
+					"name": "Forgot Password",
+					"item": [
+						{
+							"name": "Forgot Password Request",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"let token = jsonData.token;",
+											"",
+											"pm.environment.set(\"reset_token\", token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"student_id\": 21906778\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/student/forgot-password",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"student",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forgot Password Code",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{reset_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\" : 970058\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/student/forgot-password",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"student",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{reset_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"rootroot\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/student/forgot-password",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"student",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "Create",
 					"request": {
@@ -26,7 +147,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Admin\",\n    \"surname\": \"Admin\",\n    \"email\": \"admin2@admin.com\",\n    \"nationality\": \"US\",\n    \"dob\": \"2000-06-11\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"password\": \"root1234\",\n    \"role\" : \"student\",\n    \"scholarship\" : 50,\n    \"discount\" : 10,\n    \"discount_type\" : \"Sports\",\n    \"acceptance_type\" : \"foreign undergraduate\",\n    \"department_id\" : 1,\n    \"supervisor_id\" : 1\n}",
+							"raw": "{\n    \"first_name\": \"Admin\",\n    \"surname\": \"Admin\",\n    \"email\": \"admin2@admin.com\",\n    \"nationality\": \"US\",\n    \"dob\": \"2000-06-11\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"password\": \"root1234\",\n    \"role\": \"student\",\n    \"scholarship\": 50,\n    \"discount\": 10,\n    \"discount_type\": \"Sports\",\n    \"acceptance_type\": \"foreign undergraduate\",\n    \"department_id\": 1,\n    \"supervisor_id\": 1,\n    \"installments\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -41,72 +162,6 @@
 							"path": [
 								"student",
 								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "by sid",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{local}}/student/21906778",
-							"host": [
-								"{{local}}"
-							],
-							"path": [
-								"student",
-								"21906778"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Term Registration",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"semester\": \"spring\",\n    \"year\": 2023,\n    \"course_ids\": [\n        41,\n        42\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{local}}/student/term/registration",
-							"host": [
-								"{{local}}"
-							],
-							"path": [
-								"student",
-								"term",
-								"registration"
 							]
 						}
 					},
@@ -148,6 +203,150 @@
 							"path": [
 								"student",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"let token = jsonData.token;",
+									"",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/student/test",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by sid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/student",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_password\": \"root\",\n    \"new_password\": \"rootroot\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/student/reset-password",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Term Registration",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_ids\": [\n        6,\n        7,\n        8,\n        9,\n        10\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/student/term/registration",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"term",
+								"registration"
 							]
 						}
 					},
@@ -236,6 +435,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Patch Student Details",
+					"request": {
+						"method": "PATCH",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -308,14 +515,9 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Payments",
-			"item": [
+				},
 				{
-					"name": "Make Payment",
+					"name": "Account Details",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -327,11 +529,39 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/accounts/info",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"accounts",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"amount\": 1500,\n    \"process_type\": \"cash\",\n    \"currency\": \"USD\",\n    \"installment\" : 1,\n    \"student_id\" : 21906778\n}",
+							"raw": "{\n    \"installments\" : 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -339,13 +569,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{local}}/accounts/pay",
+							"raw": "{{local}}/accounts/info",
 							"host": [
 								"{{local}}"
 							],
 							"path": [
 								"accounts",
-								"pay"
+								"info"
 							]
 						}
 					},
@@ -597,7 +827,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"instructor_id\": 9,\n    \"semester\": \"Fall\",\n    \"year\": 2023,\n    \"course_ids\": [\n        1,\n        2\n    ]\n}",
+							"raw": "{\n    \"instructor_id\": 10,\n    \"semester\": \"Fall\",\n    \"year\": 2023,\n    \"course_ids\": [\n        41,\n        42\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -663,7 +893,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"student_id\": 21906778,\n    \"course_id\": 41,\n    \"lecture_time\": \"2023-02-14T10:36:10.849254Z\",\n    \"is_attended\": false\n}",
+							"raw": "{\n    \"student_id\": 21906778,\n    \"course_id\": 6,\n    \"lecture_time\": \"2023-02-14T10:36:10.849254Z\",\n    \"is_attended\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -678,6 +908,63 @@
 							"path": [
 								"instructor",
 								"attendance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supervised Students",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/instructor/students",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registered Students",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/instructor/students/registered",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"instructor",
+								"students",
+								"registered"
 							]
 						}
 					},
@@ -705,7 +992,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Introduction to Artificial Intelligence\",\n    \"code\": \"AI101\",\n    \"description\": \"This course provides an overview of the field of Artificial Intelligence and its applications.\",\n    \"credits\": 5,\n    \"ects\": 10,\n    \"theoretical\": 3,\n    \"practical\": 2,\n    \"course_schedule\": [\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\"\n        },\n        {\n            \"day\": \"Wednesday\",\n            \"start_time\": \"08:00\",\n            \"end_time\": \"16:00\",\n            \"lecture_venue\": \"ST231\"\n        },\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\"\n        },\n        {\n            \"day\": \"Wednesday\",\n            \"start_time\": \"08:00\",\n            \"end_time\": \"16:00\",\n            \"lecture_venue\": \"ST231\"\n        },\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\"\n        }\n    ]\n}",
+							"raw": "{\n    \"name\": \"Introduction to Artificial Intelligence\",\n    \"code\": \"AI101\",\n    \"description\": \"This course provides an overview of the field of Artificial Intelligence and its applications.\",\n    \"credits\": 5,\n    \"ects\": 10,\n    \"theoretical\": 3,\n    \"practical\": 2,\n    \"course_schedule\": [\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\",\n            \"is_theoretical\" : true\n        },\n        {\n            \"day\": \"Wednesday\",\n            \"start_time\": \"08:00\",\n            \"end_time\": \"16:00\",\n            \"lecture_venue\": \"ST231\",\n            \"is_theoretical\" : false\n        },\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\",\n            \"is_theoretical\" : true\n        },\n        {\n            \"day\": \"Wednesday\",\n            \"start_time\": \"08:00\",\n            \"end_time\": \"16:00\",\n            \"lecture_venue\": \"ST231\",\n            \"is_theoretical\" : false\n        },\n        {\n            \"day\": \"Monday\",\n            \"start_time\": \"08:30\",\n            \"end_time\": \"12:00\",\n            \"lecture_venue\": \"ST101\",\n            \"is_theoretical\" : true\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -720,6 +1007,99 @@
 							"path": [
 								"course",
 								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/course/CS410",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"course",
+								"CS410"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Introduction to Artificial Intelligence (updated)\",\n    \"code\": \"AI101\",\n    \"description\": \"This course provides an overview of the field of Artificial Intelligence and its applications.\",\n    \"credits\": 5,\n    \"ects\": 10,\n    \"theoretical\": 3,\n    \"practical\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/course/CS406",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"course",
+								"CS406"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/course/CS406",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"course",
+								"CS406"
 							]
 						}
 					},
@@ -798,6 +1178,48 @@
 							"path": [
 								"exam",
 								"results"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Make Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1500,\n    \"process_type\": \"cash\",\n    \"currency\": \"USD\",\n    \"installment\" : 1,\n    \"student_id\" : 21906778\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/accounts/pay",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"accounts",
+								"pay"
 							]
 						}
 					},
