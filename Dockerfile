@@ -13,7 +13,7 @@ RUN go mod download
 COPY . ./
 
 # Build the Go project using the Makefile
-RUN ls
+RUN make seed
 RUN make server
 
 # Expose the necessary port(s) if your application requires it
