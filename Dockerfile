@@ -3,6 +3,7 @@ FROM golang:1.17
 
 # Set the working directory inside the Docker image
 WORKDIR /app
+RUN pwd && ls -la
 
 # Copy the Go project files
 COPY go.mod go.sum ./
