@@ -19,6 +19,10 @@ type StudentCreateDTO struct {
 	DepartmentID   uint   `json:"department_id" validate:"required"`
 	SupervisorID   uint   `json:"supervisor_id" validate:"required"`
 	Installments   int    `json:"installments"`
+	MotherName     string `json:"mother_name" validate:"required,min=2,max=50"`
+	FatherName     string `json:"father_name" validate:"required,min=2,max=50"`
+	IDCardNumber   string `json:"id_card_number" validate:"required,min=2,max=50"`
+	PassportNumber string `json:"passport_number" validate:"required,min=2,max=50"`
 }
 
 type StudentSignInDTO struct {

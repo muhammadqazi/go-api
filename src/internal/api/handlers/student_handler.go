@@ -36,6 +36,7 @@ type StudentHandler interface {
 	PutForgotPasswordCode(c *gin.Context)
 	PatchNewPassword(c *gin.Context)
 	TestApi(c *gin.Context)
+	PatchStudent(c *gin.Context)
 }
 
 type studentHandler struct {
@@ -386,3 +387,5 @@ func (s *studentHandler) PatchNewPassword(c *gin.Context) {
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating password"})
 }
+
+func (s *studentHandler) PatchStudent(c *gin.Context) {}
