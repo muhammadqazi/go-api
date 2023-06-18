@@ -109,7 +109,10 @@ func (s *instructorsHandler) PostSignIn(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"token":          token,
 				"force_password": true,
-				"expires_in":     60,
+				"first_name":     doc.FirstName,
+				"last_name":      doc.LastName,
+				"email":          doc.Email,
+				"role":           doc.Role,
 			})
 			return
 		}
@@ -117,7 +120,10 @@ func (s *instructorsHandler) PostSignIn(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"token":          token,
 			"force_password": false,
-			"expires_in":     60,
+			"first_name":     doc.FirstName,
+			"last_name":      doc.LastName,
+			"email":          doc.Email,
+			"role":           doc.Role,
 		})
 		return
 	}
