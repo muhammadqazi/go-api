@@ -21,8 +21,54 @@ type StudentCreateDTO struct {
 	Installments   int    `json:"installments"`
 	MotherName     string `json:"mother_name" validate:"required,min=2,max=50"`
 	FatherName     string `json:"father_name" validate:"required,min=2,max=50"`
-	IDCardNumber   string `json:"id_card_number" validate:"required,min=2,max=50"`
-	PassportNumber string `json:"passport_number" validate:"required,min=2,max=50"`
+	IDCardNumber   string `json:"id_card_number" validate:"min=2,max=50"`
+	PassportNumber string `json:"passport_number" validate:"min=2,max=50"`
+}
+
+type StudentPatchDTO struct {
+	FirstName      string `json:"first_name"`
+	Surname        string `json:"surname"`
+	Email          string `json:"email"`
+	Nationality    string `json:"nationality"`
+	DOB            string `json:"dob"`
+	PlaceOfBirth   string `json:"place_of_birth"`
+	Sex            string `json:"sex"`
+	Password       string `json:"password"`
+	Role           string `json:"role"`
+	Scholarship    int    `json:"scholarship"`
+	Discount       int    `json:"discount"`
+	DiscountType   string `json:"discount_type"`
+	AcceptanceType string `json:"acceptance_type"`
+	DepartmentID   uint   `json:"department_id"`
+	SupervisorID   uint   `json:"supervisor_id"`
+	Installments   int    `json:"installments"`
+	MotherName     string `json:"mother_name"`
+	FatherName     string `json:"father_name"`
+	IDCardNumber   string `json:"id_card_number"`
+	PassportNumber string `json:"passport_number"`
+}
+
+type StudentsFetchDTO struct {
+	FirstName      string `json:"first_name"`
+	Surname        string `json:"surname"`
+	Email          string `json:"email"`
+	Nationality    string `json:"nationality"`
+	DOB            string `json:"dob"`
+	PlaceOfBirth   string `json:"place_of_birth"`
+	Sex            string `json:"sex"`
+	Password       string `json:"password"`
+	Role           string `json:"role"`
+	Scholarship    int    `json:"scholarship"`
+	Discount       int    `json:"discount"`
+	DiscountType   string `json:"discount_type"`
+	AcceptanceType string `json:"acceptance_type"`
+	DepartmentID   uint   `json:"department_id"`
+	SupervisorID   uint   `json:"supervisor_id"`
+	Installments   int    `json:"installments"`
+	MotherName     string `json:"mother_name"`
+	FatherName     string `json:"father_name"`
+	IDCardNumber   string `json:"id_card_number"`
+	PassportNumber string `json:"passport_number"`
 }
 
 type StudentSignInDTO struct {

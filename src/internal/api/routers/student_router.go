@@ -19,6 +19,7 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	student.POST("/forgot-password", h.PostForgotPasswordRequest)
 	student.PUT("/forgot-password", h.PutForgotPasswordCode)
 	student.PATCH("/forgot-password", h.PatchNewPassword)
+	student.GET("/:id", h.GetStudentByID)
 
 	/*
 		"""
@@ -32,11 +33,11 @@ func StudentRouter(r *gin.RouterGroup, h handlers.StudentHandler) {
 	admin.Use(checkRoleForCreate)
 
 	admin.POST("/create", h.PostStudent)
+	admin.PATCH("/:id", h.PatchStudent)
 
 	/* Student with Role 'student' */
 	checkRoleForStudent := middleware.RolesMiddleware(allowedRolesForStudent)
 	student.Use(checkRoleForStudent)
-	student.GET("/:id", h.GetStudentByID)
 	student.POST("/term/registration", h.PostTermRegistration)
 	student.GET("/timetable", h.GetStudentTimetable)
 	student.GET("/exam", h.GetStudentExamSchedule)

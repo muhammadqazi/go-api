@@ -147,7 +147,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Admin\",\n    \"surname\": \"Admin\",\n    \"email\": \"admin2@admin.com\",\n    \"nationality\": \"US\",\n    \"dob\": \"2000-06-11\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"password\": \"root1234\",\n    \"role\": \"student\",\n    \"scholarship\": 50,\n    \"discount\": 10,\n    \"discount_type\": \"Sports\",\n    \"acceptance_type\": \"foreign undergraduate\",\n    \"department_id\": 1,\n    \"supervisor_id\": 1,\n    \"installments\": 2\n}",
+							"raw": "{\n    \"first_name\": \"Admin\",\n    \"surname\": \"Admin\",\n    \"email\": \"admin2@admin.com\",\n    \"nationality\": \"US\",\n    \"dob\": \"2000-06-11\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"password\": \"root1234\",\n    \"role\": \"student\",\n    \"scholarship\": 50,\n    \"discount\": 10,\n    \"discount_type\": \"Sports\",\n    \"acceptance_type\": \"foreign undergraduate\",\n    \"department_id\": 1,\n    \"supervisor_id\": 1,\n    \"installments\": 2,\n    \"mother_name\" : \"Name\",\n    \"father_name\" : \"Name\" ,\n    \"passport_number\" : \"123123\",\n    \"id_card_number\" : \"123123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -272,6 +272,33 @@
 							],
 							"path": [
 								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by sid",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Admin\",\n    \"surname\": \"Admin\",\n    \"email\": \"admin2@admin.com\",\n    \"nationality\": \"US\",\n    \"dob\": \"2000-06-11\",\n    \"place_of_birth\": \"New York\",\n    \"sex\": \"male\",\n    \"role\": \"student\",\n    \"discount_type\": \"Sports\",\n    \"acceptance_type\": \"foreign undergraduate\",\n    \"department_id\": 1,\n    \"supervisor_id\": 1,\n    \"mother_name\" : \"Name\",\n    \"father_name\" : \"Name\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/student/21906778",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"student",
+								"21906778"
 							]
 						}
 					},
@@ -433,14 +460,6 @@
 								"attendance"
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Patch Student Details",
-					"request": {
-						"method": "PATCH",
-						"header": []
 					},
 					"response": []
 				}
@@ -967,6 +986,14 @@
 								"registered"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "all Students",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}

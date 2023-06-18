@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
@@ -16,9 +17,10 @@ type InstructorsServices interface {
 	CreateInstructorCourseEnrollment(dtos.InstructorCourseEnrollmentDTO) error
 	FetchInstructorCourseEnrollment(uint) ([]dtos.InstructorEnrollmentsSchema, error)
 	ModifyStudentAttendance(dto dtos.StudentAttendancePatchDTO) error
-	FetchSupervisedStudents(uint) ([]dtos.SupervisedStudentSchema, error)
+	FetchSupervisedStudents(uint, string) ([]dtos.SupervisedStudentSchema, error)
 	FetchRegisteredStudentsBySupervisorID(uint) ([]dtos.RegisteredStudentsDTO, error)
 	CreateCourseAttendanceLog(uint) error
+	FetchAllStudents() ([]dtos.StudentsFetchDTO, error)
 }
 
 type instructorsServices struct {
@@ -36,6 +38,17 @@ func NewInstructorsServices(repo repositories.InstructorsRepository, mapper mapp
 func (s *instructorsServices) CreateInstructors(instructor dtos.InstructorCreateDTO) error {
 	m := s.instructorsMapper.InstructorCreateMapper(instructor)
 	return s.instructorsRepository.InsertInstructors(m)
+}
+
+func (s *instructorsServices) FetchAllStudents() ([]dtos.StudentsFetchDTO, error) {
+	docs, err := s.instructorsRepository.QueryAllStudents()
+
+	if err != nil {
+		return nil, fmt.Errorf("error while fetching all students: %w", err)
+	}
+
+	fmt.Println(docs)
+	return nil, nil
 }
 
 func (s *instructorsServices) FetchInstructorByEmail(email string) (entities.InstructorsEntity, error) {
@@ -68,8 +81,8 @@ func (s *instructorsServices) ModifyStudentAttendance(attendance dtos.StudentAtt
 	return s.instructorsRepository.UpdateStudentAttendance(entity, attendance)
 }
 
-func (s *instructorsServices) FetchSupervisedStudents(id uint) ([]dtos.SupervisedStudentSchema, error) {
-	return s.instructorsRepository.QuerySupervisedStudents(id)
+func (s *instructorsServices) FetchSupervisedStudents(id uint, role string) ([]dtos.SupervisedStudentSchema, error) {
+	return s.instructorsRepository.QuerySupervisedStudents(id, role)
 }
 
 func (s *instructorsServices) FetchRegisteredStudentsBySupervisorID(id uint) ([]dtos.RegisteredStudentsDTO, error) {

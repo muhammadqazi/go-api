@@ -25,6 +25,7 @@ type StudentRepository interface {
 	QueryForgotPasswordCode(uint) (entities.StudentPasswordResetsEntity, error)
 	UpdateForgotPasswordFlag(uint) error
 	DeleteForgotPasswordCode(uint) error
+	UpdateStudent(uint, dtos.StudentPatchDTO) error
 }
 
 type studentConnection struct {
@@ -292,6 +293,100 @@ func (r *studentConnection) UpdateForgotPasswordFlag(sid uint) error {
 		Where("student_id = ?", sid).
 		Update("is_verified", true).Error; err != nil {
 		return err
+	}
+
+	return nil
+}
+func (r *studentConnection) UpdateStudent(sid uint, student dtos.StudentPatchDTO) error {
+
+	var updateMap = make(map[string]interface{})
+
+	if student.FirstName != "" {
+		updateMap["first_name"] = student.FirstName
+	}
+
+	if student.Surname != "" {
+		updateMap["surname"] = student.Surname
+	}
+
+	if student.Email != "" {
+		updateMap["email"] = student.Email
+	}
+
+	if student.Nationality != "" {
+		updateMap["nationality"] = student.Nationality
+	}
+
+	if student.DOB != "" {
+		updateMap["dob"] = student.DOB
+	}
+
+	if student.PlaceOfBirth != "" {
+		updateMap["place_of_birth"] = student.PlaceOfBirth
+	}
+
+	if student.Sex != "" {
+		updateMap["sex"] = student.Sex
+	}
+
+	if student.Password != "" {
+		updateMap["password"] = student.Password
+	}
+
+	if student.Role != "" {
+		updateMap["role"] = student.Role
+	}
+
+	if student.Scholarship != 0 {
+		updateMap["scholarship"] = student.Scholarship
+	}
+
+	if student.Discount != 0 {
+		updateMap["discount"] = student.Discount
+	}
+
+	if student.DiscountType != "" {
+		updateMap["discount_type"] = student.DiscountType
+	}
+
+	if student.AcceptanceType != "" {
+		updateMap["acceptance_type"] = student.AcceptanceType
+	}
+
+	if student.DepartmentID != 0 {
+		updateMap["department_id"] = student.DepartmentID
+	}
+
+	if student.SupervisorID != 0 {
+		updateMap["supervisor_id"] = student.SupervisorID
+	}
+
+	if student.Installments != 0 {
+		updateMap["installments"] = student.Installments
+	}
+
+	if student.MotherName != "" {
+		updateMap["mother_name"] = student.MotherName
+	}
+
+	if student.FatherName != "" {
+		updateMap["father_name"] = student.FatherName
+	}
+
+	if student.IDCardNumber != "" {
+		updateMap["id_card_number"] = student.IDCardNumber
+	}
+
+	if student.PassportNumber != "" {
+		updateMap["passport_number"] = student.PassportNumber
+	}
+
+	fmt.Println(updateMap)
+
+	if len(updateMap) > 0 {
+		if err := r.conn.Model(&entities.StudentsEntity{}).Where("student_id = ?", sid).Updates(updateMap).Error; err != nil {
+			return err
+		}
 	}
 
 	return nil

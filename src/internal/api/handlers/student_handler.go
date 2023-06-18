@@ -389,4 +389,21 @@ func (s *studentHandler) PatchNewPassword(c *gin.Context) {
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating password"})
 }
 
-func (s *studentHandler) PatchStudent(c *gin.Context) {}
+func (s *studentHandler) PatchStudent(c *gin.Context) {
+
+	var student dtos.StudentPatchDTO
+
+	if err := s.validator.Validate(&student, c); err != nil {
+		return
+	}
+
+	id := c.MustGet("id").(string)
+	sid, _ := strconv.ParseUint(id, 10, 64)
+
+	if err := s.studentServices.ModifyStudent(uint(sid), student); err == nil {
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Student updated successfully"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating student"})
+}

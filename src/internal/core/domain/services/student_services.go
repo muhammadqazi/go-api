@@ -23,6 +23,7 @@ type StudentServices interface {
 	VerifyForgotPasswordCode(uint) (entities.StudentPasswordResetsEntity, error)
 	ModifyForgotPasswordFlag(uint) error
 	RemoveForgotPasswordCode(uint) error
+	ModifyStudent(uint, dtos.StudentPatchDTO) error
 }
 
 type studentServices struct {
@@ -112,4 +113,8 @@ func (s *studentServices) RemoveForgotPasswordCode(sid uint) error {
 
 func (s *studentServices) ModifyForgotPasswordFlag(sid uint) error {
 	return s.studentRepository.UpdateForgotPasswordFlag(sid)
+}
+
+func (s *studentServices) ModifyStudent(sid uint, student dtos.StudentPatchDTO) error {
+	return s.studentRepository.UpdateStudent(sid, student)
 }

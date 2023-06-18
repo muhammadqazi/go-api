@@ -19,6 +19,7 @@ type StudentMapper interface {
 	StudentExamScheduleMapper([]dtos.ExamScheduleSchema) dtos.ExamScheduleFetchDTO
 	StudentCourseAttendanceFetchMapper([]dtos.StudentAttendanceSchema) []dtos.StudentAttendanceFetchDTO
 	ForgotPasswordRequestMapper(dtos.ForgotPasswordRequestDTO) entities.StudentPasswordResetsEntity
+	StudentPatchMapper(dtos.StudentPatchDTO) entities.StudentsEntity
 }
 
 type studentMapper struct {
@@ -228,4 +229,58 @@ func (m *studentMapper) ForgotPasswordRequestMapper(request dtos.ForgotPasswordR
 		ExpiresAt:  time.Now().UTC().Add(time.Minute * 60),
 		IsVerified: false,
 	}
+}
+
+func (m *studentMapper) StudentPatchMapper(student dtos.StudentPatchDTO) entities.StudentsEntity {
+	var studentEntity entities.StudentsEntity
+
+	if student.FirstName != "" {
+		studentEntity.FirstName = student.FirstName
+	}
+
+	if student.Surname != "" {
+		studentEntity.Surname = student.Surname
+	}
+
+	if student.Email != "" {
+		studentEntity.Email = student.Email
+	}
+
+	if student.Nationality != "" {
+		studentEntity.Nationality = student.Nationality
+	}
+
+	if student.DOB != "" {
+		studentEntity.DOB = student.DOB
+	}
+
+	if student.PlaceOfBirth != "" {
+		studentEntity.PlaceOfBirth = student.PlaceOfBirth
+	}
+
+	if student.Sex != "" {
+		studentEntity.Sex = student.Sex
+	}
+
+	if student.Password != "" {
+		studentEntity.Password = student.Password
+	}
+
+	if student.Role != "" {
+		studentEntity.Role = student.Role
+	}
+
+	if student.AcceptanceType != "" {
+		studentEntity.AcceptanceType = student.AcceptanceType
+	}
+
+	if student.DepartmentID != 0 {
+		studentEntity.DepartmentID = student.DepartmentID
+	}
+
+	if student.SupervisorID != 0 {
+		studentEntity.SupervisorID = student.SupervisorID
+	}
+
+	return studentEntity
 }

@@ -29,6 +29,7 @@ type InstructorsHandler interface {
 	PatchStudentAttendance(c *gin.Context)
 	GetSupervisedStudents(c *gin.Context)
 	GetRegisteredStudentsBySupervisorID(c *gin.Context)
+	GetAllStudents(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -231,9 +232,10 @@ func (s *instructorsHandler) PatchStudentAttendance(c *gin.Context) {
 func (s *instructorsHandler) GetSupervisedStudents(c *gin.Context) {
 
 	id := c.MustGet("id").(string)
+	role := c.MustGet("role").(string)
 	supervisorID, _ := strconv.ParseUint(id, 10, 64)
 
-	if doc, err := s.instructorsServices.FetchSupervisedStudents(uint(supervisorID)); err == nil {
+	if doc, err := s.instructorsServices.FetchSupervisedStudents(uint(supervisorID), role); err == nil {
 		if len(doc) > 0 {
 			c.JSON(http.StatusOK, gin.H{"status": true, "data": doc})
 			return
@@ -252,6 +254,21 @@ func (s *instructorsHandler) GetRegisteredStudentsBySupervisorID(c *gin.Context)
 	instructorID, _ := strconv.ParseUint(id, 10, 64)
 
 	if doc, err := s.instructorsServices.FetchRegisteredStudentsBySupervisorID(uint(instructorID)); err == nil {
+		if len(doc) > 0 {
+			c.JSON(http.StatusOK, gin.H{"status": true, "data": doc})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "No students found"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error fetching students"})
+}
+
+func (s *instructorsHandler) GetAllStudents(c *gin.Context) {
+
+	if doc, err := s.instructorsServices.FetchAllStudents(); err == nil {
 		if len(doc) > 0 {
 			c.JSON(http.StatusOK, gin.H{"status": true, "data": doc})
 			return

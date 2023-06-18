@@ -26,6 +26,7 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 	g.Use(checkRoleForFetch)
 
 	g.GET("/requests", h.GetTermEnrollmentRequests)
+	//g.GET("/students", h.GetAllStudents)
 	g.PATCH("/requests/:enrollment-id", h.PatchTermEnrollmentRequests)
 	g.GET("/enrollments", h.GetInstructorCourseEnrollment)
 	g.PATCH("/attendance", h.PatchStudentAttendance)
