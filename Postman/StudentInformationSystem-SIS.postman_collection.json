@@ -1253,6 +1253,76 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Faculty",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Faculty of Science\",\n    \"code\": \"MASD\",\n    \"description\": \"The Faculty of Science offers a wide range of programs in various scientific disciplines.\",\n    \"dean\": \"John Smith\",\n    \"vice_dean\": \"Jane Doe\",\n    \"email\": \"facultyofscience@example.com\",\n    \"phone_number\": \"123-456-7890\",\n    \"dean_email\": \"dean@example.com\",\n    \"dean_phone\": \"987-654-3210\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/faculty/create",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"faculty",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "with Faculty Code",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/faculty/MASD",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"faculty",
+								"MASD"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

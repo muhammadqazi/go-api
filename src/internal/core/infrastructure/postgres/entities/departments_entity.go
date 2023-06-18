@@ -15,11 +15,11 @@ type DepartmentsEntity struct {
 	DeanPhone        string   `gorm:"type:varchar(50);not null" json:"dean_phone"`
 	OfferedSemesters []string `gorm:"type:varchar(50);not null" json:"offered_semesters"` // TODO
 	NumberOfYears    int      `gorm:"not null" json:"number_of_years"`
-	// TODO : department_id needs to be added to the database
+
+	FacultyID uint `gorm:"column:faculty_id" json:"faculty_id"`
 
 	HeadID uint `gorm:"column:head_id" json:"head_id"`
 
 	StudentsEntity   []StudentsEntity   `gorm:"foreignkey:DepartmentID"`
-	FacultiesEntity  []FacultiesEntity  `gorm:"foreignkey:DepartmentID"`
 	CurriculumEntity []CurriculumEntity `gorm:"foreignkey:DepartmentID"`
 }

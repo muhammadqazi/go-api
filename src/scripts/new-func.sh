@@ -24,9 +24,9 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/common/validation"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/services"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/common/validation"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/services"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
 )
 
 /*
@@ -69,8 +69,8 @@ cat > src/internal/api/routers/${file_name}_router.go << EOF
 package routers
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/handlers"
-	middleware "github.com/muhammadqazi/SIS-Backend-Go/src/internal/api/middlewares"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
+	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
 )
 func ${name_cap}Router(r *gin.RouterGroup, h handlers.${name_cap}Handler) {
 
@@ -97,9 +97,9 @@ cat > src/internal/core/domain/services/${file_name}_services.go << EOF
 package services
 
 import (
-  "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/domain/dtos"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/mappers"
-	"github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/repositories"
+  "github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
+	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/repositories"
 )
 
 type ${name_cap}Services interface {
@@ -150,7 +150,7 @@ cat > src/internal/core/infrastructure/postgres/repositories/${file_name}_reposi
 package repositories
 
 import (
-  "github.com/muhammadqazi/SIS-Backend-Go/src/internal/core/infrastructure/postgres/entities"
+  "github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
   "gorm.io/gorm"
 )
 

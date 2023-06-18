@@ -1,19 +1,18 @@
-INSERT INTO departments_entity (department_code, name, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, created_at, is_active, offered_semesters , number_of_years)
+INSERT INTO faculties_entity (name, code, description, dean, vice_dean, email, phone_number, dean_email, dean_phone , created_at, is_active)
 VALUES
-    ('D001', 'Computer Science', 'Study of computers and computational systems', 'Dr. John Doe', 'Dr. Jane Doe', 'cs@university.com', '555-555-5555', 'dean_cs@university.com', '555-555-5551', current_timestamp , true, '{"Fall","Spring"}',4),
-    ('D002', 'Mathematics', 'Study of numbers and shapes', 'Dr. Tom Doe', 'Dr. Sarah Doe', 'math@university.com', '555-555-5556', 'dean_math@university.com', '555-555-5552', current_timestamp , true,'{"Fall","Spring"}',4),
-    ('D003', 'Physics', 'Study of matter and energy', 'Dr. James Doe', 'Dr. Emily Doe', 'physics@university.com', '555-555-5557', 'dean_physics@university.com', '555-555-5553', current_timestamp , true,'{"Fall","Spring"}',4),
-    ('D004', 'Chemistry', 'Study of chemicals and their reactions', 'Dr. David Doe', 'Dr. Lily Doe', 'chemistry@university.com', '555-555-5558', 'dean_chemistry@university.com', '555-555-5554', current_timestamp , true,'{"Fall","Spring"}',4),
-    ('D005', 'Biology', 'Study of living organisms', 'Dr. Michael Doe', 'Dr. Grace Doe', 'biology@university.com', '555-555-5559', 'dean_biology@university.com', '555-555-5555', current_timestamp , true,'{"Fall","Spring"}',4);
+    ('Mathematics', 'MATH', 'Department of Mathematics', 'John Doe', 'Jane Doe', 'math@example.com', '555-555-5555', 'johndoe@example.com', '555-555-5556',  current_timestamp , true),
+    ('Computer Science', 'CS', 'Department of Computer Science', 'Jane Smith', 'John Smith', 'cs@example.com', '555-555-5557', 'janesmith@example.com', '555-555-5558', current_timestamp , true),
+    ('Physics', 'PHYS', 'Department of Physics', 'John Johnson', 'Jane Johnson', 'physics@example.com', '555-555-5559', 'johnjohnson@example.com', '555-555-5560', current_timestamp , true),
+    ('Chemistry', 'CHEM', 'Department of Chemistry', 'Jane Wilson', 'John Wilson', 'chemistry@example.com', '555-555-5561', 'janewilson@example.com', '555-555-5562', current_timestamp , true),
+    ('Biology', 'BIO', 'Department of Biology', 'John Davis', 'Jane Davis', 'biology@example.com', '555-555-5563', 'johndavis@example.com', '555-555-5564', current_timestamp , true);
 
-
-INSERT INTO faculties_entity (name, code, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, department_id , created_at, is_active)
+INSERT INTO departments_entity (department_code, name, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, created_at, is_active, offered_semesters , number_of_years, faculty_id)
 VALUES
-    ('Mathematics', 'MATH', 'Department of Mathematics', 'John Doe', 'Jane Doe', 'math@example.com', '555-555-5555', 'johndoe@example.com', '555-555-5556', 1 , current_timestamp , true),
-    ('Computer Science', 'CS', 'Department of Computer Science', 'Jane Smith', 'John Smith', 'cs@example.com', '555-555-5557', 'janesmith@example.com', '555-555-5558', 2 , current_timestamp , true),
-    ('Physics', 'PHYS', 'Department of Physics', 'John Johnson', 'Jane Johnson', 'physics@example.com', '555-555-5559', 'johnjohnson@example.com', '555-555-5560', 3 , current_timestamp , true),
-    ('Chemistry', 'CHEM', 'Department of Chemistry', 'Jane Wilson', 'John Wilson', 'chemistry@example.com', '555-555-5561', 'janewilson@example.com', '555-555-5562', 4 , current_timestamp , true),
-    ('Biology', 'BIO', 'Department of Biology', 'John Davis', 'Jane Davis', 'biology@example.com', '555-555-5563', 'johndavis@example.com', '555-555-5564', 5 , current_timestamp , true);
+    ('D001', 'Computer Science', 'Study of computers and computational systems', 'Dr. John Doe', 'Dr. Jane Doe', 'cs@university.com', '555-555-5555', 'dean_cs@university.com', '555-555-5551', current_timestamp , true, '{"Fall","Spring"}',4 , 1),
+    ('D002', 'Mathematics', 'Study of numbers and shapes', 'Dr. Tom Doe', 'Dr. Sarah Doe', 'math@university.com', '555-555-5556', 'dean_math@university.com', '555-555-5552', current_timestamp , true,'{"Fall","Spring"}',4,2),
+    ('D003', 'Physics', 'Study of matter and energy', 'Dr. James Doe', 'Dr. Emily Doe', 'physics@university.com', '555-555-5557', 'dean_physics@university.com', '555-555-5553', current_timestamp , true,'{"Fall","Spring"}',4,3),
+    ('D004', 'Chemistry', 'Study of chemicals and their reactions', 'Dr. David Doe', 'Dr. Lily Doe', 'chemistry@university.com', '555-555-5558', 'dean_chemistry@university.com', '555-555-5554', current_timestamp , true,'{"Fall","Spring"}',4,1),
+    ('D005', 'Biology', 'Study of living organisms', 'Dr. Michael Doe', 'Dr. Grace Doe', 'biology@university.com', '555-555-5559', 'dean_biology@university.com', '555-555-5555', current_timestamp , true,'{"Fall","Spring"}',4,1);
 
 INSERT INTO instructors_entity (first_name, last_name, email, phone_number, password, dob, place_of_birth, sex, nationality, role , created_at,is_active)
 VALUES

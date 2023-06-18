@@ -59,6 +59,7 @@ func main() {
 		instructorMapper mappers.InstructorsMapper = mappers.NewInstructorsMapper()
 		courseMapper     mappers.CourseMapper      = mappers.NewCourseMapper()
 		examMapper       mappers.ExamMapper        = mappers.NewExamMapper()
+		facultyMapper    mappers.FacultyMapper     = mappers.NewFacultyMapper()
 	)
 
 	/*
@@ -74,6 +75,7 @@ func main() {
 		instructorRepository repositories.InstructorsRepository = repositories.NewInstructorsRepository(db, instructorMapper)
 		courseRepository     repositories.CourseRepository      = repositories.NewCourseRepository(db, courseMapper)
 		examRepository       repositories.ExamRepository        = repositories.NewExamRepository(db, examMapper)
+		facultyRepository    repositories.FacultyRepository     = repositories.NewFacultyRepository(db, facultyMapper)
 	)
 
 	/*
@@ -89,6 +91,7 @@ func main() {
 		instructorServices services.InstructorsServices = services.NewInstructorsServices(instructorRepository, instructorMapper)
 		courseServices     services.CourseServices      = services.NewCourseServices(courseRepository, courseMapper)
 		examServices       services.ExamServices        = services.NewExamServices(examRepository, examMapper)
+		facultyServices    services.FacultyServices     = services.NewFacultyServices(facultyRepository, facultyMapper)
 	)
 
 	/*
@@ -104,6 +107,7 @@ func main() {
 		instructorHandler handlers.InstructorsHandler = handlers.NewInstructorsHandler(instructorServices, instructorMapper, jwtService, validator)
 		courseHandler     handlers.CourseHandler      = handlers.NewCourseHandler(courseServices, courseMapper, validator)
 		examHandler       handlers.ExamHandler        = handlers.NewExamHandler(examServices, examMapper, validator)
+		facultyHandler    handlers.FacultyHandler     = handlers.NewFacultyHandler(facultyServices, facultyMapper, validator)
 	)
 
 	/*
@@ -130,6 +134,7 @@ func main() {
 	routers.InstructorsRouter(auth, instructorHandler)
 	routers.CourseRouter(auth, courseHandler)
 	routers.ExamRouter(auth, examHandler)
+	routers.FacultyRouter(auth, facultyHandler)
 
 	/*
 		"""
