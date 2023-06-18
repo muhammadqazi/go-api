@@ -112,7 +112,7 @@ func main() {
 		"""
 	*/
 
-	r := gin.Default()
+	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	r.Use(middleware.CORSMiddleware())

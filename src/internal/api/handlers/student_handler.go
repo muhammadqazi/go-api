@@ -101,6 +101,7 @@ func (s *studentHandler) PostStudent(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"status": true, "message": "Student created successfully", "student_id": sid})
 			return
 		}
+
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error creating student"})

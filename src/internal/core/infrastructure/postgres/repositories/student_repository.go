@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
@@ -45,6 +46,8 @@ func (r *studentConnection) InsertStudent(student entities.StudentsEntity) (uint
 	if res.Error != nil {
 		return 0, res.Error
 	}
+
+	fmt.Println("Student ID: ", student.StudentID)
 
 	return student.StudentID, nil
 }
