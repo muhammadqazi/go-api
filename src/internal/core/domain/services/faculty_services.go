@@ -10,6 +10,7 @@ import (
 type FacultyServices interface {
 	CreateFaculty(dtos.FacultyCreateDTO) error
 	FetchFaculty(string) (entities.FacultiesEntity, error)
+	FetchAllFaculties() ([]entities.FacultiesEntity, error)
 }
 
 type facultyServices struct {
@@ -35,4 +36,8 @@ func (s *facultyServices) CreateFaculty(faculty dtos.FacultyCreateDTO) error {
 }
 func (s *facultyServices) FetchFaculty(code string) (entities.FacultiesEntity, error) {
 	return s.facultyRepository.SelectFacultyByCode(code)
+}
+
+func (s *facultyServices) FetchAllFaculties() ([]entities.FacultiesEntity, error) {
+	return s.facultyRepository.QuertAllFaculties()
 }

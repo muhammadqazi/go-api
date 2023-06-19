@@ -7,6 +7,7 @@ import (
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/services"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/mappers"
 	"net/http"
+	"strconv"
 )
 
 /*
@@ -20,6 +21,7 @@ type CourseHandler interface {
 	GetCourseByCourseCode(c *gin.Context)
 	PatchCourseByCourseCode(c *gin.Context)
 	DeleteCourseByCourseCode(c *gin.Context)
+	PatchCourseInstructorByCourseId(c *gin.Context)
 }
 
 type courseHandler struct {
@@ -95,4 +97,23 @@ func (s *courseHandler) DeleteCourseByCourseCode(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Course deleted successfully"})
+}
+
+func (s *courseHandler) PatchCourseInstructorByCourseId(c *gin.Context) {
+	id := c.Param("id")
+	uintCourseId, _ := strconv.ParseUint(id, 10, 64)
+
+	var course dtos.CourseInstructorUpdateDTO
+	course.CourseId = uint(uintCourseId)
+
+	if err := s.validator.Validate(&course, c); err != nil {
+		return
+	}
+
+	if err := s.courseServices.ModifyCourseInstructorByCourseId(course); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": true, "message": "Course instructor updated successfully"})
 }

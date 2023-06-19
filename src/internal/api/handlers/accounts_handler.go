@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/common/validation"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
@@ -18,7 +19,7 @@ import (
 
 type AccountingHandler interface {
 	PostPayment(c *gin.Context)
-	GetAccountDetails(c *gin.Context)
+	GetAccountDetailsByStudentId(c *gin.Context)
 	PatchAccountDetailsByStudentID(c *gin.Context)
 }
 
@@ -62,12 +63,20 @@ func (s *accountingHandler) PostPayment(c *gin.Context) {
 
 }
 
-func (s *accountingHandler) GetAccountDetails(c *gin.Context) {
+func (s *accountingHandler) GetAccountDetailsByStudentId(c *gin.Context) {
 
-	id := c.MustGet("id").(string)
+	id := c.Param("id")
 	sid, _ := strconv.ParseUint(id, 10, 64)
 
+	fmt.Println(sid, "we here")
+
 	if account, err := s.accountingServices.FetchAccountDetails(uint(sid)); err == nil {
+
+		if len(account) == 0 {
+			c.JSON(http.StatusOK, gin.H{"status": true, "message": "No Account Found"})
+			return
+		}
+
 		mappedData := s.accountingMapper.AccountsFetchMapper(account)
 		c.JSON(http.StatusOK, gin.H{"status": true, "data": mappedData})
 		return

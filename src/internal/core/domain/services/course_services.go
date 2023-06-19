@@ -11,6 +11,7 @@ type CourseServices interface {
 	FetchCourseByCourseCode(string) ([]dtos.CourseFetchByCodeSchema, error)
 	ModifyCourseByCourseCode(string, dtos.CourseUpdateDTO) error
 	RemoveCourseByCourseCode(string) error
+	ModifyCourseInstructorByCourseId(dto dtos.CourseInstructorUpdateDTO) error
 }
 
 type courseServices struct {
@@ -49,4 +50,8 @@ func (s *courseServices) ModifyCourseByCourseCode(code string, course dtos.Cours
 
 func (s *courseServices) RemoveCourseByCourseCode(code string) error {
 	return s.courseRepository.DeleteCourseByCourseCode(code)
+}
+
+func (s *courseServices) ModifyCourseInstructorByCourseId(dto dtos.CourseInstructorUpdateDTO) error {
+	return s.courseRepository.UpdateCourseInstructorByCourseId(dto)
 }

@@ -14,6 +14,7 @@ type CourseRepository interface {
 	QueryCourseByCourseCode(string) ([]dtos.CourseFetchByCodeSchema, error)
 	UpdateCourseByCourseCode(string, entities.CoursesEntity) error
 	DeleteCourseByCourseCode(string) error
+	UpdateCourseInstructorByCourseId(dtos.CourseInstructorUpdateDTO) error
 }
 
 type courseConnection struct {
@@ -95,4 +96,8 @@ func (r *courseConnection) DeleteCourseByCourseCode(code string) error {
 	}
 
 	return r.conn.Table("courses_entity").Where("code = ?", code).Updates(update).Error
+}
+
+func (r *courseConnection) UpdateCourseInstructorByCourseId(dto dtos.CourseInstructorUpdateDTO) error {
+	return nil
 }

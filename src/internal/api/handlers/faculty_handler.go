@@ -18,6 +18,7 @@ import (
 type FacultyHandler interface {
 	PostFaculty(c *gin.Context)
 	GetFaculty(c *gin.Context)
+	GetAllFaculties(c *gin.Context)
 }
 
 type facultyHandler struct {
@@ -64,4 +65,14 @@ func (s *facultyHandler) GetFaculty(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": true, "data": faculty})
+}
+
+func (s *facultyHandler) GetAllFaculties(c *gin.Context) {
+	faculties, err := s.facultyServices.FetchAllFaculties()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": false, "message": "Faculty not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": true, "data": faculties})
 }

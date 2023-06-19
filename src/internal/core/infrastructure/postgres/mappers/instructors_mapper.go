@@ -1,12 +1,13 @@
 package mappers
 
 import (
+	"strings"
+	"time"
+
 	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/common/utils"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
-	"strings"
-	"time"
 )
 
 type InstructorsMapper interface {

@@ -6,13 +6,13 @@ VALUES
     ('Chemistry', 'CHEM', 'Department of Chemistry', 'Jane Wilson', 'John Wilson', 'chemistry@example.com', '555-555-5561', 'janewilson@example.com', '555-555-5562', current_timestamp , true),
     ('Biology', 'BIO', 'Department of Biology', 'John Davis', 'Jane Davis', 'biology@example.com', '555-555-5563', 'johndavis@example.com', '555-555-5564', current_timestamp , true);
 
-INSERT INTO departments_entity (department_code, name, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, created_at, is_active, offered_semesters , number_of_years, faculty_id)
+INSERT INTO departments_entity (department_code, name, description, dean, vice_dean, email, phone_number, dean_email, dean_phone, created_at, is_active , number_of_years, faculty_id)
 VALUES
-    ('D001', 'Computer Science', 'Study of computers and computational systems', 'Dr. John Doe', 'Dr. Jane Doe', 'cs@university.com', '555-555-5555', 'dean_cs@university.com', '555-555-5551', current_timestamp , true, '{"Fall","Spring"}',4 , 1),
-    ('D002', 'Mathematics', 'Study of numbers and shapes', 'Dr. Tom Doe', 'Dr. Sarah Doe', 'math@university.com', '555-555-5556', 'dean_math@university.com', '555-555-5552', current_timestamp , true,'{"Fall","Spring"}',4,2),
-    ('D003', 'Physics', 'Study of matter and energy', 'Dr. James Doe', 'Dr. Emily Doe', 'physics@university.com', '555-555-5557', 'dean_physics@university.com', '555-555-5553', current_timestamp , true,'{"Fall","Spring"}',4,3),
-    ('D004', 'Chemistry', 'Study of chemicals and their reactions', 'Dr. David Doe', 'Dr. Lily Doe', 'chemistry@university.com', '555-555-5558', 'dean_chemistry@university.com', '555-555-5554', current_timestamp , true,'{"Fall","Spring"}',4,1),
-    ('D005', 'Biology', 'Study of living organisms', 'Dr. Michael Doe', 'Dr. Grace Doe', 'biology@university.com', '555-555-5559', 'dean_biology@university.com', '555-555-5555', current_timestamp , true,'{"Fall","Spring"}',4,1);
+    ('D001', 'Computer Science', 'Study of computers and computational systems', 'Dr. John Doe', 'Dr. Jane Doe', 'cs@university.com', '555-555-5555', 'dean_cs@university.com', '555-555-5551', current_timestamp , true,4 , 1),
+    ('D002', 'Mathematics', 'Study of numbers and shapes', 'Dr. Tom Doe', 'Dr. Sarah Doe', 'math@university.com', '555-555-5556', 'dean_math@university.com', '555-555-5552', current_timestamp , true,4,2),
+    ('D003', 'Physics', 'Study of matter and energy', 'Dr. James Doe', 'Dr. Emily Doe', 'physics@university.com', '555-555-5557', 'dean_physics@university.com', '555-555-5553', current_timestamp , true,4,3),
+    ('D004', 'Chemistry', 'Study of chemicals and their reactions', 'Dr. David Doe', 'Dr. Lily Doe', 'chemistry@university.com', '555-555-5558', 'dean_chemistry@university.com', '555-555-5554', current_timestamp , true,4,1),
+    ('D005', 'Biology', 'Study of living organisms', 'Dr. Michael Doe', 'Dr. Grace Doe', 'biology@university.com', '555-555-5559', 'dean_biology@university.com', '555-555-5555', current_timestamp , true,4,1);
 
 INSERT INTO instructors_entity (first_name, last_name, email, phone_number, password, dob, place_of_birth, sex, nationality, role , created_at,is_active)
 VALUES
@@ -108,4 +108,22 @@ VALUES
     (1, current_timestamp , true),
     (1,current_timestamp , true),
     (1 ,current_timestamp , true);
+
+INSERT INTO buildings_entity (building_id, name, code, description, number_of_rooms , created_at)
+VALUES
+    (1, 'Building A', 'A001', 'This is Building A', 5 , current_timestamp),
+    (2, 'Building B', 'B001', 'This is Building B', 10,current_timestamp),
+    (3, 'Building C', 'C001', 'This is Building C', 3,current_timestamp),
+    (4, 'Building D', 'D001', 'This is Building D', 7,current_timestamp),
+    (5, 'Building E', 'E001', 'This is Building E', 2,current_timestamp);
+
+
+INSERT INTO building_rooms_entity (building_room_id, room_number, room_description, number_of_seats, building_id, created_at , is_available)
+VALUES
+    (1, 'Room 101', 'This is Room 101', 50, 1, current_timestamp, true),
+    (2, 'Room 201', 'This is Room 201', 100, 2, current_timestamp, false),
+    (3, 'Room 301', 'This is Room 301', 30, 3, current_timestamp, true),
+    (4, 'Room 102', 'This is Room 102', 40, 1, current_timestamp, true),
+    (5, 'Room 202', 'This is Room 202', 80, 2, current_timestamp, false);
+
 

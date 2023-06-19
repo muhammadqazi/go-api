@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/domain/dtos"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/core/infrastructure/postgres/entities"
 	"gorm.io/gorm"
@@ -45,14 +46,15 @@ func (r *accountingConnection) QueryAccountDetailsByStudentID(sid uint) ([]dtos.
 		inv.installment AS invoice_installment, inv.term
 	`).
 		Joins(`
-		JOIN payments_entity as pay ON pay.account_id = acc.account_id
-		JOIN invoices_entity as inv ON inv.account_id = acc.account_id
+		LEFT JOIN payments_entity as pay ON pay.account_id = acc.account_id
+		LEFT JOIN invoices_entity as inv ON inv.account_id = acc.account_id
 	`).
 		Where("student_id = ?", sid).
 		Scan(&info).Error; err != nil {
 		return nil, err
 	}
 
+	fmt.Println(info, "info")
 	return info, nil
 }
 

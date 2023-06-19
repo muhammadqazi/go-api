@@ -9,6 +9,7 @@ import (
 type FacultyRepository interface {
 	InsertFaculty(entity entities.FacultiesEntity) error
 	SelectFacultyByCode(code string) (entities.FacultiesEntity, error)
+	QuertAllFaculties() ([]entities.FacultiesEntity, error)
 }
 
 type facultyConnection struct {
@@ -38,4 +39,14 @@ func (r *facultyConnection) SelectFacultyByCode(code string) (entities.Faculties
 	}
 
 	return faculty, nil
+}
+
+func (r *facultyConnection) QuertAllFaculties() ([]entities.FacultiesEntity, error) {
+	var faculties []entities.FacultiesEntity
+
+	if err := r.conn.Find(&faculties).Error; err != nil {
+		return faculties, err
+	}
+
+	return faculties, nil
 }

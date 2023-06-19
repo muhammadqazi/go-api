@@ -60,6 +60,9 @@ func main() {
 		courseMapper     mappers.CourseMapper      = mappers.NewCourseMapper()
 		examMapper       mappers.ExamMapper        = mappers.NewExamMapper()
 		facultyMapper    mappers.FacultyMapper     = mappers.NewFacultyMapper()
+		departmentMapper mappers.DepartmentMapper  = mappers.NewDepartmentMapper()
+		buildingMapper   mappers.BuildingMapper    = mappers.NewBuildingMapper()
+		roomMapper       mappers.RoomMapper        = mappers.NewRoomMapper()
 	)
 
 	/*
@@ -76,6 +79,9 @@ func main() {
 		courseRepository     repositories.CourseRepository      = repositories.NewCourseRepository(db, courseMapper)
 		examRepository       repositories.ExamRepository        = repositories.NewExamRepository(db, examMapper)
 		facultyRepository    repositories.FacultyRepository     = repositories.NewFacultyRepository(db, facultyMapper)
+		departmentRepository repositories.DepartmentRepository  = repositories.NewDepartmentRepository(db, departmentMapper)
+		buildingRepository   repositories.BuildingRepository    = repositories.NewBuildingRepository(db, buildingMapper)
+		roomRepository       repositories.RoomRepository        = repositories.NewRoomRepository(db, roomMapper)
 	)
 
 	/*
@@ -92,6 +98,9 @@ func main() {
 		courseServices     services.CourseServices      = services.NewCourseServices(courseRepository, courseMapper)
 		examServices       services.ExamServices        = services.NewExamServices(examRepository, examMapper)
 		facultyServices    services.FacultyServices     = services.NewFacultyServices(facultyRepository, facultyMapper)
+		departmentServices services.DepartmentServices  = services.NewDepartmentServices(departmentRepository, departmentMapper)
+		buildingServices   services.BuildingServices    = services.NewBuildingServices(buildingRepository, buildingMapper)
+		roomServices       services.RoomServices        = services.NewRoomServices(roomRepository, roomMapper)
 	)
 
 	/*
@@ -108,6 +117,9 @@ func main() {
 		courseHandler     handlers.CourseHandler      = handlers.NewCourseHandler(courseServices, courseMapper, validator)
 		examHandler       handlers.ExamHandler        = handlers.NewExamHandler(examServices, examMapper, validator)
 		facultyHandler    handlers.FacultyHandler     = handlers.NewFacultyHandler(facultyServices, facultyMapper, validator)
+		departmentHandler handlers.DepartmentHandler  = handlers.NewDepartmentHandler(departmentServices, departmentMapper, validator)
+		buildingHandler   handlers.BuildingHandler    = handlers.NewBuildingHandler(buildingServices, buildingMapper, validator)
+		roomHandler       handlers.RoomHandler        = handlers.NewRoomHandler(roomServices, roomMapper, validator)
 	)
 
 	/*
@@ -135,6 +147,9 @@ func main() {
 	routers.CourseRouter(auth, courseHandler)
 	routers.ExamRouter(auth, examHandler)
 	routers.FacultyRouter(auth, facultyHandler)
+	routers.DepartmentRouter(auth, departmentHandler)
+	routers.BuildingRouter(auth, buildingHandler)
+	routers.RoomRouter(auth, roomHandler)
 
 	/*
 		"""

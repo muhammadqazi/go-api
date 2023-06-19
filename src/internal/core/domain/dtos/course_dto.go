@@ -68,3 +68,8 @@ type CourseLogSchema struct {
 	EndTime          string `gorm:"end_time"`
 	IsTheoretical    bool   `gorm:"is_theoretical"`
 }
+
+type CourseInstructorUpdateDTO struct {
+	CourseId      uint   `json:"course_id" validate:"required"`
+	InstructorIds []uint `json:"instructor_ids" validate:"required min=1"`
+}

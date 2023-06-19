@@ -14,6 +14,8 @@ func AccountingRouter(r *gin.RouterGroup, h handlers.AccountingHandler) {
 	student := r.Group("/accounts")
 	admin := r.Group("/accounts")
 
+	student.GET("/:id", h.GetAccountDetailsByStudentId)
+
 	/*
 		"""
 		We will use the RolesMiddleware to check if the user has the required permissions to access the route
@@ -26,11 +28,10 @@ func AccountingRouter(r *gin.RouterGroup, h handlers.AccountingHandler) {
 	student.Use(checkRoleForStudent)
 
 	student.POST("/pay", h.PostPayment)
-	student.GET("/info", h.GetAccountDetails)
 
 	/* Handlers with 'admin' roles */
 
 	admin.Use(middleware.RolesMiddleware(allowedRolesForAdmin))
 
-	admin.PATCH("/info", h.PatchAccountDetailsByStudentID)
+	//admin.PATCH("/info", h.PatchAccountDetailsByStudentID)
 }

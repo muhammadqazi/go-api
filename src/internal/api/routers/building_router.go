@@ -6,10 +6,10 @@ import (
 	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
 )
 
-func FacultyRouter(r *gin.RouterGroup, h handlers.FacultyHandler) {
+func BuildingRouter(r *gin.RouterGroup, h handlers.BuildingHandler) {
 
 	allowedRolesForCreate := []string{"admin"}
-	g := r.Group("/faculty")
+	g := r.Group("/building")
 
 	/*
 		"""
@@ -20,7 +20,7 @@ func FacultyRouter(r *gin.RouterGroup, h handlers.FacultyHandler) {
 	checkRoleForCreate := middleware.RolesMiddleware(allowedRolesForCreate)
 	g.Use(checkRoleForCreate)
 
-	g.POST("/create", h.PostFaculty)
-	g.GET("/:code", h.GetFaculty)
-	g.GET("/", h.GetAllFaculties)
+	g.POST("/create", h.PostBuilding)
+	g.GET("/:code", h.GetBuilding)
+	g.GET("/", h.GetAllBuildings)
 }
