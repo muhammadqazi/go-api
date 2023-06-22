@@ -140,6 +140,8 @@ func main() {
 	*/
 	auth := r.Group("/api/v1", middleware.AuthorizeJWT(jwtService))
 
+	auth.Use(middleware.CORSMiddleware())
+
 	routers.StudentRouter(auth, studentHandler)
 	routers.AccountingRouter(auth, accountsHandler)
 	routers.CurriculumRouter(auth, curriculumHandler)
