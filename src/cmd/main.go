@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
 	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
@@ -23,7 +24,7 @@ func main() {
 		"""
 	*/
 
-	config, err := core.LoadConfig()
+	conf, err := core.LoadConfig()
 	if err != nil {
 		errfmt := "Error loading config: %s"
 		panic(fmt.Errorf(errfmt, err))
@@ -34,7 +35,7 @@ func main() {
 		Connect to the database
 		"""
 	*/
-	var db *gorm.DB = database.Init(config.DBUrl)
+	var db *gorm.DB = database.Init(conf.DBUrl)
 	defer database.CloseDatabaseConnection(db)
 
 	/*
@@ -43,7 +44,7 @@ func main() {
 		"""
 	*/
 
-	var jwtService security.TokenManager = security.NewTokenManager(config)
+	var jwtService security.TokenManager = security.NewTokenManager(conf)
 	var validator validation.Validator = validation.NewStructValidator()
 
 	/*
@@ -131,7 +132,13 @@ func main() {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	r.Use(middleware.CORSMiddleware())
+
+	// Enable CORS
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
+	r.Use(cors.New(config))
 
 	/*
 		"""
@@ -139,8 +146,6 @@ func main() {
 		"""
 	*/
 	auth := r.Group("/api/v1", middleware.AuthorizeJWT(jwtService))
-
-	auth.Use(middleware.CORSMiddleware())
 
 	routers.StudentRouter(auth, studentHandler)
 	routers.AccountingRouter(auth, accountsHandler)
@@ -159,6 +164,6 @@ func main() {
 		"""
 	*/
 
-	r.Run("0.0.0.0" + config.Port)
+	r.Run("0.0.0.0" + conf.Port)
 
 }
