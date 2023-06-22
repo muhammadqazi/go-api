@@ -7,13 +7,13 @@ type DepartmentsEntity struct {
 	DepartmentCode string `gorm:"type:varchar(50);not null;uniqueIndex" json:"department_code"`
 	Name           string `gorm:"type:varchar(50);not null" json:"name"`
 	Description    string `gorm:"type:varchar(255);not null" json:"description"`
-	Dean           string `gorm:"type:varchar(50);not null" json:"dean"`
-	ViceDean       string `gorm:"type:varchar(50);not null" json:"vice_dean"`
-	Email          string `gorm:"type:varchar(50);not null" json:"email"`
-	PhoneNumber    string `gorm:"type:varchar(50);not null" json:"phone_number"`
-	DeanEmail      string `gorm:"type:varchar(50);not null" json:"dean_email"`
-	DeanPhone      string `gorm:"type:varchar(50);not null" json:"dean_phone"`
-	NumberOfYears  int    `gorm:"not null" json:"number_of_years"`
+	//Dean           string `gorm:"type:varchar(50);not null" json:"dean"`
+	//ViceDean string `gorm:"type:varchar(50);not null" json:"vice_dean"`
+	Email       string `gorm:"type:varchar(50);not null" json:"email"`
+	PhoneNumber string `gorm:"type:varchar(50);not null" json:"phone_number"`
+	//DeanEmail      string `gorm:"type:varchar(50);not null" json:"dean_email"`
+	//DeanPhone      string `gorm:"type:varchar(50);not null" json:"dean_phone"`
+	NumberOfYears int `gorm:"not null" json:"number_of_years"`
 
 	FacultyID uint `gorm:"column:faculty_id" json:"faculty_id"`
 
@@ -21,4 +21,5 @@ type DepartmentsEntity struct {
 
 	StudentsEntity   []StudentsEntity   `gorm:"foreignkey:DepartmentID"`
 	CurriculumEntity []CurriculumEntity `gorm:"foreignkey:DepartmentID"`
+	CoursesEntity    []CoursesEntity    `gorm:"foreignkey:DepartmentID"`
 }

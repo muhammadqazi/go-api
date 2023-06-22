@@ -17,6 +17,7 @@ type CourseCreateDTO struct {
 	Theoretical    int              `json:"theoretical" validate:"required"`
 	Practical      int              `json:"practical" validate:"required"`
 	CourseSchedule []CourseSchedule `json:"course_schedule" validate:"required,dive,required"`
+	DepartmentID   uint             `json:"department_id" validate:"required"`
 }
 
 type CourseUpdateDTO struct {

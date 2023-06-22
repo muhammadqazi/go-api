@@ -10,4 +10,6 @@ type BuildingRoomsEntity struct {
 	IsAvailable     bool   `gorm:"not null" json:"is_available"`
 
 	BuildingID uint `gorm:"not null" json:"building_id"`
+
+	InstructorsEntity []InstructorsEntity `gorm:"foreignkey:OfficeId"`
 }

@@ -157,6 +157,6 @@ func main() {
 		"""
 	*/
 
-	r.Run("localhost" + config.Port)
+	r.Run("0.0.0.0" + config.Port)
 
 }

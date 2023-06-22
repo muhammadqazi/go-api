@@ -24,13 +24,14 @@ func NewCourseMapper() CourseMapper {
 
 func (m *courseMapper) CourseCreateMapper(dto dtos.CourseCreateDTO) entities.CoursesEntity {
 	return entities.CoursesEntity{
-		Name:        dto.Name,
-		Code:        dto.Code,
-		Description: dto.Description,
-		Credits:     dto.Credits,
-		ECTS:        dto.ECTS,
-		Theoretical: dto.Theoretical,
-		Practical:   dto.Practical,
+		Name:         dto.Name,
+		Code:         dto.Code,
+		Description:  dto.Description,
+		Credits:      dto.Credits,
+		ECTS:         dto.ECTS,
+		Theoretical:  dto.Theoretical,
+		Practical:    dto.Practical,
+		DepartmentID: dto.DepartmentID,
 	}
 }
 

@@ -48,8 +48,6 @@ func (r *studentConnection) InsertStudent(student entities.StudentsEntity) (uint
 		return 0, res.Error
 	}
 
-	fmt.Println("Student ID: ", student.StudentID)
-
 	return student.StudentID, nil
 }
 

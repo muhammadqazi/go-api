@@ -18,7 +18,7 @@ type StudentsEntity struct {
 	Status         string    `gorm:"type:varchar(50);not null" json:"status"`
 	AccessStatus   string    `gorm:"type:varchar(50);not null" json:"access_status"`
 	AcceptanceType string    `gorm:"type:varchar(50);not null" json:"acceptance_type"`
-	Semester       string    `gorm:"type:varchar(50);not null" json:"semester"`
+	Semester       string    `gorm:"type:varchar(50);not null" json:"s emester"`
 	GraduationDate time.Time `gorm:"type:timestamp" json:"graduation_date"`
 
 	IsGraduated bool `gorm:"type:boolean;not null;default:false" json:"is_graduated"`

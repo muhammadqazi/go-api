@@ -1,7 +1,6 @@
 package mappers
 
 import (
-	"strings"
 	"time"
 
 	"github.com/muhammadqazi/campus-hq-api/src/internal/common/security"
@@ -42,6 +41,8 @@ func (s *instructorsMapper) InstructorCreateMapper(instructor dtos.InstructorCre
 		Sex:          instructor.Sex,
 		Nationality:  instructor.Nationality,
 		Role:         string(instructor.Role),
+		Salary:       instructor.Salary,
+		OfficeId:     instructor.OfficeId,
 		BaseEntity: entities.BaseEntity{
 			CreatedAt: time.Now().UTC(),
 			IsActive:  true,
@@ -92,8 +93,12 @@ func (s *instructorsMapper) InstructorTermRequestsMapper(requests []dtos.Instruc
 }
 
 func (s *instructorsMapper) InstructorCourseEnrollmentMapper(enrollment dtos.InstructorCourseEnrollmentDTO) entities.InstructorEnrollmentsEntity {
+	semester := utils.GetCurrentSemester()
+	year := utils.GetCurrentYear()
 	return entities.InstructorEnrollmentsEntity{
 		InstructorID: enrollment.InstructorID,
+		Semester:     semester,
+		Year:         year,
 		BaseEntity: entities.BaseEntity{
 			CreatedAt: time.Now().UTC(),
 			IsActive:  true,
@@ -105,8 +110,6 @@ func (s *instructorsMapper) InstructorCoursesMapper(enrollmentID uint, courseID 
 	return entities.InstructorCoursesEntity{
 		InstructorEnrollmentID: enrollmentID,
 		CourseID:               courseID,
-		Semester:               strings.ToLower(info.Semester),
-		Year:                   info.Year,
 	}
 }
 

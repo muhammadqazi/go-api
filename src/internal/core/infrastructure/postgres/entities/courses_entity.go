@@ -5,12 +5,14 @@ type CoursesEntity struct {
 
 	CourseID    uint   `gorm:"primaryKey;not null;uniqueIndex" json:"course_id"`
 	Name        string `gorm:"type:varchar(255);not null" json:"name"`
-	Code        string `gorm:"type:varchar(255);not null" json:"code"`
+	Code        string `gorm:"type:varchar(255);not null;uniqueIndex" json:"code"`
 	Description string `gorm:"type:varchar(255);not null" json:"description"`
 	Credits     int    `gorm:"not null" json:"credits"`
 	ECTS        int    `gorm:"not null" json:"ects"`
 	Theoretical int    `gorm:"not null" json:"theoretical"`
 	Practical   int    `gorm:"not null" json:"practical"`
+
+	DepartmentID uint `gorm:"not null" json:"department_id"`
 
 	InstructorCoursesEntity    []InstructorCoursesEntity    `gorm:"foreignkey:CourseID"`
 	TranscriptEntity           []TranscriptEntity           `gorm:"foreignkey:CourseID"`

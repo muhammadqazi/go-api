@@ -20,12 +20,8 @@ func (m *departmentMapper) DepartmentCreateMapper(department dtos.DepartmentCrea
 	return entities.DepartmentsEntity{
 		Name:          department.Name,
 		Description:   department.Description,
-		Dean:          department.Dean,
-		ViceDean:      department.ViceDean,
 		Email:         department.Email,
 		PhoneNumber:   department.PhoneNumber,
-		DeanEmail:     department.DeanEmail,
-		DeanPhone:     department.DeanPhone,
 		NumberOfYears: department.NumberOfYears,
 		FacultyID:     department.FacultyID,
 		HeadID:        department.HeadID,

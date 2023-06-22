@@ -18,9 +18,13 @@ type InstructorsEntity struct {
 	// Office       string `gorm:"type:varchar(255);not null" json:"office"`
 	// OfficeLine  string `gorm:"type:varchar(255);not null" json:"office_line"`
 	// OfficeHours string `gorm:"type:varchar(255);not null" json:"office_hours"`
+	Salary   float64 `gorm:"type:float;not null" json:"salary"`
+	OfficeId uint    `gorm:"column:office_id" json:"office_id"`
 
 	InstructorEnrollmentsEntity []InstructorEnrollmentsEntity `gorm:"foreignkey:InstructorID"`
 	DepartmentsEntity           []DepartmentsEntity           `gorm:"foreignkey:HeadID"`
+	FacultiesEntity             []FacultiesEntity             `gorm:"foreignkey:DeanID"`
+	FacultiesEntityVice         []FacultiesEntity             `gorm:"foreignkey:ViceDeanId"`
 	StudentsEntity              []StudentsEntity              `gorm:"foreignkey:SupervisorID"`
 
 	StudentEnrollmentsEntity []StudentEnrollmentsEntity `gorm:"foreignkey:SupervisorID"`

@@ -19,13 +19,8 @@ func NewFacultyMapper() FacultyMapper {
 func (m *facultyMapper) FacultyCreateMapper(dto dtos.FacultyCreateDTO) entities.FacultiesEntity {
 	return entities.FacultiesEntity{
 		Name:        dto.Name,
-		Code:        dto.Code,
 		Description: dto.Description,
-		Dean:        dto.Dean,
-		ViceDean:    dto.ViceDean,
 		Email:       dto.Email,
 		PhoneNumber: dto.PhoneNumber,
-		DeanEmail:   dto.DeanEmail,
-		DeanPhone:   dto.DeanPhone,
 	}
 }
