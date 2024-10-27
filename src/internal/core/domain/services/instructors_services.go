@@ -21,6 +21,7 @@ type InstructorsServices interface {
 	FetchRegisteredStudentsBySupervisorID(uint) ([]dtos.RegisteredStudentsDTO, error)
 	CreateCourseAttendanceLog(uint) error
 	FetchAllStudents() ([]dtos.StudentsFetchDTO, error)
+	ModifyPassword(dtos.ResetPasswordDTO, uint) error
 }
 
 type instructorsServices struct {
@@ -91,4 +92,8 @@ func (s *instructorsServices) FetchRegisteredStudentsBySupervisorID(id uint) ([]
 
 func (s *instructorsServices) CreateCourseAttendanceLog(id uint) error {
 	return s.instructorsRepository.InsertCourseAttendanceLog(id)
+}
+
+func (s *instructorsServices) ModifyPassword(dto dtos.ResetPasswordDTO, id uint) error {
+	return s.instructorsRepository.UpdatePassword(dto, id)
 }

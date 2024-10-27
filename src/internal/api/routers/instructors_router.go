@@ -14,6 +14,7 @@ func InstructorsRouter(r *gin.RouterGroup, h handlers.InstructorsHandler) {
 	g := r.Group("/instructor")
 
 	g.POST("/login", h.PostSignIn)
+	g.PATCH("/reset-password", h.PatchPassword)
 
 	/*
 		"""

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/muhammadqazi/campus-hq-api/src/internal/api/handlers"
 	middleware "github.com/muhammadqazi/campus-hq-api/src/internal/api/middlewares"
@@ -133,12 +132,7 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	// Enable CORS
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
-	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
-	r.Use(cors.New(config))
+	r.Use(middleware.CORSMiddleware())
 
 	/*
 		"""

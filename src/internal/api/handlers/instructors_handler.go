@@ -30,6 +30,7 @@ type InstructorsHandler interface {
 	GetSupervisedStudents(c *gin.Context)
 	GetRegisteredStudentsBySupervisorID(c *gin.Context)
 	GetAllStudents(c *gin.Context)
+	PatchPassword(c *gin.Context)
 }
 
 type instructorsHandler struct {
@@ -279,4 +280,23 @@ func (s *instructorsHandler) GetAllStudents(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error fetching students"})
+}
+
+func (s *instructorsHandler) PatchPassword(c *gin.Context) {
+
+	var request dtos.ResetPasswordDTO
+
+	if err := s.validator.Validate(&request, c); err != nil {
+		return
+	}
+
+	id := c.MustGet("id").(string)
+	instructorID, _ := strconv.ParseUint(id, 10, 64)
+
+	if err := s.instructorsServices.ModifyPassword(request, uint(instructorID)); err == nil {
+		c.JSON(http.StatusOK, gin.H{"status": true, "message": "Password updated successfully"})
+		return
+	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{"status": false, "message": "Error updating password"})
 }

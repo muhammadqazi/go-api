@@ -22,5 +22,5 @@ func BuildingRouter(r *gin.RouterGroup, h handlers.BuildingHandler) {
 
 	g.POST("/create", h.PostBuilding)
 	g.GET("/:code", h.GetBuilding)
-	g.GET("/", h.GetAllBuildings)
+	g.GET("/all", h.GetAllBuildings)
 }

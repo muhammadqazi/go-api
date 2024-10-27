@@ -24,6 +24,7 @@ type InstructorsRepository interface {
 	QueryRegisteredStudentsBySupervisorID(uint) ([]dtos.RegisteredStudentsDTO, error)
 	InsertCourseAttendanceLog(uint) error
 	QueryAllStudents() ([]entities.StudentsEntity, error)
+	UpdatePassword(dtos.ResetPasswordDTO, uint) error
 }
 
 type instructorsConnection struct {
@@ -423,4 +424,31 @@ func (r *instructorsConnection) QueryAllStudents() ([]entities.StudentsEntity, e
 	}
 
 	return result, nil
+}
+
+func (r *instructorsConnection) UpdatePassword(dto dtos.ResetPasswordDTO, id uint) error {
+
+	// check if the old password is correct
+	var result []entities.InstructorsEntity
+	err := r.conn.Table("instructors").Where("instructor_id = ?", id).Find(&result).Error
+	if err != nil {
+		return err
+	}
+
+	if len(result) == 0 {
+		return errors.New("instructor not found")
+
+	}
+
+	if result[0].Password != dto.CurrentPassword {
+		return errors.New("old password is incorrect")
+	}
+
+	err = r.conn.Table("instructors").Where("instructor_id = ?", id).Update("password", dto.NewPassword).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
